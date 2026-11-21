@@ -33,4 +33,6 @@ public interface OutboundOrderRepository extends JpaRepository<OutboundOrder, Lo
 
     @EntityGraph(attributePaths = {"createdBy", "warehouse"})
     Page<OutboundOrder> findByStatusOrderByCreatedAtDesc(OutboundStatus status, Pageable pageable);
+
+    long countByStatus(OutboundStatus status);
 }

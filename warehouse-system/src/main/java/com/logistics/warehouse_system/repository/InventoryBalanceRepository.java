@@ -23,4 +23,7 @@ public interface InventoryBalanceRepository extends JpaRepository<InventoryBalan
     Page<InventoryBalance> search(@Param("productId") Long productId,
                                   @Param("locationId") Long locationId,
                                   Pageable pageable);
+
+    @Query("select sum(b.quantityOnHand) from InventoryBalance b")
+    Long totalQuantityOnHand();
 }

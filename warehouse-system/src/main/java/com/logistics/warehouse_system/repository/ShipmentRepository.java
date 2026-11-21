@@ -6,7 +6,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface ShipmentRepository extends JpaRepository<Shipment, Long> {
@@ -22,4 +24,7 @@ public interface ShipmentRepository extends JpaRepository<Shipment, Long> {
 
     @EntityGraph(attributePaths = "outboundOrder")
     Page<Shipment> findByStatusOrderByCreatedAtDesc(ShipmentStatus status, Pageable pageable);
+
+    @Query("select s.status, count(s) from Shipment s group by s.status")
+    List<Object[]> countGroupedByStatus();
 }
