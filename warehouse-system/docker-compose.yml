@@ -17,7 +17,7 @@ services:
       retries: 10
 
   backend:
-    build: ./warehouse-system
+    build: .
     container_name: warehouse-backend
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/logistics_db

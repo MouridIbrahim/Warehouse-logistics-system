@@ -1,0 +1,87 @@
+package com.logistics.warehouse_system.service;
+
+import com.logistics.warehouse_system.dto.CreateWarehouseRequest;
+import com.logistics.warehouse_system.dto.PageResponse;
+import com.logistics.warehouse_system.dto.UpdateWarehouseRequest;
+import com.logistics.warehouse_system.dto.WarehouseDto;
+import com.logistics.warehouse_system.entities.Warehouse;
+import com.logistics.warehouse_system.exception.ConflictException;
+import com.logistics.warehouse_system.exception.NotFoundException;
+import com.logistics.warehouse_system.repository.WarehouseRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+
+@Service
+public class WarehouseService {
+
+    private final WarehouseRepository warehouseRepository;
+    private final AuditLogService auditLogService;
+
+    public WarehouseService(WarehouseRepository warehouseRepository, AuditLogService auditLogService) {
+        this.warehouseRepository = warehouseRepository;
+        this.auditLogService = auditLogService;
+    }
+
+    @Transactional(readOnly = true)
+    public PageResponse<WarehouseDto> list(String term, Pageable pageable) {
+        Page<Warehouse> page = (term == null || term.isBlank())
+                ? warehouseRepository.findAll(pageable)
+                : warehouseRepository.findByCodeContainingIgnoreCaseOrNameContainingIgnoreCase(
+                        term.trim(), term.trim(), pageable);
+        List<WarehouseDto> content = page.getContent().stream().map(WarehouseDto::from).toList();
+        return PageResponse.of(page, content);
+    }
+
+    @Transactional(readOnly = true)
+    public WarehouseDto get(Long id) {
+        Warehouse warehouse = warehouseRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Warehouse", id));
+        return WarehouseDto.from(warehouse);
+    }
+
+    @Transactional
+    public WarehouseDto create(CreateWarehouseRequest request) {
+        if (warehouseRepository.existsByCode(request.code())) {
+            throw new ConflictException("Warehouse code already exists: " + request.code());
+        }
+        Warehouse warehouse = Warehouse.builder()
+                .code(request.code())
+                .name(request.name())
+                .address(request.address())
+                .active(true)
+                .build();
+        warehouseRepository.save(warehouse);
+        auditLogService.record("WAREHOUSE_CREATED", "WAREHOUSE", warehouse.getId());
+        return WarehouseDto.from(warehouse);
+    }
+
+    @Transactional
+    public WarehouseDto update(Long id, UpdateWarehouseRequest request) {
+        Warehouse warehouse = warehouseRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Warehouse", id));
+
+        if (request.code() != null && !request.code().equals(warehouse.getCode())) {
+            if (warehouseRepository.existsByCode(request.code())) {
+                throw new ConflictException("Warehouse code already exists: " + request.code());
+            }
+            warehouse.setCode(request.code());
+        }
+        if (request.name() != null) {
+            warehouse.setName(request.name());
+        }
+        if (request.address() != null) {
+            warehouse.setAddress(request.address());
+        }
+        if (request.active() != null) {
+            warehouse.setActive(request.active());
+        }
+
+        warehouseRepository.save(warehouse);
+        auditLogService.record("WAREHOUSE_UPDATED", "WAREHOUSE", warehouse.getId());
+        return WarehouseDto.from(warehouse);
+    }
+}

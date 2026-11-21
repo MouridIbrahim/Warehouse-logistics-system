@@ -47,7 +47,8 @@ Status legend: `TODO` / `IN_PROGRESS` / `BLOCKED` / `DONE`.
 
 ### Foundation (infra, schema, security, auth, users)
 
-- **BE-001** — Docker Compose + `.env.example` + `.gitignore`. `DONE`
+- **BE-001** — `docker-compose.yml` (in `warehouse-system/`) + `Dockerfile` +
+  `.dockerignore` + `.env`/`.env.example` + `README.md` run instructions. `DONE`
 - **BE-002** — `application.yml` (datasource env, `ddl-auto: validate`,
   Flyway, JWT/CORS, pagination defaults). `DONE`
 - **BE-003** — Flyway migrations V1–V6 (identity, products/warehouses,
@@ -67,8 +68,8 @@ Status legend: `TODO` / `IN_PROGRESS` / `BLOCKED` / `DONE`.
 
 ### Feature modules (not yet implemented)
 
-- **BE-015** — Product management (CRUD + deactivate + search). `TODO`
-- **BE-016** — Warehouse & storage-location management. `TODO`
+- **BE-015** — Product management (CRUD + deactivate + search). `DONE`
+- **BE-016** — Warehouse & storage-location management. `DONE`
 - **BE-017** — Inbound receiving (create + confirm → inventory + movement). `TODO`
 - **BE-018** — Inventory monitoring + manual adjustment. `TODO`
 - **BE-019** — Outbound processing (create + dispatch, concurrency-safe). `TODO`
@@ -101,5 +102,7 @@ Status legend: `TODO` / `IN_PROGRESS` / `BLOCKED` / `DONE`.
 | Task | Status | Notes |
 |---|---|---|
 | BE-001 … BE-014 | DONE | Foundation compiles; DB-backed run pending Docker |
-| BE-015 … BE-022 | TODO | Feature modules |
+| BE-015 | DONE | Product management compiles |
+| BE-016 | DONE | Warehouse & location management compiles |
+| BE-017 … BE-022 | TODO | Feature modules |
 | BE-023 … BE-025 | TODO | Tests + OpenAPI |
