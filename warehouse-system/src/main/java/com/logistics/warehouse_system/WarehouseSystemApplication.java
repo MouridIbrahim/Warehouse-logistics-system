@@ -8,6 +8,8 @@ public class WarehouseSystemApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(WarehouseSystemApplication.class, args);
+		System.out.println("Warehouse System Application started successfully.");
+		
 	}
 
 }
