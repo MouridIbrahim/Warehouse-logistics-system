@@ -72,7 +72,7 @@ Status legend: `TODO` / `IN_PROGRESS` / `BLOCKED` / `DONE`.
 - **BE-016** — Warehouse & storage-location management. `DONE`
 - **BE-017** — Inbound receiving (create + confirm → inventory + movement). `DONE`
 - **BE-018** — Inventory monitoring + manual adjustment. `DONE`
-- **BE-019** — Outbound processing (create + dispatch, concurrency-safe). `TODO`
+- **BE-019** — Outbound processing (create + dispatch, concurrency-safe). `DONE`
 - **BE-020** — Shipment management (create + validated status transitions). `TODO`
 - **BE-021** — Reports / dashboard. `TODO`
 - **BE-022** — Audit history read endpoint. `TODO`
@@ -106,5 +106,6 @@ Status legend: `TODO` / `IN_PROGRESS` / `BLOCKED` / `DONE`.
 | BE-016 | DONE | Warehouse & location management compiles |
 | BE-017 | DONE | Inbound receiving compiles |
 | BE-018 | DONE | Inventory monitoring + adjustment compiles |
-| BE-019 … BE-022 | TODO | Feature modules |
+| BE-019 | DONE | Outbound processing compiles |
+| BE-020 … BE-022 | TODO | Feature modules |
 | BE-023 … BE-025 | TODO | Tests + OpenAPI |
