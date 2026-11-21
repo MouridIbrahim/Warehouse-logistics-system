@@ -75,7 +75,7 @@ Status legend: `TODO` / `IN_PROGRESS` / `BLOCKED` / `DONE`.
 - **BE-019** — Outbound processing (create + dispatch, concurrency-safe). `DONE`
 - **BE-020** — Shipment management (create + validated status transitions). `DONE`
 - **BE-021** — Reports / dashboard. `DONE`
-- **BE-022** — Audit history read endpoint. `TODO`
+- **BE-022** — Audit history read endpoint. `DONE`
 
 ### Quality
 
@@ -109,5 +109,5 @@ Status legend: `TODO` / `IN_PROGRESS` / `BLOCKED` / `DONE`.
 | BE-019 | DONE | Outbound processing compiles |
 | BE-020 | DONE | Shipment management compiles |
 | BE-021 | DONE | Reports / dashboard compiles |
-| BE-022 | TODO | Audit history read endpoint |
+| BE-022 | DONE | Audit history read endpoint compiles |
 | BE-023 … BE-025 | TODO | Tests + OpenAPI |

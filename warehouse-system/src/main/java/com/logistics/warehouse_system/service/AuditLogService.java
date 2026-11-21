@@ -1,14 +1,19 @@
 package com.logistics.warehouse_system.service;
 
+import com.logistics.warehouse_system.dto.AuditDto;
+import com.logistics.warehouse_system.dto.PageResponse;
 import com.logistics.warehouse_system.entities.AuditLog;
 import com.logistics.warehouse_system.entities.User;
 import com.logistics.warehouse_system.repository.AuditLogRepository;
 import com.logistics.warehouse_system.repository.UserRepository;
 import com.logistics.warehouse_system.security.SecurityUtils;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
+import java.util.List;
 
 @Service
 public class AuditLogService {
@@ -39,5 +44,12 @@ public class AuditLogService {
                 .occurredAt(Instant.now())
                 .build();
         auditLogRepository.save(log);
+    }
+
+    @Transactional(readOnly = true)
+    public PageResponse<AuditDto> list(String entityType, String action, Pageable pageable) {
+        Page<AuditLog> page = auditLogRepository.search(entityType, action, pageable);
+        List<AuditDto> content = page.getContent().stream().map(AuditDto::from).toList();
+        return PageResponse.of(page, content);
     }
 }
