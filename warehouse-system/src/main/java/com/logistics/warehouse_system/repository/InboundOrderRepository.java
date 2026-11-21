@@ -22,13 +22,15 @@ public interface InboundOrderRepository extends JpaRepository<InboundOrder, Long
             left join fetch o.items i
             left join fetch i.product
             left join fetch i.storageLocation
+            left join fetch o.warehouse
+            left join fetch o.createdBy
             where o.id = :id
             """)
     Optional<InboundOrder> findByIdWithItems(@Param("id") Long id);
 
-    @EntityGraph(attributePaths = "createdBy")
+    @EntityGraph(attributePaths = {"createdBy", "warehouse"})
     Page<InboundOrder> findAllByOrderByCreatedAtDesc(Pageable pageable);
 
-    @EntityGraph(attributePaths = "createdBy")
+    @EntityGraph(attributePaths = {"createdBy", "warehouse"})
     Page<InboundOrder> findByStatusOrderByCreatedAtDesc(InboundStatus status, Pageable pageable);
 }
