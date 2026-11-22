@@ -1,8 +1,7 @@
 package com.logistics.warehouse_system.config;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.logistics.warehouse_system.dto.ApiError;
 import com.logistics.warehouse_system.security.JwtAuthenticationFilter;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,6 +19,8 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import java.io.IOException;
+import java.time.Instant;
 import java.util.Arrays;
 import java.util.List;
 
@@ -49,7 +50,6 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http,
                                                    JwtAuthenticationFilter jwtFilter,
-                                                   ObjectMapper objectMapper,
                                                    @Value("${app.cors.allowed-origins}") String allowedOrigins)
             throws Exception {
         http
@@ -60,21 +60,24 @@ public class SecurityConfig {
                         .requestMatchers(PUBLIC_ENDPOINTS).permitAll()
                         .anyRequest().authenticated())
                 .exceptionHandling(eh -> eh
-                        .authenticationEntryPoint((request, response, ex) -> {
-                            response.setStatus(401);
-                            response.setContentType("application/json");
-                            response.getWriter().write(objectMapper.writeValueAsString(
-                                    ApiError.of(401, "UNAUTHORIZED", "Authentication required")));
-                        })
-                        .accessDeniedHandler((request, response, ex) -> {
-                            response.setStatus(403);
-                            response.setContentType("application/json");
-                            response.getWriter().write(objectMapper.writeValueAsString(
-                                    ApiError.of(403, "FORBIDDEN", "Access denied")));
-                        }))
+                        .authenticationEntryPoint((request, response, ex) ->
+                                writeError(response, 401, "UNAUTHORIZED", "Authentication required"))
+                        .accessDeniedHandler((request, response, ex) ->
+                                writeError(response, 403, "FORBIDDEN", "Access denied")))
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
+    }
+
+    private void writeError(HttpServletResponse response, int status, String code, String message)
+            throws IOException {
+        response.setStatus(status);
+        response.setContentType("application/json");
+        String json = "{\"status\":" + status
+                + ",\"code\":\"" + code + "\""
+                + ",\"message\":\"" + message + "\""
+                + ",\"timestamp\":\"" + Instant.now() + "\"}";
+        response.getWriter().write(json);
     }
 
     private CorsConfigurationSource corsConfigurationSource(String allowedOrigins) {

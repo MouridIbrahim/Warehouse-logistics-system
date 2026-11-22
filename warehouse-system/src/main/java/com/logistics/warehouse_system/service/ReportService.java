@@ -43,8 +43,13 @@ public class ReportService {
 
     @Transactional(readOnly = true)
     public DashboardDto dashboard(LocalDate from, LocalDate to) {
-        Instant fromInstant = from == null ? null : from.atStartOfDay(ZoneOffset.UTC).toInstant();
-        Instant toInstant = to == null ? null : to.plusDays(1).atStartOfDay(ZoneOffset.UTC).toInstant();
+        // Sentinel values keep the query parameters non-null so PostgreSQL can infer their type.
+        Instant fromInstant = from == null
+                ? Instant.parse("1900-01-01T00:00:00Z")
+                : from.atStartOfDay(ZoneOffset.UTC).toInstant();
+        Instant toInstant = to == null
+                ? Instant.parse("2999-01-01T00:00:00Z")
+                : to.plusDays(1).atStartOfDay(ZoneOffset.UTC).toInstant();
 
         Long inbound = inventoryMovementRepository.sumQuantityByType(MovementType.INBOUND, fromInstant, toInstant);
         Long outbound = inventoryMovementRepository.sumQuantityByType(MovementType.OUTBOUND, fromInstant, toInstant);

@@ -79,10 +79,10 @@ Status legend: `TODO` / `IN_PROGRESS` / `BLOCKED` / `DONE`.
 
 ### Quality
 
-- **BE-023** — Unit tests (service rules, transitions, validation). `TODO`
+- **BE-023** — Unit tests (service rules, transitions, validation). `DONE`
 - **BE-024** — Integration tests (Postgres/Testcontainers: workflows,
-  rollback, concurrency, auth). `TODO`
-- **BE-025** — OpenAPI annotations + Swagger UI verification. `TODO`
+  rollback, concurrency, auth). `DONE`
+- **BE-025** — OpenAPI annotations + Swagger UI verification. `DONE`
 
 ## 5. API contract (agreed shape)
 
@@ -110,4 +110,6 @@ Status legend: `TODO` / `IN_PROGRESS` / `BLOCKED` / `DONE`.
 | BE-020 | DONE | Shipment management compiles |
 | BE-021 | DONE | Reports / dashboard compiles |
 | BE-022 | DONE | Audit history read endpoint compiles |
-| BE-023 … BE-025 | TODO | Tests + OpenAPI |
+| BE-023 | DONE | 17 unit tests pass |
+| BE-024 | DONE | 5 integration tests pass (Testcontainers/Postgres) |
+| BE-025 | DONE | OpenAPI + Swagger UI configured & verified |

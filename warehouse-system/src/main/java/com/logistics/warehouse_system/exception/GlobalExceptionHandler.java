@@ -1,6 +1,8 @@
 package com.logistics.warehouse_system.exception;
 
 import com.logistics.warehouse_system.dto.ApiError;
+import jakarta.persistence.OptimisticLockException;
+import org.hibernate.StaleObjectStateException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.http.HttpStatus;
@@ -53,8 +55,10 @@ public class GlobalExceptionHandler {
                 "Invalid value for parameter '" + ex.getName() + "'");
     }
 
-    @ExceptionHandler(OptimisticLockingFailureException.class)
-    public ResponseEntity<ApiError> handleOptimisticLock(OptimisticLockingFailureException ex) {
+    @ExceptionHandler({OptimisticLockingFailureException.class,
+            OptimisticLockException.class,
+            StaleObjectStateException.class})
+    public ResponseEntity<ApiError> handleOptimisticLock(Exception ex) {
         return build(HttpStatus.CONFLICT, "CONFLICT",
                 "The record was modified concurrently. Please refresh and retry.");
     }

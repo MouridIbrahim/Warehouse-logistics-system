@@ -27,8 +27,8 @@ public interface InventoryMovementRepository extends JpaRepository<InventoryMove
     @Query("""
             select sum(abs(m.quantityDelta)) from InventoryMovement m
             where m.movementType = :type
-              and (:from is null or m.occurredAt >= :from)
-              and (:to is null or m.occurredAt < :to)
+              and m.occurredAt >= :from
+              and m.occurredAt < :to
             """)
     Long sumQuantityByType(@Param("type") MovementType type,
                            @Param("from") Instant from,
