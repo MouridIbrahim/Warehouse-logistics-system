@@ -18,11 +18,14 @@ public class JwtService {
 
     private final SecretKey key;
     private final long expirationMs;
+    private final long refreshExpirationMs;
 
     public JwtService(@Value("${app.jwt.secret}") String secret,
-                      @Value("${app.jwt.expiration-ms}") long expirationMs) {
+                      @Value("${app.jwt.expiration-ms}") long expirationMs,
+                      @Value("${app.jwt.refresh-expiration-ms}") long refreshExpirationMs) {
         this.key = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
         this.expirationMs = expirationMs;
+        this.refreshExpirationMs = refreshExpirationMs;
     }
 
     public String generateToken(AppUserDetails userDetails) {
@@ -39,8 +42,27 @@ public class JwtService {
                 .compact();
     }
 
+    public String generateRefreshToken(AppUserDetails userDetails) {
+        List<String> authorities = userDetails.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .toList();
+        return Jwts.builder()
+                .subject(userDetails.getUsername())
+                .claim("uid", userDetails.getId())
+                .claim("roles", authorities)
+                .claim("type", "refresh")
+                .issuedAt(new Date())
+                .expiration(new Date(System.currentTimeMillis() + refreshExpirationMs))
+                .signWith(key)
+                .compact();
+    }
+
     public long getExpirationMs() {
         return expirationMs;
+    }
+
+    public long getRefreshExpirationMs() {
+        return refreshExpirationMs;
     }
 
     public Claims parseClaims(String token) {

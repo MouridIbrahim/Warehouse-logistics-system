@@ -63,6 +63,7 @@ public class UserService {
         if (userRepository.existsByUsername(request.username())) {
             throw new ConflictException("Username already exists: " + request.username());
         }
+        validatePassword(request.password());
         Set<Role> roles = resolveRoles(request.roles());
         User user = User.builder()
                 .username(request.username())
@@ -105,6 +106,7 @@ public class UserService {
         if (userRepository.existsByUsername(request.username())) {
             throw new ConflictException("Username already exists: " + request.username());
         }
+        validatePassword(request.password());
         Role adminRole = roleRepository.findByName("ADMINISTRATOR")
                 .orElseThrow(() -> new IllegalStateException("ADMINISTRATOR role is not seeded"));
         User user = User.builder()
@@ -127,6 +129,7 @@ public class UserService {
         if (!passwordEncoder.matches(request.currentPassword(), user.getPasswordHash())) {
             throw new BadRequestException("Current password is incorrect");
         }
+        validatePassword(request.newPassword());
         user.setPasswordHash(passwordEncoder.encode(request.newPassword()));
         userRepository.save(user);
         auditLogService.record("PASSWORD_CHANGED", "USER", userId);
@@ -139,6 +142,24 @@ public class UserService {
         user.setPasswordHash(passwordEncoder.encode(request.newPassword()));
         userRepository.save(user);
         auditLogService.record("PASSWORD_RESET", "USER", userId);
+    }
+
+    private void validatePassword(String password) {
+        if (password == null || password.length() < 8) {
+            throw new BadRequestException("Password must be at least 8 characters long");
+        }
+        if (!password.matches(".*[A-Z].*")) {
+            throw new BadRequestException("Password must contain at least one uppercase letter");
+        }
+        if (!password.matches(".*[a-z].*")) {
+            throw new BadRequestException("Password must contain at least one lowercase letter");
+        }
+        if (!password.matches(".*[0-9].*")) {
+            throw new BadRequestException("Password must contain at least one digit");
+        }
+        if (!password.matches(".*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>\\/?].*")) {
+            throw new BadRequestException("Password must contain at least one special character");
+        }
     }
 
     @Transactional(readOnly = true)

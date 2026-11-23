@@ -75,7 +75,7 @@ class UserServiceTest {
         when(roleRepository.findByName("ADMINISTRATOR")).thenReturn(Optional.of(adminRole));
         when(passwordEncoder.encode(anyString())).thenReturn("hashed");
 
-        UserDto dto = userService.register(new RegisterRequest("alice", "password123", "Alice"));
+        UserDto dto = userService.register(new RegisterRequest("alice", "Passw0rd!", "Alice"));
 
         assertThat(dto.username()).isEqualTo("alice");
         assertThat(dto.roles()).containsExactly("ADMINISTRATOR");
@@ -87,7 +87,7 @@ class UserServiceTest {
         when(userRepository.existsByRoleName("ADMINISTRATOR")).thenReturn(true);
 
         assertThatThrownBy(() -> userService.register(
-                new RegisterRequest("alice", "password123", "Alice")))
+                new RegisterRequest("alice", "Passw0rd!", "Alice")))
                 .isInstanceOf(ConflictException.class);
     }
 
@@ -97,7 +97,7 @@ class UserServiceTest {
         when(userRepository.existsByUsername("alice")).thenReturn(true);
 
         assertThatThrownBy(() -> userService.register(
-                new RegisterRequest("alice", "password123", "Alice")))
+                new RegisterRequest("alice", "Passw0rd!", "Alice")))
                 .isInstanceOf(ConflictException.class);
     }
 
@@ -121,9 +121,9 @@ class UserServiceTest {
         u.setPasswordHash("old-hash");
         when(userRepository.findById(1L)).thenReturn(Optional.of(u));
         when(passwordEncoder.matches("oldpass", "old-hash")).thenReturn(true);
-        when(passwordEncoder.encode("newpassword123")).thenReturn("new-hash");
+        when(passwordEncoder.encode("Newpass123!")).thenReturn("new-hash");
 
-        userService.changeOwnPassword(new ChangePasswordRequest("oldpass", "newpassword123"));
+        userService.changeOwnPassword(new ChangePasswordRequest("oldpass", "Newpass123!"));
 
         assertThat(u.getPasswordHash()).isEqualTo("new-hash");
         verify(userRepository).save(u);
@@ -133,9 +133,9 @@ class UserServiceTest {
     void resetPasswordUpdatesHash() {
         User u = user(2L);
         when(userRepository.findById(2L)).thenReturn(Optional.of(u));
-        when(passwordEncoder.encode("newpassword123")).thenReturn("new-hash");
+        when(passwordEncoder.encode("Newpass123!")).thenReturn("new-hash");
 
-        userService.resetPassword(2L, new ResetPasswordRequest("newpassword123"));
+        userService.resetPassword(2L, new ResetPasswordRequest("Newpass123!"));
 
         assertThat(u.getPasswordHash()).isEqualTo("new-hash");
         verify(userRepository).save(u);
