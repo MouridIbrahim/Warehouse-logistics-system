@@ -9,6 +9,7 @@ export interface UserDto {
 
 export interface LoginResponse {
   accessToken: string
+  refreshToken: string
   tokenType: string
   expiresIn: number
   user: UserDto

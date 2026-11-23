@@ -5,19 +5,18 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.util.Deque;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentLinkedDeque;
 
 /**
  * Sliding-window rate limiter for authentication endpoints (login/register).
- * Tracks request timestamps per client IP in memory.
+ * Uses Redis for distributed rate limiting across multiple backend instances,
+ * falling back to in-memory tracking if Redis is unavailable.
  */
 @Component
 public class RateLimitFilter extends OncePerRequestFilter {
@@ -25,17 +24,23 @@ public class RateLimitFilter extends OncePerRequestFilter {
     private static final String LOGIN_PATH = "/api/v1/auth/login";
     private static final String REGISTER_PATH = "/api/v1/auth/register";
 
-    private final Map<String, Deque<Long>> requestTimestamps = new ConcurrentHashMap<>();
+    private final StringRedisTemplate redisTemplate;
     private final boolean enabled;
     private final int maxRequests;
-    private final long windowMillis;
+    private final long windowSeconds;
 
-    public RateLimitFilter(@Value("${app.rate-limit.enabled:true}") boolean enabled,
+    // In-memory fallback (used when Redis is unavailable)
+    private final java.util.Map<String, java.util.Deque<Long>> requestTimestamps =
+            new java.util.concurrent.ConcurrentHashMap<>();
+
+    public RateLimitFilter(StringRedisTemplate redisTemplate,
+                           @Value("${app.rate-limit.enabled:true}") boolean enabled,
                            @Value("${app.rate-limit.max-requests:10}") int maxRequests,
                            @Value("${app.rate-limit.window-seconds:60}") long windowSeconds) {
+        this.redisTemplate = redisTemplate;
         this.enabled = enabled;
         this.maxRequests = maxRequests;
-        this.windowMillis = windowSeconds * 1000;
+        this.windowSeconds = windowSeconds;
     }
 
     @Override
@@ -52,25 +57,59 @@ public class RateLimitFilter extends OncePerRequestFilter {
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
         String ip = clientIp(request);
-        long now = System.currentTimeMillis();
-        Deque<Long> timestamps = requestTimestamps.computeIfAbsent(ip, k -> new ConcurrentLinkedDeque<>());
 
-        synchronized (timestamps) {
-            while (!timestamps.isEmpty() && now - timestamps.peekFirst() > windowMillis) {
-                timestamps.pollFirst();
-            }
-            if (timestamps.size() >= maxRequests) {
-                response.setStatus(429);
-                response.setContentType("application/json");
-                response.getWriter().write(
-                        "{\"status\":429,\"code\":\"RATE_LIMITED\","
-                                + "\"message\":\"Too many requests. Please try again later.\"}");
-                return;
-            }
-            timestamps.addLast(now);
+        boolean allowed;
+        if (redisTemplate != null) {
+            allowed = isAllowedRedis(ip);
+        } else {
+            allowed = isAllowedMemory(ip);
+        }
+
+        if (!allowed) {
+            response.setStatus(429);
+            response.setContentType("application/json");
+            response.getWriter().write(
+                    "{\"status\":429,\"code\":\"RATE_LIMITED\","
+                            + "\"message\":\"Too many requests. Please try again later.\"}");
+            return;
         }
 
         filterChain.doFilter(request, response);
+    }
+
+    private boolean isAllowedRedis(String ip) {
+        try {
+            String key = "ratelimit:" + ip;
+            Long count = redisTemplate.opsForValue().increment(key);
+            if (count == 1) {
+                redisTemplate.expire(key, java.time.Duration.ofSeconds(windowSeconds / 1000));
+            }
+            return count <= maxRequests;
+        } catch (Exception e) {
+            // Redis unavailable, fall back to in-memory
+            return isAllowedMemory(ip);
+        }
+    }
+
+    private boolean isAllowedMemory(String ip) {
+        long now = System.currentTimeMillis();
+        java.util.Deque<Long> timestamps = requestTimestamps.computeIfAbsent(ip,
+                k -> new java.util.concurrent.ConcurrentLinkedDeque<>());
+
+        synchronized (timestamps) {
+            while (!timestamps.isEmpty() && now - timestamps.peekFirst() > windowMillis()) {
+                timestamps.pollFirst();
+            }
+            if (timestamps.size() >= maxRequests) {
+                return false;
+            }
+            timestamps.addLast(now);
+            return true;
+        }
+    }
+
+    private long windowMillis() {
+        return windowSeconds * 1000;
     }
 
     private String clientIp(HttpServletRequest request) {
@@ -85,9 +124,9 @@ public class RateLimitFilter extends OncePerRequestFilter {
     public void cleanupStaleEntries() {
         long now = System.currentTimeMillis();
         requestTimestamps.entrySet().removeIf(entry -> {
-            Deque<Long> deque = entry.getValue();
+            java.util.Deque<Long> deque = entry.getValue();
             synchronized (deque) {
-                while (!deque.isEmpty() && now - deque.peekFirst() > windowMillis) {
+                while (!deque.isEmpty() && now - deque.peekFirst() > windowMillis()) {
                     deque.pollFirst();
                 }
                 return deque.isEmpty();

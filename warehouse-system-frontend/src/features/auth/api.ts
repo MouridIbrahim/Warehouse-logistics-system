@@ -26,3 +26,7 @@ export async function changePassword(payload: {
 }): Promise<void> {
   await api.post('/api/v1/auth/change-password', payload)
 }
+
+export async function logout(): Promise<void> {
+  await api.post('/api/v1/auth/logout')
+}

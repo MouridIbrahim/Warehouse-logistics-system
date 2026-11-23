@@ -34,6 +34,10 @@ app:
     max-requests: ${RATE_LIMIT_MAX_REQUESTS:10}
     window-seconds: ${RATE_LIMIT_WINDOW_SECONDS:60}
 
+  redis:
+    host: ${REDIS_HOST:localhost}
+    port: ${REDIS_PORT:6379}
+
 springdoc:
   swagger-ui:
     path: /swagger-ui.html

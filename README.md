@@ -53,3 +53,39 @@ $env:JAVA_HOME = "C:\Users\mouri\.jdks\jdk-25.0.5.1+2"
 .\mvnw.cmd -Dmaven.test.skip=true package   # build, skip tests
 .\mvnw.cmd test                            # run unit + integration tests
 ```
+
+## Database Backup & Restore
+
+PostgreSQL data is stored in the Docker named volume `postgres_data`. Back up and restore it as follows:
+
+### Create a backup
+
+```powershell
+# From the warehouse-system/ directory
+docker compose exec db pg_dumpall -U postgres > backup_$(Get-Date -Format "yyyyMMdd_HHmmss").sql
+```
+
+### Restore from a backup
+
+```powershell
+# Stop the backend first (keep db running)
+docker compose stop backend
+
+# Restore the backup
+cat backup_20261123_120000.sql | docker compose exec -T db psql -U postgres
+
+# Restart the backend
+docker compose start backend
+```
+
+### Automated backup (cron example)
+
+Add a cron job on the host to run daily backups:
+
+```bash
+# /etc/cron.d/warehouse-backup
+0 2 * * * docker compose -f /path/to/warehouse-system/docker-compose.yml exec -T db pg_dumpall -U postgres > /backups/warehouse_$(date +\%Y\%m\%d).sql
+```
+
+> **Warning:** `docker compose down -v` deletes the named volume and all data. Always back up before running destructive commands.
+
