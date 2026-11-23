@@ -21,8 +21,14 @@ public interface UserRepository extends JpaRepository<User, Long> {
             where (:term is null
                 or lower(u.username) like lower(concat('%', :term, '%'))
                 or lower(u.displayName) like lower(concat('%', :term, '%')))
+              and (:role is null or exists (
+                select 1 from u.roles r where r.name = :role))
+              and (:active is null or u.active = :active)
             """)
-    Page<User> search(@Param("term") String term, Pageable pageable);
+    Page<User> search(@Param("term") String term,
+                      @Param("role") String role,
+                      @Param("active") Boolean active,
+                      Pageable pageable);
 
     @EntityGraph(attributePaths = "roles")
     @Query("select u from User u where u.id = :id")

@@ -34,12 +34,22 @@ export const SHIPMENT_TRANSITIONS: Record<string, string[]> = {
 }
 
 export async function listShipments(
+  term?: string,
   status?: string,
   page = 0,
   size = 20,
+  from?: string,
+  to?: string,
 ): Promise<PageResponse<ShipmentDto>> {
   const { data } = await api.get<PageResponse<ShipmentDto>>('/api/v1/shipments', {
-    params: { status: status || undefined, page, size },
+    params: {
+      term: term || undefined,
+      status: status || undefined,
+      page,
+      size,
+      from: from || undefined,
+      to: to || undefined,
+    },
   })
   return data
 }

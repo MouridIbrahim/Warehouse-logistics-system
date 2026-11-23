@@ -26,12 +26,24 @@ export interface OutboundOrderDto {
 }
 
 export async function listOutboundOrders(
+  term?: string,
   status?: string,
   page = 0,
   size = 20,
+  warehouseId?: number,
+  from?: string,
+  to?: string,
 ): Promise<PageResponse<OutboundOrderDto>> {
   const { data } = await api.get<PageResponse<OutboundOrderDto>>('/api/v1/outbound-orders', {
-    params: { status: status || undefined, page, size },
+    params: {
+      term: term || undefined,
+      status: status || undefined,
+      page,
+      size,
+      warehouseId: warehouseId || undefined,
+      from: from || undefined,
+      to: to || undefined,
+    },
   })
   return data
 }

@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.time.Instant;
 import java.util.Optional;
 
 public interface InboundOrderRepository extends JpaRepository<InboundOrder, Long> {
@@ -33,6 +34,23 @@ public interface InboundOrderRepository extends JpaRepository<InboundOrder, Long
 
     @EntityGraph(attributePaths = {"createdBy", "warehouse"})
     Page<InboundOrder> findByStatusOrderByCreatedAtDesc(InboundStatus status, Pageable pageable);
+
+    @EntityGraph(attributePaths = {"createdBy", "warehouse"})
+    @Query("""
+            select distinct o from InboundOrder o
+            where (:term is null or lower(o.referenceNumber) like lower(concat('%', :term, '%')))
+              and (:status is null or o.status = :status)
+              and (:warehouseId is null or o.warehouse.id = :warehouseId)
+              and (:from is null or o.createdAt >= :from)
+              and (:to is null or o.createdAt <= :to)
+            order by o.createdAt desc, o.id desc
+            """)
+    Page<InboundOrder> search(@Param("term") String term,
+                              @Param("status") InboundStatus status,
+                              @Param("warehouseId") Long warehouseId,
+                              @Param("from") Instant from,
+                              @Param("to") Instant to,
+                              Pageable pageable);
 
     long countByStatus(InboundStatus status);
 }

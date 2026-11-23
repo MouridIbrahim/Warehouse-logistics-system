@@ -10,6 +10,7 @@ import com.logistics.warehouse_system.service.ShipmentService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.Instant;
 import java.util.List;
 
 @Tag(name = "Shipments")
@@ -43,9 +45,12 @@ public class ShipmentController {
 
     @GetMapping
     @PreAuthorize(VIEW)
-    public PageResponse<ShipmentDto> list(@RequestParam(required = false) ShipmentStatus status,
+    public PageResponse<ShipmentDto> list(@RequestParam(required = false) String term,
+                                          @RequestParam(required = false) ShipmentStatus status,
+                                          @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Instant from,
+                                          @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Instant to,
                                           @PageableDefault(size = 20) Pageable pageable) {
-        return shipmentService.list(status, pageable);
+        return shipmentService.list(term, status, from, to, pageable);
     }
 
     @GetMapping("/{id}")

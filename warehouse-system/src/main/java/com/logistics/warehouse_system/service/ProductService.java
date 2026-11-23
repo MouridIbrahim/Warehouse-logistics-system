@@ -13,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Instant;
 import java.util.List;
 
 @Service
@@ -27,11 +28,9 @@ public class ProductService {
     }
 
     @Transactional(readOnly = true)
-    public PageResponse<ProductDto> list(String term, Pageable pageable) {
-        Page<Product> page = (term == null || term.isBlank())
-                ? productRepository.findAll(pageable)
-                : productRepository.findBySkuContainingIgnoreCaseOrNameContainingIgnoreCase(
-                        term.trim(), term.trim(), pageable);
+    public PageResponse<ProductDto> list(String term, String unitOfMeasure, Boolean active,
+                                         Instant from, Instant to, Pageable pageable) {
+        Page<Product> page = productRepository.search(term, unitOfMeasure, active, from, to, pageable);
         List<ProductDto> content = page.getContent().stream().map(ProductDto::from).toList();
         return PageResponse.of(page, content);
     }

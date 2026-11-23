@@ -15,6 +15,12 @@
     -moz-osx-font-smoothing: grayscale;
   }
 
+  /* Smooth anchor scrolling, offset by the fixed header height. */
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 5rem;
+  }
+
   ::-webkit-scrollbar {
     width: 10px;
     height: 10px;

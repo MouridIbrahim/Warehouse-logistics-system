@@ -8,6 +8,7 @@ import com.logistics.warehouse_system.service.InboundService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -19,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.time.Instant;
 
 @Tag(name = "Inbound Orders")
 @RestController
@@ -32,9 +35,13 @@ public class InboundController {
     }
 
     @GetMapping
-    public PageResponse<InboundOrderDto> list(@RequestParam(required = false) InboundStatus status,
+    public PageResponse<InboundOrderDto> list(@RequestParam(required = false) String term,
+                                              @RequestParam(required = false) InboundStatus status,
+                                              @RequestParam(required = false) Long warehouseId,
+                                              @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Instant from,
+                                              @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Instant to,
                                               @PageableDefault(size = 20) Pageable pageable) {
-        return inboundService.list(status, pageable);
+        return inboundService.list(term, status, warehouseId, from, to, pageable);
     }
 
     @GetMapping("/{id}")

@@ -36,8 +36,10 @@ public class UserController {
     @GetMapping
     @PreAuthorize("hasRole('ADMINISTRATOR')")
     public PageResponse<UserDto> list(@RequestParam(required = false) String term,
+                                      @RequestParam(required = false) String role,
+                                      @RequestParam(required = false) Boolean active,
                                       @PageableDefault(size = 20) Pageable pageable) {
-        return userService.list(term, pageable);
+        return userService.list(term, role, active, pageable);
     }
 
     @GetMapping("/{id}")

@@ -1,0 +1,105 @@
+export type Access = 'yes' | 'no' | 'limited' | 'read'
+
+export interface Module {
+  name: string
+  capabilities: string[]
+}
+
+export const MODULES: Module[] = [
+  {
+    name: 'Users & Access',
+    capabilities: ['Manage users and role assignments', 'Manage system configuration'],
+  },
+  {
+    name: 'Products',
+    capabilities: ['View products', 'Create / update / deactivate products'],
+  },
+  { name: 'Warehouses & Locations', capabilities: ['Manage warehouses and locations'] },
+  { name: 'Inbound', capabilities: ['Record / confirm inbound receiving'] },
+  { name: 'Inventory', capabilities: ['View inventory', 'Adjust inventory manually'] },
+  {
+    name: 'Outbound',
+    capabilities: ['Create / manage outbound orders', 'Confirm dispatch / deduct stock'],
+  },
+  { name: 'Shipments', capabilities: ['Manage shipment records and statuses'] },
+  { name: 'Reports', capabilities: ['View operational reports'] },
+  { name: 'Audit', capabilities: ['View audit history'] },
+]
+
+export const ROLE_ACCESS: Record<string, Record<string, Access>> = {
+  ADMINISTRATOR: {
+    'Manage users and role assignments': 'yes',
+    'Manage system configuration': 'yes',
+    'View products': 'yes',
+    'Create / update / deactivate products': 'yes',
+    'Manage warehouses and locations': 'yes',
+    'Record / confirm inbound receiving': 'yes',
+    'View inventory': 'yes',
+    'Adjust inventory manually': 'yes',
+    'Create / manage outbound orders': 'yes',
+    'Confirm dispatch / deduct stock': 'yes',
+    'Manage shipment records and statuses': 'yes',
+    'View operational reports': 'yes',
+    'View audit history': 'yes',
+  },
+  WAREHOUSE_MANAGER: {
+    'Manage users and role assignments': 'no',
+    'Manage system configuration': 'no',
+    'View products': 'yes',
+    'Create / update / deactivate products': 'yes',
+    'Manage warehouses and locations': 'yes',
+    'Record / confirm inbound receiving': 'yes',
+    'View inventory': 'yes',
+    'Adjust inventory manually': 'yes',
+    'Create / manage outbound orders': 'yes',
+    'Confirm dispatch / deduct stock': 'yes',
+    'Manage shipment records and statuses': 'yes',
+    'View operational reports': 'yes',
+    'View audit history': 'yes',
+  },
+  WAREHOUSE_EMPLOYEE: {
+    'Manage users and role assignments': 'no',
+    'Manage system configuration': 'no',
+    'View products': 'yes',
+    'Create / update / deactivate products': 'no',
+    'Manage warehouses and locations': 'limited',
+    'Record / confirm inbound receiving': 'yes',
+    'View inventory': 'yes',
+    'Adjust inventory manually': 'no',
+    'Create / manage outbound orders': 'yes',
+    'Confirm dispatch / deduct stock': 'yes',
+    'Manage shipment records and statuses': 'no',
+    'View operational reports': 'limited',
+    'View audit history': 'no',
+  },
+  SHIPMENT_MANAGER: {
+    'Manage users and role assignments': 'no',
+    'Manage system configuration': 'no',
+    'View products': 'read',
+    'Create / update / deactivate products': 'no',
+    'Manage warehouses and locations': 'no',
+    'Record / confirm inbound receiving': 'no',
+    'View inventory': 'read',
+    'Adjust inventory manually': 'no',
+    'Create / manage outbound orders': 'read',
+    'Confirm dispatch / deduct stock': 'no',
+    'Manage shipment records and statuses': 'yes',
+    'View operational reports': 'limited',
+    'View audit history': 'no',
+  },
+  VIEWER_AUDITOR: {
+    'Manage users and role assignments': 'no',
+    'Manage system configuration': 'no',
+    'View products': 'read',
+    'Create / update / deactivate products': 'no',
+    'Manage warehouses and locations': 'read',
+    'Record / confirm inbound receiving': 'no',
+    'View inventory': 'read',
+    'Adjust inventory manually': 'no',
+    'Create / manage outbound orders': 'no',
+    'Confirm dispatch / deduct stock': 'no',
+    'Manage shipment records and statuses': 'read',
+    'View operational reports': 'read',
+    'View audit history': 'read',
+  },
+}

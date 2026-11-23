@@ -5,39 +5,67 @@ import type { PageResponse } from '../../types'
 import { formatDateTime } from '../../lib/format'
 import { getErrorMessage } from '../../lib/api'
 import { PageHeader } from '../../components/ui/PageHeader'
-import { SearchInput } from '../../components/ui/SearchInput'
 import { Pagination } from '../../components/ui/Pagination'
 import { Modal } from '../../components/ui/Modal'
 import { Button } from '../../components/ui/Button'
 import { StatusBadge } from '../../components/ui/StatusBadge'
 import { EmptyState } from '../../components/ui/EmptyState'
-import { createWarehouse, listWarehouses } from './api'
+import { FilterToolbar } from '../../components/ui/filter'
+import { ActiveFilterChips } from '../../components/ui/filter'
+import { useAuth } from '../auth/auth-context'
+import { ADMIN_MANAGER, hasAnyRole } from '../auth/permissions'
+import { createWarehouse, listWarehouses, updateWarehouse } from './api'
 import type { WarehouseDto } from './api'
 
 export function WarehousesPage() {
-  const [searchInput, setSearchInput] = useState('')
+  const { user } = useAuth()
   const [term, setTerm] = useState('')
+  const [active, setActive] = useState('')
+  const [from, setFrom] = useState('')
+  const [to, setTo] = useState('')
   const [page, setPage] = useState(0)
   const [size, setSize] = useState(20)
   const [data, setData] = useState<PageResponse<WarehouseDto> | null>(null)
   const [loading, setLoading] = useState(true)
   const [showCreate, setShowCreate] = useState(false)
+  const [editTarget, setEditTarget] = useState<WarehouseDto | null>(null)
 
-  useEffect(() => {
-    const t = setTimeout(() => setTerm(searchInput.trim()), 400)
-    return () => clearTimeout(t)
-  }, [searchInput])
+  const ACTIVE_OPTIONS = [
+    { value: 'true', label: 'Active' },
+    { value: 'false', label: 'Inactive' },
+  ]
 
   useEffect(() => {
     setLoading(true)
-    listWarehouses(term || undefined, page, size)
+    listWarehouses(
+      term || undefined,
+      page,
+      size,
+      active ? active === 'true' : undefined,
+      from || undefined,
+      to || undefined,
+    )
       .then(setData)
       .finally(() => setLoading(false))
-  }, [term, page, size])
+  }, [term, active, from, to, page, size])
 
   function refresh() {
-    listWarehouses(term || undefined, page, size).then(setData)
+    listWarehouses(
+      term || undefined,
+      page,
+      size,
+      active ? active === 'true' : undefined,
+      from || undefined,
+      to || undefined,
+    ).then(setData)
   }
+
+  const activeChips = [
+    ...(term ? [{ key: 'search', label: `Search: "${term}"`, value: term, onRemove: () => setTerm('') }] : []),
+    ...(active ? [{ key: 'active', label: `Status: ${active === 'true' ? 'Active' : 'Inactive'}`, value: active, onRemove: () => setActive('') }] : []),
+    ...(from ? [{ key: 'from', label: `From: ${from}`, value: from, onRemove: () => setFrom('') }] : []),
+    ...(to ? [{ key: 'to', label: `To: ${to}`, value: to, onRemove: () => setTo('') }] : []),
+  ]
 
   return (
     <div>
@@ -45,19 +73,42 @@ export function WarehousesPage() {
         title="Warehouses"
         description="View and manage warehouses and their storage locations."
         actions={
-          <Button icon="add" onClick={() => setShowCreate(true)}>
-            Add Warehouse
-          </Button>
+          hasAnyRole(user, ADMIN_MANAGER) ? (
+            <Button icon="add" onClick={() => setShowCreate(true)}>
+              Add Warehouse
+            </Button>
+          ) : undefined
         }
       />
 
+      {activeChips.length > 0 && (
+        <ActiveFilterChips chips={activeChips} onClearAll={() => { setTerm(''); setActive(''); setFrom(''); setTo('') }} />
+      )}
+
       <div className="mt-6 bg-surface rounded-xl border border-border-default shadow-sm overflow-hidden">
         <div className="p-space-md border-b border-border-default">
-          <SearchInput
-            value={searchInput}
-            onChange={setSearchInput}
-            placeholder="Search warehouse name or code..."
-            className="w-full sm:w-80"
+          <FilterToolbar
+            search={{
+              value: term,
+              onChange: setTerm,
+              placeholder: 'Search warehouse name or code...',
+            }}
+            selects={[
+              {
+                key: 'active',
+                value: active,
+                onChange: setActive,
+                options: ACTIVE_OPTIONS,
+                placeholder: 'All statuses',
+              },
+            ]}
+            dateRange={{
+              startValue: from,
+              endValue: to,
+              onStartChange: setFrom,
+              onEndChange: setTo,
+            }}
+            onReset={() => { setTerm(''); setActive(''); setFrom(''); setTo('') }}
           />
         </div>
 
@@ -85,17 +136,7 @@ export function WarehousesPage() {
                 data.content.map((w) => (
                   <tr key={w.id} className="hover:bg-app-bg/50 transition-colors">
                     <td className="px-4 py-3">
-                      <div className="flex items-center gap-3">
-                        <div className="w-9 h-9 rounded-lg bg-surface-container flex items-center justify-center text-primary shrink-0">
-                          <span className="material-symbols-outlined text-[18px]">warehouse</span>
-                        </div>
-                        <Link
-                          to={`/warehouses/${w.id}`}
-                          className="text-body-semibold text-text-primary hover:text-primary truncate"
-                        >
-                          {w.name}
-                        </Link>
-                      </div>
+                      <span className="text-body-semibold text-text-primary">{w.name}</span>
                     </td>
                     <td className="px-4 py-3">
                       <span className="text-body-semibold tabular-nums text-text-primary">{w.code}</span>
@@ -116,14 +157,18 @@ export function WarehousesPage() {
                     <td className="px-4 py-3 text-right whitespace-nowrap">
                       <div className="flex items-center justify-end gap-1">
                         <Link
-                          to={`/warehouses/${w.id}`}
+                          to={`/app/warehouses/${w.id}`}
                           className="p-1 rounded text-text-secondary hover:text-primary transition-colors"
                           title="View details"
                         >
-                          <span className="material-symbols-outlined text-[18px]">visibility</span>
+                          <span className="material-symbols-outlined text-[18px]">open_in_new</span>
                         </Link>
-                        <button className="p-1 rounded text-text-secondary hover:text-text-primary transition-colors" title="More options">
-                          <span className="material-symbols-outlined text-[18px]">more_vert</span>
+                        <button
+                          className="p-1 rounded text-text-secondary hover:text-primary transition-colors"
+                          title="Edit"
+                          onClick={() => setEditTarget(w)}
+                        >
+                          <span className="material-symbols-outlined text-[18px]">edit</span>
                         </button>
                       </div>
                     </td>
@@ -135,7 +180,7 @@ export function WarehousesPage() {
                     <EmptyState
                       icon="warehouse"
                       title="No warehouses found"
-                      description="Add your first warehouse to start managing storage."
+                      description="Try a different search term, or add your first warehouse."
                     />
                   </td>
                 </tr>
@@ -160,6 +205,7 @@ export function WarehousesPage() {
       </div>
 
       <CreateWarehouseModal open={showCreate} onClose={() => setShowCreate(false)} onCreated={refresh} />
+      <EditWarehouseModal warehouse={editTarget} onClose={() => setEditTarget(null)} onUpdated={refresh} />
     </div>
   )
 }
@@ -184,7 +230,11 @@ function CreateWarehouseModal({
     setLoading(true)
     setError(null)
     try {
-      await createWarehouse({ code, name, address: address || undefined })
+      await createWarehouse({
+        code,
+        name,
+        address: address || undefined,
+      })
       setCode('')
       setName('')
       setAddress('')
@@ -213,7 +263,6 @@ function CreateWarehouseModal({
           <label className="text-form-label text-text-primary">Code *</label>
           <input
             className="h-10 px-3 text-body-default text-text-primary bg-surface border border-border-default rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/30"
-            placeholder="e.g. DC-001"
             value={code}
             onChange={(e) => setCode(e.target.value)}
             required
@@ -238,6 +287,109 @@ function CreateWarehouseModal({
           </Button>
           <Button type="submit" disabled={loading}>
             {loading ? 'Creating...' : 'Create Warehouse'}
+          </Button>
+        </div>
+      </form>
+    </Modal>
+  )
+}
+
+function EditWarehouseModal({
+  warehouse,
+  onClose,
+  onUpdated,
+}: {
+  warehouse: WarehouseDto | null
+  onClose: () => void
+  onUpdated: () => void
+}) {
+  const [code, setCode] = useState('')
+  const [name, setName] = useState('')
+  const [address, setAddress] = useState('')
+  const [active, setActive] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+  const [loading, setLoading] = useState(false)
+
+  useEffect(() => {
+    if (warehouse) {
+      setCode(warehouse.code)
+      setName(warehouse.name)
+      setAddress(warehouse.address ?? '')
+      setActive(warehouse.active)
+      setError(null)
+    }
+  }, [warehouse])
+
+  async function handleSubmit(e: FormEvent) {
+    e.preventDefault()
+    if (!warehouse) return
+    setLoading(true)
+    setError(null)
+    try {
+      await updateWarehouse(warehouse.id, {
+        code,
+        name,
+        address: address || undefined,
+        active,
+      })
+      onUpdated()
+      onClose()
+    } catch (err) {
+      setError(getErrorMessage(err))
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  return (
+    <Modal open={!!warehouse} onClose={onClose} title="Edit Warehouse">
+      <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
+        <div className="flex flex-col gap-1.5">
+          <label className="text-form-label text-text-primary">Warehouse name *</label>
+          <input
+            className="h-10 px-3 text-body-default text-text-primary bg-surface border border-border-default rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/30"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required
+          />
+        </div>
+        <div className="flex flex-col gap-1.5">
+          <label className="text-form-label text-text-primary">Code *</label>
+          <input
+            className="h-10 px-3 text-body-default text-text-primary bg-surface border border-border-default rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/30"
+            value={code}
+            onChange={(e) => setCode(e.target.value)}
+            required
+          />
+        </div>
+        <div className="flex flex-col gap-1.5">
+          <label className="text-form-label text-text-primary">Address</label>
+          <input
+            className="h-10 px-3 text-body-default text-text-primary bg-surface border border-border-default rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/30"
+            value={address}
+            onChange={(e) => setAddress(e.target.value)}
+          />
+        </div>
+        <label className="flex items-center gap-2 cursor-pointer select-none">
+          <input
+            type="checkbox"
+            className="w-4 h-4 rounded accent-[#C45D16]"
+            checked={active}
+            onChange={(e) => setActive(e.target.checked)}
+          />
+          <span className="text-body-default text-text-primary">Active</span>
+        </label>
+
+        {error && (
+          <div className="p-3 rounded-lg bg-status-danger-bg text-status-danger-text text-caption-meta">{error}</div>
+        )}
+
+        <div className="flex items-center justify-end gap-2 mt-2">
+          <Button type="button" variant="secondary" onClick={onClose}>
+            Cancel
+          </Button>
+          <Button type="submit" disabled={loading}>
+            {loading ? 'Saving...' : 'Save Changes'}
           </Button>
         </div>
       </form>

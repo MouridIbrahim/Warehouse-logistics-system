@@ -75,7 +75,7 @@ export function CreateInboundOrderPage() {
         notes: notes || undefined,
         items: parsedItems,
       })
-      navigate('/inbound')
+      navigate('/app/inbound')
     } catch (err) {
       setError(getErrorMessage(err))
     } finally {
@@ -86,7 +86,7 @@ export function CreateInboundOrderPage() {
   return (
     <div>
       <div className="text-caption-meta text-text-secondary mb-2 flex items-center gap-1.5">
-        <Link to="/inbound" className="hover:text-primary">
+        <Link to="/app/inbound" className="hover:text-primary">
           Inbound Operations
         </Link>
         <span className="text-text-secondary/50">/</span>
@@ -211,7 +211,7 @@ export function CreateInboundOrderPage() {
           )}
 
           <div className="flex items-center gap-2">
-            <Button type="button" variant="secondary" onClick={() => navigate('/inbound')}>
+            <Button type="button" variant="secondary" onClick={() => navigate('/app/inbound')}>
               Cancel
             </Button>
             <Button type="submit" disabled={loading} className="flex-1">

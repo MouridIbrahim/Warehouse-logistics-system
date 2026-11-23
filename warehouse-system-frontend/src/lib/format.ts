@@ -1,3 +1,11 @@
+export function humanize(value: string): string {
+  return value
+    .toLowerCase()
+    .split('_')
+    .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+    .join(' ')
+}
+
 export function formatDateTime(iso?: string): string {
   if (!iso) return '—'
   const d = new Date(iso)

@@ -75,7 +75,7 @@ export function CreateOutboundOrderPage() {
         notes: notes || undefined,
         items: parsedItems,
       })
-      navigate('/outbound')
+      navigate('/app/outbound')
     } catch (err) {
       setError(getErrorMessage(err))
     } finally {
@@ -86,7 +86,7 @@ export function CreateOutboundOrderPage() {
   return (
     <div>
       <div className="text-caption-meta text-text-secondary mb-2 flex items-center gap-1.5">
-        <Link to="/outbound" className="hover:text-primary">
+        <Link to="/app/outbound" className="hover:text-primary">
           Outbound Operations
         </Link>
         <span className="text-text-secondary/50">/</span>
@@ -211,7 +211,7 @@ export function CreateOutboundOrderPage() {
           )}
 
           <div className="flex items-center gap-2">
-            <Button type="button" variant="secondary" onClick={() => navigate('/outbound')}>
+            <Button type="button" variant="secondary" onClick={() => navigate('/app/outbound')}>
               Cancel
             </Button>
             <Button type="submit" disabled={loading} className="flex-1">

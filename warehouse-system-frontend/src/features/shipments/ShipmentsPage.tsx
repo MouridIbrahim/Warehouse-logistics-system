@@ -6,13 +6,14 @@ import { formatDateTime } from '../../lib/format'
 import { getErrorMessage } from '../../lib/api'
 import { useAuth } from '../auth/auth-context'
 import { PageHeader } from '../../components/ui/PageHeader'
-import { SearchInput } from '../../components/ui/SearchInput'
-import { Select } from '../../components/ui/Select'
 import { Pagination } from '../../components/ui/Pagination'
+import { Select } from '../../components/ui/Select'
 import { Button } from '../../components/ui/Button'
 import { StatusBadge } from '../../components/ui/StatusBadge'
 import { EmptyState } from '../../components/ui/EmptyState'
 import { Modal } from '../../components/ui/Modal'
+import { FilterToolbar } from '../../components/ui/filter'
+import { ActiveFilterChips } from '../../components/ui/filter'
 import { listOutboundOrders } from '../outbound/api'
 import { createShipment, listShipments } from './api'
 import type { ShipmentDto } from './api'
@@ -35,13 +36,24 @@ export function shipmentBadge(status: string): { tone: 'success' | 'warning' | '
   }
 }
 
+const SHIPMENT_STATUS_OPTIONS = [
+  { value: 'PENDING', label: 'Pending' },
+  { value: 'PREPARED', label: 'Prepared' },
+  { value: 'IN_TRANSIT', label: 'In Transit' },
+  { value: 'DELIVERED', label: 'Delivered' },
+  { value: 'DELAYED', label: 'Delayed' },
+  { value: 'CANCELLED', label: 'Cancelled' },
+]
+
 export function ShipmentsPage() {
   const { user } = useAuth()
   const canManage = !!user?.roles.some((r) =>
     ['ADMINISTRATOR', 'WAREHOUSE_MANAGER', 'SHIPMENT_MANAGER'].includes(r),
   )
-  const [search, setSearch] = useState('')
+  const [term, setTerm] = useState('')
   const [status, setStatus] = useState('')
+  const [from, setFrom] = useState('')
+  const [to, setTo] = useState('')
   const [page, setPage] = useState(0)
   const [size, setSize] = useState(20)
   const [data, setData] = useState<PageResponse<ShipmentDto> | null>(null)
@@ -50,26 +62,23 @@ export function ShipmentsPage() {
 
   useEffect(() => {
     setLoading(true)
-    listShipments(status || undefined, page, size)
+    listShipments(term || undefined, status || undefined, page, size, from || undefined, to || undefined)
       .then(setData)
       .finally(() => setLoading(false))
-  }, [status, page, size])
-
-  const filtered = data
-    ? {
-        ...data,
-        content: data.content.filter(
-          (s) =>
-            !search ||
-            s.trackingNumber.toLowerCase().includes(search.toLowerCase()) ||
-            s.outboundReferenceNumber.toLowerCase().includes(search.toLowerCase()),
-        ),
-      }
-    : null
+  }, [term, status, from, to, page, size])
 
   function refresh() {
-    listShipments(status || undefined, page, size).then(setData)
+    listShipments(term || undefined, status || undefined, page, size, from || undefined, to || undefined).then(setData)
   }
+
+  const activeChips = [
+    ...(term ? [{ key: 'search', label: `Search: "${term}"`, value: term, onRemove: () => setTerm('') }] : []),
+    ...(status
+      ? [{ key: 'status', label: `Status: ${SHIPMENT_STATUS_OPTIONS.find((o) => o.value === status)?.label ?? status}`, value: status, onRemove: () => setStatus('') }]
+      : []),
+    ...(from ? [{ key: 'from', label: `From: ${from}`, value: from, onRemove: () => setFrom('') }] : []),
+    ...(to ? [{ key: 'to', label: `To: ${to}`, value: to, onRemove: () => setTo('') }] : []),
+  ]
 
   return (
     <div>
@@ -85,22 +94,34 @@ export function ShipmentsPage() {
         }
       />
 
+      {activeChips.length > 0 && (
+        <ActiveFilterChips chips={activeChips} onClearAll={() => { setTerm(''); setStatus(''); setFrom(''); setTo('') }} />
+      )}
+
       <div className="mt-6 bg-surface rounded-xl border border-border-default shadow-sm overflow-hidden">
-        <div className="p-space-md flex flex-col lg:flex-row lg:items-center gap-3 border-b border-border-default">
-          <SearchInput
-            value={search}
-            onChange={setSearch}
-            placeholder="Search tracking number..."
-            className="w-full sm:w-80"
-          />
-          <Select
-            value={status}
-            onChange={setStatus}
-            placeholder="All statuses"
-            options={['PENDING', 'PREPARED', 'IN_TRANSIT', 'DELIVERED', 'DELAYED', 'CANCELLED'].map(
-              (s) => ({ value: s, label: s.replace('_', ' ').toLowerCase().replace(/\b\w/g, (c) => c.toUpperCase()) }),
-            )}
-            className="w-full sm:w-48"
+        <div className="p-space-md border-b border-border-default">
+          <FilterToolbar
+            search={{
+              value: term,
+              onChange: setTerm,
+              placeholder: 'Search tracking number...',
+            }}
+            selects={[
+              {
+                key: 'status',
+                value: status,
+                onChange: setStatus,
+                options: SHIPMENT_STATUS_OPTIONS,
+                placeholder: 'All statuses',
+              },
+            ]}
+            dateRange={{
+              startValue: from,
+              endValue: to,
+              onStartChange: setFrom,
+              onEndChange: setTo,
+            }}
+            onReset={() => { setTerm(''); setStatus(''); setFrom(''); setTo('') }}
           />
         </div>
 
@@ -124,14 +145,14 @@ export function ShipmentsPage() {
                     Loading shipments...
                   </td>
                 </tr>
-              ) : filtered && filtered.content.length > 0 ? (
-                filtered.content.map((s) => {
+              ) : data && data.content.length > 0 ? (
+                data.content.map((s) => {
                   const badge = shipmentBadge(s.status)
                   return (
                     <tr key={s.id} className="hover:bg-app-bg/50 transition-colors">
                       <td className="px-4 py-3">
                         <Link
-                          to={`/shipments/${s.id}`}
+                          to={`/app/shipments/${s.id}`}
                           className="text-body-semibold tabular-nums text-text-primary hover:text-primary"
                         >
                           {s.trackingNumber}
@@ -154,7 +175,7 @@ export function ShipmentsPage() {
                       <td className="px-4 py-3 text-right whitespace-nowrap">
                         <div className="flex items-center justify-end gap-1">
                           <Link
-                            to={`/shipments/${s.id}`}
+                            to={`/app/shipments/${s.id}`}
                             className="p-1 rounded text-text-secondary hover:text-primary transition-colors"
                             title="View details"
                           >
@@ -218,7 +239,7 @@ function CreateShipmentModal({
 
   useEffect(() => {
     if (open) {
-      listOutboundOrders('DISPATCHED', 0, 100).then((d) =>
+      listOutboundOrders(undefined, 'DISPATCHED', 0, 100).then((d) =>
         setOutboundOptions(d.content.map((o) => ({ value: String(o.id), label: o.referenceNumber }))),
       )
     }

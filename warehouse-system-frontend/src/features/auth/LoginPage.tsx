@@ -19,7 +19,7 @@ export function LoginPage() {
     setError(null)
     try {
       await login(username, password)
-      navigate('/')
+      navigate('/app')
     } catch (err) {
       setError(getErrorMessage(err))
     } finally {

@@ -65,10 +65,9 @@ public class OutboundService {
     }
 
     @Transactional(readOnly = true)
-    public PageResponse<OutboundOrderDto> list(OutboundStatus status, Pageable pageable) {
-        Page<OutboundOrder> page = (status == null)
-                ? outboundOrderRepository.findAllByOrderByCreatedAtDesc(pageable)
-                : outboundOrderRepository.findByStatusOrderByCreatedAtDesc(status, pageable);
+    public PageResponse<OutboundOrderDto> list(String term, OutboundStatus status, Long warehouseId,
+                                               Instant from, Instant to, Pageable pageable) {
+        Page<OutboundOrder> page = outboundOrderRepository.search(term, status, warehouseId, from, to, pageable);
         List<OutboundOrderDto> content = page.getContent().stream().map(OutboundOrderDto::summary).toList();
         return PageResponse.of(page, content);
     }

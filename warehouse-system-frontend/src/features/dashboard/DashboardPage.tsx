@@ -139,10 +139,10 @@ export function DashboardPage() {
             <p className="text-caption-meta text-text-secondary mt-0.5">Common operational routines</p>
             <div className="grid grid-cols-2 gap-space-md mt-4">
               {[
-                { icon: 'south_west', label: 'Receive Goods', to: '/inbound' },
-                { icon: 'north_east', label: 'Create Outbound', to: '/outbound' },
-                { icon: 'inventory_2', label: 'Manage Products', to: '/products' },
-                { icon: 'local_shipping', label: 'Track Shipments', to: '/shipments' },
+                { icon: 'south_west', label: 'Receive Goods', to: '/app/inbound' },
+                { icon: 'north_east', label: 'Create Outbound', to: '/app/outbound' },
+                { icon: 'inventory_2', label: 'Manage Products', to: '/app/products' },
+                { icon: 'local_shipping', label: 'Track Shipments', to: '/app/shipments' },
               ].map((a) => (
                 <a
                   key={a.label}

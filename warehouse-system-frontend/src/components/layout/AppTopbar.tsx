@@ -9,7 +9,7 @@ export function AppTopbar() {
 
   function handleLogout() {
     logout()
-    navigate('/login')
+    navigate('/')
   }
 
   return (
@@ -55,7 +55,7 @@ export function AppTopbar() {
                   className="w-full flex items-center gap-2 px-3 py-2 text-body-default text-text-primary hover:bg-app-bg"
                   onClick={() => {
                     setOpen(false)
-                    navigate('/profile')
+                    navigate('/app/profile')
                   }}
                 >
                   <span className="material-symbols-outlined text-[18px]">person</span>

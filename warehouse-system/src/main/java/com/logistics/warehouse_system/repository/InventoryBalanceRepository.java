@@ -19,9 +19,14 @@ public interface InventoryBalanceRepository extends JpaRepository<InventoryBalan
             select b from InventoryBalance b
             where (:productId is null or b.product.id = :productId)
               and (:locationId is null or b.storageLocation.id = :locationId)
+              and (:quantityCondition is null or
+                (:quantityCondition = 'LOW_STOCK' and b.quantityOnHand < 10) or
+                (:quantityCondition = 'OUT_OF_STOCK' and b.quantityOnHand = 0) or
+                (:quantityCondition = 'IN_STOCK' and b.quantityOnHand > 0))
             """)
     Page<InventoryBalance> search(@Param("productId") Long productId,
                                   @Param("locationId") Long locationId,
+                                  @Param("quantityCondition") String quantityCondition,
                                   Pageable pageable);
 
     @Query("select sum(b.quantityOnHand) from InventoryBalance b")

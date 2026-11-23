@@ -45,10 +45,8 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public PageResponse<UserDto> list(String term, Pageable pageable) {
-        Page<User> page = (term == null || term.isBlank())
-                ? userRepository.findAll(pageable)
-                : userRepository.search(term.trim(), pageable);
+    public PageResponse<UserDto> list(String term, String role, Boolean active, Pageable pageable) {
+        Page<User> page = userRepository.search(term, role, active, pageable);
         List<UserDto> content = page.getContent().stream().map(UserDto::from).toList();
         return PageResponse.of(page, content);
     }

@@ -9,10 +9,12 @@ import com.logistics.warehouse_system.repository.UserRepository;
 import com.logistics.warehouse_system.security.SecurityUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -21,7 +23,8 @@ public class AuditLogService {
     private final AuditLogRepository auditLogRepository;
     private final UserRepository userRepository;
 
-    public AuditLogService(AuditLogRepository auditLogRepository, UserRepository userRepository) {
+    public AuditLogService(AuditLogRepository auditLogRepository,
+                           UserRepository userRepository) {
         this.auditLogRepository = auditLogRepository;
         this.userRepository = userRepository;
     }
@@ -60,8 +63,34 @@ public class AuditLogService {
     }
 
     @Transactional(readOnly = true)
-    public PageResponse<AuditDto> list(String entityType, String action, Pageable pageable) {
-        Page<AuditLog> page = auditLogRepository.search(entityType, action, pageable);
+    public PageResponse<AuditDto> list(String entityType, String action, Long actorUserId,
+                                       Instant from, Instant to, Pageable pageable) {
+        Specification<AuditLog> spec = null;
+        if (entityType != null || action != null || actorUserId != null || from != null || to != null) {
+            spec = Specification.where((root, query, cb) -> {
+                List<jakarta.persistence.criteria.Predicate> predicates = new ArrayList<>();
+                if (entityType != null) {
+                    predicates.add(cb.equal(root.get("entityType"), entityType));
+                }
+                if (action != null) {
+                    predicates.add(cb.equal(root.get("action"), action));
+                }
+                if (actorUserId != null) {
+                    predicates.add(cb.equal(root.get("actor").get("id"), actorUserId));
+                }
+                if (from != null) {
+                    predicates.add(cb.greaterThanOrEqualTo(root.get("occurredAt"), from));
+                }
+                if (to != null) {
+                    predicates.add(cb.lessThanOrEqualTo(root.get("occurredAt"), to));
+                }
+                return cb.and(predicates.toArray(new jakarta.persistence.criteria.Predicate[0]));
+            });
+        }
+
+        Page<AuditLog> page = spec != null
+                ? auditLogRepository.findAll(spec, pageable)
+                : auditLogRepository.findAll(pageable);
         List<AuditDto> content = page.getContent().stream().map(AuditDto::from).toList();
         return PageResponse.of(page, content);
     }

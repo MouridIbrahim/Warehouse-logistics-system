@@ -65,10 +65,9 @@ public class InboundService {
     }
 
     @Transactional(readOnly = true)
-    public PageResponse<InboundOrderDto> list(InboundStatus status, Pageable pageable) {
-        Page<InboundOrder> page = (status == null)
-                ? inboundOrderRepository.findAllByOrderByCreatedAtDesc(pageable)
-                : inboundOrderRepository.findByStatusOrderByCreatedAtDesc(status, pageable);
+    public PageResponse<InboundOrderDto> list(String term, InboundStatus status, Long warehouseId,
+                                              Instant from, Instant to, Pageable pageable) {
+        Page<InboundOrder> page = inboundOrderRepository.search(term, status, warehouseId, from, to, pageable);
         List<InboundOrderDto> content = page.getContent().stream().map(InboundOrderDto::summary).toList();
         return PageResponse.of(page, content);
     }

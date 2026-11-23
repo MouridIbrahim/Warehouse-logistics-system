@@ -25,9 +25,19 @@ export async function listWarehouses(
   term?: string,
   page = 0,
   size = 20,
+  active?: boolean,
+  from?: string,
+  to?: string,
 ): Promise<PageResponse<WarehouseDto>> {
   const { data } = await api.get<PageResponse<WarehouseDto>>('/api/v1/warehouses', {
-    params: { term: term || undefined, page, size },
+    params: {
+      term: term || undefined,
+      page,
+      size,
+      active: active !== undefined ? active : undefined,
+      from: from || undefined,
+      to: to || undefined,
+    },
   })
   return data
 }
@@ -43,6 +53,36 @@ export async function createWarehouse(payload: {
   address?: string
 }): Promise<WarehouseDto> {
   const { data } = await api.post<WarehouseDto>('/api/v1/warehouses', payload)
+  return data
+}
+
+export async function updateWarehouse(
+  id: number,
+  payload: { code?: string; name?: string; address?: string; active?: boolean },
+): Promise<WarehouseDto> {
+  const { data } = await api.patch<WarehouseDto>(`/api/v1/warehouses/${id}`, payload)
+  return data
+}
+
+export async function getLocation(
+  warehouseId: number,
+  locationId: number,
+): Promise<StorageLocationDto> {
+  const { data } = await api.get<StorageLocationDto>(
+    `/api/v1/warehouses/${warehouseId}/locations/${locationId}`,
+  )
+  return data
+}
+
+export async function updateLocation(
+  warehouseId: number,
+  locationId: number,
+  payload: { code?: string; name?: string; active?: boolean },
+): Promise<StorageLocationDto> {
+  const { data } = await api.patch<StorageLocationDto>(
+    `/api/v1/warehouses/${warehouseId}/locations/${locationId}`,
+    payload,
+  )
   return data
 }
 

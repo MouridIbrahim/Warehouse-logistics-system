@@ -48,10 +48,8 @@ public class ShipmentService {
     }
 
     @Transactional(readOnly = true)
-    public PageResponse<ShipmentDto> list(ShipmentStatus status, Pageable pageable) {
-        Page<Shipment> page = (status == null)
-                ? shipmentRepository.findAllByOrderByCreatedAtDesc(pageable)
-                : shipmentRepository.findByStatusOrderByCreatedAtDesc(status, pageable);
+    public PageResponse<ShipmentDto> list(String term, ShipmentStatus status, Instant from, Instant to, Pageable pageable) {
+        Page<Shipment> page = shipmentRepository.search(term, status, from, to, pageable);
         List<ShipmentDto> content = page.getContent().stream().map(ShipmentDto::from).toList();
         return PageResponse.of(page, content);
     }

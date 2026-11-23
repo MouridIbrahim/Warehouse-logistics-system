@@ -31,8 +31,9 @@ public class InventoryController {
     @GetMapping
     public PageResponse<InventoryBalanceDto> balances(@RequestParam(required = false) Long productId,
                                                       @RequestParam(required = false) Long locationId,
+                                                      @RequestParam(required = false) String quantityCondition,
                                                       @PageableDefault(size = 20) Pageable pageable) {
-        return inventoryService.listBalances(productId, locationId, pageable);
+        return inventoryService.listBalances(productId, locationId, quantityCondition, pageable);
     }
 
     @GetMapping("/movements")

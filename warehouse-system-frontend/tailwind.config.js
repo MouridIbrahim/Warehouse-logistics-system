@@ -31,6 +31,7 @@ export default {
         'status-neutral-bg': '#F1F5F9',
         'status-neutral-text': '#475569',
         'on-primary': '#FFFFFF',
+        'primary-fixed': '#FFDBCA',
         error: '#DC2626',
       },
       spacing: {

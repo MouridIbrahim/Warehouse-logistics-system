@@ -62,7 +62,7 @@ export function ShipmentDetailsPage() {
   return (
     <div>
       <div className="text-caption-meta text-text-secondary mb-2 flex items-center gap-1.5">
-        <Link to="/shipments" className="hover:text-primary">
+        <Link to="/app/shipments" className="hover:text-primary">
           Shipments
         </Link>
         <span className="text-text-secondary/50">/</span>

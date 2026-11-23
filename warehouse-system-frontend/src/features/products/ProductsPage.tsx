@@ -4,13 +4,16 @@ import type { PageResponse } from '../../types'
 import { formatDateTime } from '../../lib/format'
 import { getErrorMessage } from '../../lib/api'
 import { PageHeader } from '../../components/ui/PageHeader'
-import { SearchInput } from '../../components/ui/SearchInput'
 import { Pagination } from '../../components/ui/Pagination'
 import { Modal } from '../../components/ui/Modal'
 import { Button } from '../../components/ui/Button'
 import { StatusBadge } from '../../components/ui/StatusBadge'
 import { EmptyState } from '../../components/ui/EmptyState'
-import { createProduct, listProducts } from './api'
+import { FilterToolbar } from '../../components/ui/filter'
+import { ActiveFilterChips } from '../../components/ui/filter'
+import { useAuth } from '../auth/auth-context'
+import { ADMIN_MANAGER, hasAnyRole } from '../auth/permissions'
+import { createProduct, getProduct, listProducts, updateProduct } from './api'
 import type { ProductDto } from './api'
 
 function initials(name: string): string {
@@ -19,29 +22,67 @@ function initials(name: string): string {
 }
 
 export function ProductsPage() {
-  const [searchInput, setSearchInput] = useState('')
+  const { user } = useAuth()
   const [term, setTerm] = useState('')
+  const [unitOfMeasure, setUnitOfMeasure] = useState('')
+  const [active, setActive] = useState('')
+  const [from, setFrom] = useState('')
+  const [to, setTo] = useState('')
   const [page, setPage] = useState(0)
   const [size, setSize] = useState(20)
   const [data, setData] = useState<PageResponse<ProductDto> | null>(null)
   const [loading, setLoading] = useState(true)
   const [showCreate, setShowCreate] = useState(false)
+  const [editTarget, setEditTarget] = useState<ProductDto | null>(null)
 
-  useEffect(() => {
-    const t = setTimeout(() => setTerm(searchInput.trim()), 400)
-    return () => clearTimeout(t)
-  }, [searchInput])
+  const UNIT_OPTIONS = [
+    { value: 'pcs', label: 'Pieces' },
+    { value: 'box', label: 'Box' },
+    { value: 'kg', label: 'Kilogram' },
+    { value: 'unit', label: 'Unit' },
+    { value: 'pair', label: 'Pair' },
+    { value: 'set', label: 'Set' },
+  ]
+
+  const ACTIVE_OPTIONS = [
+    { value: 'true', label: 'Active' },
+    { value: 'false', label: 'Inactive' },
+  ]
 
   useEffect(() => {
     setLoading(true)
-    listProducts(term || undefined, page, size)
+    listProducts(
+      term || undefined,
+      page,
+      size,
+      unitOfMeasure || undefined,
+      active ? active === 'true' : undefined,
+      from || undefined,
+      to || undefined,
+    )
       .then(setData)
       .finally(() => setLoading(false))
-  }, [term, page, size])
+  }, [term, unitOfMeasure, active, from, to, page, size])
 
   function refresh() {
-    listProducts(term || undefined, page, size).then(setData)
+    listProducts(
+      term || undefined,
+      page,
+      size,
+      unitOfMeasure || undefined,
+      active ? active === 'true' : undefined,
+      from || undefined,
+      to || undefined,
+    ).then(setData)
   }
+
+  const activeChips = [
+    ...(term ? [{ key: 'search', label: `Search: "${term}"`, value: term, onRemove: () => setTerm('') }] : []),
+    ...(unitOfMeasure ? [{ key: 'unitOfMeasure', label: `Unit: ${unitOfMeasure}`, value: unitOfMeasure, onRemove: () => setUnitOfMeasure('') }] : []),
+    ...(active ? [{ key: 'active', label: `Status: ${active === 'true' ? 'Active' : 'Inactive'}`, value: active, onRemove: () => setActive('') }] : []),
+    ...(from ? [{ key: 'from', label: `From: ${from}`, value: from, onRemove: () => setFrom('') }] : []),
+    ...(to ? [{ key: 'to', label: `To: ${to}`, value: to, onRemove: () => setTo('') }] : []),
+  ]
 
   return (
     <div>
@@ -49,19 +90,49 @@ export function ProductsPage() {
         title="Products"
         description="Manage the product catalogue, SKU definitions, and stock availability."
         actions={
-          <Button icon="add" onClick={() => setShowCreate(true)}>
-            Add Product
-          </Button>
+          hasAnyRole(user, ADMIN_MANAGER) ? (
+            <Button icon="add" onClick={() => setShowCreate(true)}>
+              Add Product
+            </Button>
+          ) : undefined
         }
       />
 
+      {activeChips.length > 0 && (
+        <ActiveFilterChips chips={activeChips} onClearAll={() => { setTerm(''); setUnitOfMeasure(''); setActive(''); setFrom(''); setTo('') }} />
+      )}
+
       <div className="mt-6 bg-surface rounded-xl border border-border-default shadow-sm overflow-hidden">
-        <div className="p-space-md flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3 border-b border-border-default">
-          <SearchInput
-            value={searchInput}
-            onChange={setSearchInput}
-            placeholder="Search product name or SKU..."
-            className="w-full sm:w-80"
+        <div className="p-space-md border-b border-border-default">
+          <FilterToolbar
+            search={{
+              value: term,
+              onChange: setTerm,
+              placeholder: 'Search product name or SKU...',
+            }}
+            selects={[
+              {
+                key: 'unitOfMeasure',
+                value: unitOfMeasure,
+                onChange: setUnitOfMeasure,
+                options: UNIT_OPTIONS,
+                placeholder: 'Unit of measure',
+              },
+              {
+                key: 'active',
+                value: active,
+                onChange: setActive,
+                options: ACTIVE_OPTIONS,
+                placeholder: 'All statuses',
+              },
+            ]}
+            dateRange={{
+              startValue: from,
+              endValue: to,
+              onStartChange: setFrom,
+              onEndChange: setTo,
+            }}
+            onReset={() => { setTerm(''); setUnitOfMeasure(''); setActive(''); setFrom(''); setTo('') }}
           />
         </div>
 
@@ -119,11 +190,12 @@ export function ProductsPage() {
                     </td>
                     <td className="px-4 py-3 text-right whitespace-nowrap">
                       <div className="flex items-center justify-end gap-1">
-                        <button className="p-1 rounded text-text-secondary hover:text-primary transition-colors" title="Edit">
+                        <button
+                          className="p-1 rounded text-text-secondary hover:text-primary transition-colors"
+                          title="Edit"
+                          onClick={() => setEditTarget(p)}
+                        >
                           <span className="material-symbols-outlined text-[18px]">edit</span>
-                        </button>
-                        <button className="p-1 rounded text-text-secondary hover:text-text-primary transition-colors" title="More options">
-                          <span className="material-symbols-outlined text-[18px]">more_vert</span>
                         </button>
                       </div>
                     </td>
@@ -160,6 +232,7 @@ export function ProductsPage() {
       </div>
 
       <CreateProductModal open={showCreate} onClose={() => setShowCreate(false)} onCreated={refresh} />
+      <EditProductModal product={editTarget} onClose={() => setEditTarget(null)} onUpdated={refresh} />
     </div>
   )
 }
@@ -254,6 +327,125 @@ function CreateProductModal({
           </Button>
           <Button type="submit" disabled={loading}>
             {loading ? 'Creating...' : 'Create Product'}
+          </Button>
+        </div>
+      </form>
+    </Modal>
+  )
+}
+
+function EditProductModal({
+  product,
+  onClose,
+  onUpdated,
+}: {
+  product: ProductDto | null
+  onClose: () => void
+  onUpdated: () => void
+}) {
+  const [name, setName] = useState('')
+  const [sku, setSku] = useState('')
+  const [description, setDescription] = useState('')
+  const [unit, setUnit] = useState('')
+  const [active, setActive] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+  const [loading, setLoading] = useState(false)
+
+  useEffect(() => {
+    if (product) {
+      setError(null)
+      getProduct(product.id)
+        .then((p) => {
+          setName(p.name)
+          setSku(p.sku)
+          setDescription(p.description ?? '')
+          setUnit(p.unitOfMeasure ?? '')
+          setActive(p.active)
+        })
+        .catch((err) => setError(getErrorMessage(err)))
+    }
+  }, [product])
+
+  async function handleSubmit(e: FormEvent) {
+    e.preventDefault()
+    if (!product) return
+    setLoading(true)
+    setError(null)
+    try {
+      await updateProduct(product.id, {
+        name,
+        sku,
+        description: description || undefined,
+        unitOfMeasure: unit || undefined,
+        active,
+      })
+      onUpdated()
+      onClose()
+    } catch (err) {
+      setError(getErrorMessage(err))
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  return (
+    <Modal open={!!product} onClose={onClose} title="Edit Product">
+      <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
+        <div className="flex flex-col gap-1.5">
+          <label className="text-form-label text-text-primary">Product name *</label>
+          <input
+            className="h-10 px-3 text-body-default text-text-primary bg-surface border border-border-default rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/30"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required
+          />
+        </div>
+        <div className="flex flex-col gap-1.5">
+          <label className="text-form-label text-text-primary">SKU *</label>
+          <input
+            className="h-10 px-3 text-body-default text-text-primary bg-surface border border-border-default rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/30"
+            value={sku}
+            onChange={(e) => setSku(e.target.value)}
+            required
+          />
+        </div>
+        <div className="flex flex-col gap-1.5">
+          <label className="text-form-label text-text-primary">Unit of measure</label>
+          <input
+            className="h-10 px-3 text-body-default text-text-primary bg-surface border border-border-default rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/30"
+            value={unit}
+            onChange={(e) => setUnit(e.target.value)}
+          />
+        </div>
+        <div className="flex flex-col gap-1.5">
+          <label className="text-form-label text-text-primary">Description</label>
+          <textarea
+            className="px-3 py-2 text-body-default text-text-primary bg-surface border border-border-default rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/30 resize-none"
+            rows={3}
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+          />
+        </div>
+        <label className="flex items-center gap-2 cursor-pointer select-none">
+          <input
+            type="checkbox"
+            className="w-4 h-4 rounded accent-[#C45D16]"
+            checked={active}
+            onChange={(e) => setActive(e.target.checked)}
+          />
+          <span className="text-body-default text-text-primary">Active</span>
+        </label>
+
+        {error && (
+          <div className="p-3 rounded-lg bg-status-danger-bg text-status-danger-text text-caption-meta">{error}</div>
+        )}
+
+        <div className="flex items-center justify-end gap-2 mt-2">
+          <Button type="button" variant="secondary" onClick={onClose}>
+            Cancel
+          </Button>
+          <Button type="submit" disabled={loading}>
+            {loading ? 'Saving...' : 'Save Changes'}
           </Button>
         </div>
       </form>

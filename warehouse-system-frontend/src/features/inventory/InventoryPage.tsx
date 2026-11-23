@@ -5,12 +5,13 @@ import { formatDateTime } from '../../lib/format'
 import { getErrorMessage } from '../../lib/api'
 import { useAuth } from '../auth/auth-context'
 import { PageHeader } from '../../components/ui/PageHeader'
-import { SearchInput } from '../../components/ui/SearchInput'
 import { Pagination } from '../../components/ui/Pagination'
 import { Modal } from '../../components/ui/Modal'
 import { Button } from '../../components/ui/Button'
 import { StatusBadge } from '../../components/ui/StatusBadge'
 import { EmptyState } from '../../components/ui/EmptyState'
+import { FilterToolbar } from '../../components/ui/filter'
+import { ActiveFilterChips } from '../../components/ui/filter'
 import { adjustStock, listBalances, listMovements } from './api'
 import type { InventoryBalanceDto, InventoryMovementDto } from './api'
 
@@ -23,6 +24,10 @@ function movementBadge(type: string): { tone: 'success' | 'info' | 'neutral'; la
     default:
       return { tone: 'neutral', label: 'Adjustment' }
   }
+}
+
+function formatNumberInput(value: string): string {
+  return value.replace(/[^0-9-]/g, '')
 }
 
 export function InventoryPage() {
@@ -65,18 +70,33 @@ export function InventoryPage() {
 
 function BalancesTable({ canAdjust }: { canAdjust: boolean }) {
   const [search, setSearch] = useState('')
+  const [productId, setProductId] = useState('')
+  const [locationId, setLocationId] = useState('')
+  const [quantityCondition, setQuantityCondition] = useState('')
   const [page, setPage] = useState(0)
   const [size, setSize] = useState(20)
   const [data, setData] = useState<PageResponse<InventoryBalanceDto> | null>(null)
   const [loading, setLoading] = useState(true)
   const [adjustTarget, setAdjustTarget] = useState<InventoryBalanceDto | null>(null)
 
+  const QUANTITY_OPTIONS = [
+    { value: 'LOW_STOCK', label: 'Low Stock (< 10)' },
+    { value: 'OUT_OF_STOCK', label: 'Out of Stock (= 0)' },
+    { value: 'IN_STOCK', label: 'In Stock (> 0)' },
+  ]
+
   useEffect(() => {
     setLoading(true)
-    listBalances(page, size)
+    listBalances(
+      page,
+      size,
+      productId ? Number(productId) : undefined,
+      locationId ? Number(locationId) : undefined,
+      quantityCondition || undefined,
+    )
       .then(setData)
       .finally(() => setLoading(false))
-  }, [page, size])
+  }, [productId, locationId, quantityCondition, page, size])
 
   const filtered = data
     ? {
@@ -91,17 +111,58 @@ function BalancesTable({ canAdjust }: { canAdjust: boolean }) {
     : null
 
   function refresh() {
-    listBalances(page, size).then(setData)
+    listBalances(
+      page,
+      size,
+      productId ? Number(productId) : undefined,
+      locationId ? Number(locationId) : undefined,
+      quantityCondition || undefined,
+    ).then(setData)
   }
+
+  const activeChips = [
+    ...(search ? [{ key: 'search', label: `Search: "${search}"`, value: search, onRemove: () => setSearch('') }] : []),
+    ...(productId ? [{ key: 'productId', label: `Product ID: ${productId}`, value: productId, onRemove: () => setProductId('') }] : []),
+    ...(locationId ? [{ key: 'locationId', label: `Location ID: ${locationId}`, value: locationId, onRemove: () => setLocationId('') }] : []),
+    ...(quantityCondition ? [{ key: 'quantityCondition', label: `Quantity: ${QUANTITY_OPTIONS.find((o) => o.value === quantityCondition)?.label}`, value: quantityCondition, onRemove: () => setQuantityCondition('') }] : []),
+  ]
 
   return (
     <div className="bg-surface rounded-xl border border-border-default shadow-sm overflow-hidden">
       <div className="p-space-md border-b border-border-default">
-        <SearchInput
-          value={search}
-          onChange={setSearch}
-          placeholder="Search product or SKU..."
-          className="w-full sm:w-80"
+        {activeChips.length > 0 && (
+          <ActiveFilterChips chips={activeChips} onClearAll={() => { setSearch(''); setProductId(''); setLocationId(''); setQuantityCondition('') }} />
+        )}
+        <FilterToolbar
+          search={{
+            value: search,
+            onChange: setSearch,
+            placeholder: 'Search product or SKU...',
+          }}
+          selects={[
+            {
+              key: 'productId',
+              value: productId,
+              onChange: (v) => setProductId(formatNumberInput(v)),
+              options: [],
+              placeholder: 'Product ID',
+            },
+            {
+              key: 'locationId',
+              value: locationId,
+              onChange: (v) => setLocationId(formatNumberInput(v)),
+              options: [],
+              placeholder: 'Location ID',
+            },
+            {
+              key: 'quantityCondition',
+              value: quantityCondition,
+              onChange: setQuantityCondition,
+              options: QUANTITY_OPTIONS,
+              placeholder: 'Quantity condition',
+            },
+          ]}
+          onReset={() => { setSearch(''); setProductId(''); setLocationId(''); setQuantityCondition('') }}
         />
       </div>
 
@@ -203,6 +264,8 @@ function BalancesTable({ canAdjust }: { canAdjust: boolean }) {
 }
 
 function MovementsTable() {
+  const [productId, setProductId] = useState('')
+  const [locationId, setLocationId] = useState('')
   const [page, setPage] = useState(0)
   const [size, setSize] = useState(20)
   const [data, setData] = useState<PageResponse<InventoryMovementDto> | null>(null)
@@ -210,13 +273,48 @@ function MovementsTable() {
 
   useEffect(() => {
     setLoading(true)
-    listMovements(page, size)
+    listMovements(
+      page,
+      size,
+      productId ? Number(productId) : undefined,
+      locationId ? Number(locationId) : undefined,
+    )
       .then(setData)
       .finally(() => setLoading(false))
-  }, [page, size])
+  }, [productId, locationId, page, size])
+
+  const activeChips = [
+    ...(productId ? [{ key: 'productId', label: `Product ID: ${productId}`, value: productId, onRemove: () => setProductId('') }] : []),
+    ...(locationId ? [{ key: 'locationId', label: `Location ID: ${locationId}`, value: locationId, onRemove: () => setLocationId('') }] : []),
+  ]
 
   return (
     <div className="bg-surface rounded-xl border border-border-default shadow-sm overflow-hidden">
+      <div className="p-space-md border-b border-border-default">
+        {activeChips.length > 0 && (
+          <ActiveFilterChips chips={activeChips} onClearAll={() => { setProductId(''); setLocationId('') }} />
+        )}
+        <FilterToolbar
+          selects={[
+            {
+              key: 'productId',
+              value: productId,
+              onChange: (v) => setProductId(formatNumberInput(v)),
+              options: [],
+              placeholder: 'Product ID',
+            },
+            {
+              key: 'locationId',
+              value: locationId,
+              onChange: (v) => setLocationId(formatNumberInput(v)),
+              options: [],
+              placeholder: 'Location ID',
+            },
+          ]}
+          onReset={() => { setProductId(''); setLocationId('') }}
+        />
+      </div>
+
       <div className="overflow-x-auto">
         <table className="w-full text-left">
           <thead className="bg-app-bg text-table-header uppercase text-text-secondary select-none">

@@ -19,3 +19,10 @@ export async function me(): Promise<UserDto> {
   const { data } = await api.get<UserDto>('/api/v1/auth/me')
   return data
 }
+
+export async function changePassword(payload: {
+  currentPassword: string
+  newPassword: string
+}): Promise<void> {
+  await api.post('/api/v1/auth/change-password', payload)
+}

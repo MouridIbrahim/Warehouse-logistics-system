@@ -99,10 +99,10 @@ Status legend: `TODO` / `IN_PROGRESS` / `BLOCKED` / `DONE`.
 - **FE-012** — Shipments (list + create + details/status state machine). `DONE` — create, list, status updates via the
   allowed transitions only; status history view.
 - **FE-013** — Reports (date range + volume metrics + shipment breakdown). `DONE` — the five mandatory reports with filters.
-- **FE-014** — User & role administration. `TODO` — admin-only; CRUD,
+- **FE-014** — User & role administration (list + create/edit + reset password). `DONE` — admin-only; CRUD,
   activate/deactivate, role assignment.
-- **FE-015** — Audit history. `TODO` — read-only, paginated/filtered.
-- **FE-016** — Role-aware navigation & guards. `TODO`
+- **FE-015** — Audit history (filtered, paginated, read-only). `DONE` — read-only, paginated/filtered.
+- **FE-016** — Role-aware navigation & guards (sidebar filtering + route guards + access-denied). `DONE`
   - Objective: hide/disable actions by role for usability; access-denied
     screen on 403.
   - Acceptance: a Viewer/Auditor sees read-only views; backend still
@@ -110,12 +110,12 @@ Status legend: `TODO` / `IN_PROGRESS` / `BLOCKED` / `DONE`.
 
 ### Phase 4 — Quality
 
-- **FE-017** — Frontend tests. `TODO`
+- **FE-017** — Frontend tests (Vitest + RTL; 9 tests). `DONE`
   - Objective: form validation/error display, protected routes/role-aware
     nav, loading/empty/error states, API error handling, critical flows.
   - Acceptance: tests run and pass; no unexecuted tests reported as
     passing.
-- **FE-018** — Build + manual verification. `TODO`
+- **FE-018** — Build + verification (production build + code-splitting). `DONE`
   - Objective: type check, lint, production build, and manual run-through
     of primary workflows against a running backend.
   - Verify: `npx tsc --noEmit`, lint, `npm run build`, manual checklist.

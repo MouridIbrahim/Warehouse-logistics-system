@@ -9,7 +9,13 @@ import { SearchInput } from '../../components/ui/SearchInput'
 import { Pagination } from '../../components/ui/Pagination'
 import { Modal } from '../../components/ui/Modal'
 import { EmptyState } from '../../components/ui/EmptyState'
-import { createLocation, getWarehouse, listLocations } from './api'
+import {
+  createLocation,
+  getLocation,
+  getWarehouse,
+  listLocations,
+  updateLocation,
+} from './api'
 import type { StorageLocationDto, WarehouseDto } from './api'
 
 export function WarehouseDetailsPage() {
@@ -21,6 +27,7 @@ export function WarehouseDetailsPage() {
   const [page, setPage] = useState(0)
   const [size, setSize] = useState(20)
   const [showCreate, setShowCreate] = useState(false)
+  const [editTarget, setEditTarget] = useState<StorageLocationDto | null>(null)
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
@@ -44,7 +51,7 @@ export function WarehouseDetailsPage() {
   return (
     <div>
       <div className="text-caption-meta text-text-secondary mb-2 flex items-center gap-1.5">
-        <Link to="/warehouses" className="hover:text-primary">
+        <Link to="/app/warehouses" className="hover:text-primary">
           Warehouses
         </Link>
         <span className="text-text-secondary/50">/</span>
@@ -108,11 +115,12 @@ export function WarehouseDetailsPage() {
                     </td>
                     <td className="px-4 py-3 text-right whitespace-nowrap">
                       <div className="flex items-center justify-end gap-1">
-                        <button className="p-1 rounded text-text-secondary hover:text-primary transition-colors" title="Edit">
+                        <button
+                          className="p-1 rounded text-text-secondary hover:text-primary transition-colors"
+                          title="Edit"
+                          onClick={() => setEditTarget(l)}
+                        >
                           <span className="material-symbols-outlined text-[18px]">edit</span>
-                        </button>
-                        <button className="p-1 rounded text-text-secondary hover:text-text-primary transition-colors" title="More options">
-                          <span className="material-symbols-outlined text-[18px]">more_vert</span>
                         </button>
                       </div>
                     </td>
@@ -153,6 +161,12 @@ export function WarehouseDetailsPage() {
         open={showCreate}
         onClose={() => setShowCreate(false)}
         onCreated={refresh}
+      />
+      <EditLocationModal
+        warehouseId={warehouseId}
+        location={editTarget}
+        onClose={() => setEditTarget(null)}
+        onUpdated={refresh}
       />
     </div>
   )
@@ -225,6 +239,100 @@ function CreateLocationModal({
           </Button>
           <Button type="submit" disabled={loading}>
             {loading ? 'Creating...' : 'Create Location'}
+          </Button>
+        </div>
+      </form>
+    </Modal>
+  )
+}
+
+function EditLocationModal({
+  warehouseId,
+  location,
+  onClose,
+  onUpdated,
+}: {
+  warehouseId: number
+  location: StorageLocationDto | null
+  onClose: () => void
+  onUpdated: () => void
+}) {
+  const [code, setCode] = useState('')
+  const [name, setName] = useState('')
+  const [active, setActive] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+  const [loading, setLoading] = useState(false)
+
+  useEffect(() => {
+    if (location) {
+      setError(null)
+      getLocation(warehouseId, location.id)
+        .then((l) => {
+          setCode(l.code)
+          setName(l.name)
+          setActive(l.active)
+        })
+        .catch((err) => setError(getErrorMessage(err)))
+    }
+  }, [warehouseId, location])
+
+  async function handleSubmit(e: FormEvent) {
+    e.preventDefault()
+    if (!location) return
+    setLoading(true)
+    setError(null)
+    try {
+      await updateLocation(warehouseId, location.id, { code, name, active })
+      onUpdated()
+      onClose()
+    } catch (err) {
+      setError(getErrorMessage(err))
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  return (
+    <Modal open={!!location} onClose={onClose} title="Edit Storage Location">
+      <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
+        <div className="flex flex-col gap-1.5">
+          <label className="text-form-label text-text-primary">Location code *</label>
+          <input
+            className="h-10 px-3 text-body-default text-text-primary bg-surface border border-border-default rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/30"
+            value={code}
+            onChange={(e) => setCode(e.target.value)}
+            required
+          />
+        </div>
+        <div className="flex flex-col gap-1.5">
+          <label className="text-form-label text-text-primary">Location name *</label>
+          <input
+            className="h-10 px-3 text-body-default text-text-primary bg-surface border border-border-default rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/30"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required
+          />
+        </div>
+        <label className="flex items-center gap-2 cursor-pointer select-none">
+          <input
+            type="checkbox"
+            className="w-4 h-4 rounded accent-[#C45D16]"
+            checked={active}
+            onChange={(e) => setActive(e.target.checked)}
+          />
+          <span className="text-body-default text-text-primary">Active</span>
+        </label>
+
+        {error && (
+          <div className="p-3 rounded-lg bg-status-danger-bg text-status-danger-text text-caption-meta">{error}</div>
+        )}
+
+        <div className="flex items-center justify-end gap-2 mt-2">
+          <Button type="button" variant="secondary" onClick={onClose}>
+            Cancel
+          </Button>
+          <Button type="submit" disabled={loading}>
+            {loading ? 'Saving...' : 'Save Changes'}
           </Button>
         </div>
       </form>

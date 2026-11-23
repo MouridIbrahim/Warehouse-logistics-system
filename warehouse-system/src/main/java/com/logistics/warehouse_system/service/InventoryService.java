@@ -52,8 +52,8 @@ public class InventoryService {
     }
 
     @Transactional(readOnly = true)
-    public PageResponse<InventoryBalanceDto> listBalances(Long productId, Long locationId, Pageable pageable) {
-        Page<InventoryBalance> page = inventoryBalanceRepository.search(productId, locationId, pageable);
+    public PageResponse<InventoryBalanceDto> listBalances(Long productId, Long locationId, String quantityCondition, Pageable pageable) {
+        Page<InventoryBalance> page = inventoryBalanceRepository.search(productId, locationId, quantityCondition, pageable);
         List<InventoryBalanceDto> content = page.getContent().stream().map(InventoryBalanceDto::from).toList();
         return PageResponse.of(page, content);
     }

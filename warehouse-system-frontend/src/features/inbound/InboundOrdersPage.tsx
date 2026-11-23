@@ -3,40 +3,62 @@ import { Link } from 'react-router-dom'
 import type { PageResponse } from '../../types'
 import { formatDateTime } from '../../lib/format'
 import { PageHeader } from '../../components/ui/PageHeader'
-import { SearchInput } from '../../components/ui/SearchInput'
-import { Select } from '../../components/ui/Select'
 import { Pagination } from '../../components/ui/Pagination'
 import { Button } from '../../components/ui/Button'
 import { StatusBadge } from '../../components/ui/StatusBadge'
 import { EmptyState } from '../../components/ui/EmptyState'
+import { FilterToolbar } from '../../components/ui/filter'
+import { ActiveFilterChips } from '../../components/ui/filter'
 import { listInboundOrders } from './api'
 import type { InboundOrderDto } from './api'
+import { listWarehouses } from '../warehouses/api'
+import type { WarehouseDto } from '../warehouses/api'
+
+const INBOUND_STATUS_OPTIONS = [
+  { value: 'DRAFT', label: 'Draft' },
+  { value: 'CONFIRMED', label: 'Confirmed' },
+]
 
 export function InboundOrdersPage() {
-  const [search, setSearch] = useState('')
+  const [term, setTerm] = useState('')
   const [status, setStatus] = useState('')
+  const [warehouseId, setWarehouseId] = useState<number | null>(null)
+  const [from, setFrom] = useState('')
+  const [to, setTo] = useState('')
   const [page, setPage] = useState(0)
   const [size, setSize] = useState(20)
   const [data, setData] = useState<PageResponse<InboundOrderDto> | null>(null)
   const [loading, setLoading] = useState(true)
+  const [warehouses, setWarehouses] = useState<WarehouseDto[]>([])
+
+  useEffect(() => {
+    listWarehouses('', 0, 100).then((d) => setWarehouses(d.content))
+  }, [])
 
   useEffect(() => {
     setLoading(true)
-    listInboundOrders(status || undefined, page, size)
+    listInboundOrders(
+      term || undefined,
+      status || undefined,
+      page,
+      size,
+      warehouseId ?? undefined,
+      from || undefined,
+      to || undefined,
+    )
       .then(setData)
       .finally(() => setLoading(false))
-  }, [status, page, size])
+  }, [term, status, warehouseId, from, to, page, size])
 
-  const filtered = data
-    ? {
-        ...data,
-        content: data.content.filter(
-          (o) =>
-            !search ||
-            o.referenceNumber.toLowerCase().includes(search.toLowerCase()),
-        ),
-      }
-    : null
+  const activeChips = [
+    ...(term ? [{ key: 'search', label: `Search: "${term}"`, value: term, onRemove: () => setTerm('') }] : []),
+    ...(status
+      ? [{ key: 'status', label: `Status: ${INBOUND_STATUS_OPTIONS.find((o) => o.value === status)?.label ?? status}`, value: status, onRemove: () => setStatus('') }]
+      : []),
+    ...(warehouseId ? [{ key: 'warehouseId', label: `Warehouse: ${warehouses.find((w) => w.id === warehouseId)?.name ?? warehouseId}`, value: String(warehouseId), onRemove: () => setWarehouseId(null) }] : []),
+    ...(from ? [{ key: 'from', label: `From: ${from}`, value: from, onRemove: () => setFrom('') }] : []),
+    ...(to ? [{ key: 'to', label: `To: ${to}`, value: to, onRemove: () => setTo('') }] : []),
+  ]
 
   return (
     <div>
@@ -44,29 +66,47 @@ export function InboundOrdersPage() {
         title="Inbound Operations"
         description="Track expected and received goods."
         actions={
-          <Link to="/inbound/new">
+          <Link to="/app/inbound/new">
             <Button icon="add">Create Inbound Order</Button>
           </Link>
         }
       />
 
+      {activeChips.length > 0 && (
+        <ActiveFilterChips chips={activeChips} onClearAll={() => { setTerm(''); setStatus(''); setWarehouseId(null); setFrom(''); setTo('') }} />
+      )}
+
       <div className="mt-6 bg-surface rounded-xl border border-border-default shadow-sm overflow-hidden">
-        <div className="p-space-md flex flex-col lg:flex-row lg:items-center gap-3 border-b border-border-default">
-          <SearchInput
-            value={search}
-            onChange={setSearch}
-            placeholder="Search inbound reference..."
-            className="w-full sm:w-80"
-          />
-          <Select
-            value={status}
-            onChange={setStatus}
-            placeholder="All statuses"
-            options={[
-              { value: 'DRAFT', label: 'Draft' },
-              { value: 'CONFIRMED', label: 'Confirmed' },
+        <div className="p-space-md border-b border-border-default">
+          <FilterToolbar
+            search={{
+              value: term,
+              onChange: setTerm,
+              placeholder: 'Search inbound reference...',
+            }}
+            selects={[
+              {
+                key: 'status',
+                value: status,
+                onChange: setStatus,
+                options: INBOUND_STATUS_OPTIONS,
+                placeholder: 'All statuses',
+              },
+              {
+                key: 'warehouseId',
+                value: warehouseId ? String(warehouseId) : '',
+                onChange: (v) => setWarehouseId(v ? Number(v) : null),
+                options: warehouses.map((w) => ({ value: String(w.id), label: `${w.code} - ${w.name}` })),
+                placeholder: 'All warehouses',
+              },
             ]}
-            className="w-full sm:w-48"
+            dateRange={{
+              startValue: from,
+              endValue: to,
+              onStartChange: setFrom,
+              onEndChange: setTo,
+            }}
+            onReset={() => { setTerm(''); setStatus(''); setWarehouseId(null); setFrom(''); setTo('') }}
           />
         </div>
 
@@ -90,12 +130,12 @@ export function InboundOrdersPage() {
                     Loading inbound orders...
                   </td>
                 </tr>
-              ) : filtered && filtered.content.length > 0 ? (
-                filtered.content.map((o) => (
+              ) : data && data.content.length > 0 ? (
+                data.content.map((o) => (
                   <tr key={o.id} className="hover:bg-app-bg/50 transition-colors">
                     <td className="px-4 py-3">
                       <Link
-                        to={`/inbound/${o.id}`}
+                        to={`/app/inbound/${o.id}`}
                         className="text-body-semibold tabular-nums text-text-primary hover:text-primary"
                       >
                         {o.referenceNumber}
@@ -120,7 +160,7 @@ export function InboundOrdersPage() {
                     <td className="px-4 py-3 text-right whitespace-nowrap">
                       <div className="flex items-center justify-end gap-1">
                         <Link
-                          to={`/inbound/${o.id}`}
+                          to={`/app/inbound/${o.id}`}
                           className="p-1 rounded text-text-secondary hover:text-primary transition-colors"
                           title="View details"
                         >

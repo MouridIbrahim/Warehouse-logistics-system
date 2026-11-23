@@ -33,9 +33,17 @@ export async function listBalances(
   page = 0,
   size = 20,
   productId?: number,
+  locationId?: number,
+  quantityCondition?: string,
 ): Promise<PageResponse<InventoryBalanceDto>> {
   const { data } = await api.get<PageResponse<InventoryBalanceDto>>('/api/v1/inventory', {
-    params: { page, size, productId: productId || undefined },
+    params: {
+      page,
+      size,
+      productId: productId || undefined,
+      locationId: locationId || undefined,
+      quantityCondition: quantityCondition || undefined,
+    },
   })
   return data
 }
@@ -44,9 +52,10 @@ export async function listMovements(
   page = 0,
   size = 20,
   productId?: number,
+  locationId?: number,
 ): Promise<PageResponse<InventoryMovementDto>> {
   const { data } = await api.get<PageResponse<InventoryMovementDto>>('/api/v1/inventory/movements', {
-    params: { page, size, productId: productId || undefined },
+    params: { page, size, productId: productId || undefined, locationId: locationId || undefined },
   })
   return data
 }
