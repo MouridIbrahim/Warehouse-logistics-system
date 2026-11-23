@@ -15,8 +15,10 @@ export interface DashboardDto {
   shipmentStatusCounts: ShipmentStatusCount[]
 }
 
-export async function fetchDashboard(): Promise<DashboardDto> {
-  const { data } = await api.get<DashboardDto>('/api/v1/reports/dashboard')
+export async function fetchDashboard(from?: string, to?: string): Promise<DashboardDto> {
+  const { data } = await api.get<DashboardDto>('/api/v1/reports/dashboard', {
+    params: { from: from || undefined, to: to || undefined },
+  })
   return data
 }
 

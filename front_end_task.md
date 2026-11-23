@@ -92,13 +92,13 @@ Status legend: `TODO` / `IN_PROGRESS` / `BLOCKED` / `DONE`.
   scoped per warehouse.
 - **FE-009** — Inbound (list + create with items editor + details/confirm). `DONE` — create draft, add items, confirm;
   success/failure feedback; quantity validation.
-- **FE-010** — Inventory. `TODO` — balances list/filter/paginate;
+- **FE-010** — Inventory (balances + movement history + adjustment). `DONE` — balances list/filter/paginate;
   movement history; authorized manual adjustment.
 - **FE-011** — Outbound (list + create + details/dispatch). `DONE` — create draft, dispatch; show conflict
   on insufficient stock without partial dispatch.
-- **FE-012** — Shipments. `TODO` — create, list, status updates via the
+- **FE-012** — Shipments (list + create + details/status state machine). `DONE` — create, list, status updates via the
   allowed transitions only; status history view.
-- **FE-013** — Reports. `TODO` — the five mandatory reports with filters.
+- **FE-013** — Reports (date range + volume metrics + shipment breakdown). `DONE` — the five mandatory reports with filters.
 - **FE-014** — User & role administration. `TODO` — admin-only; CRUD,
   activate/deactivate, role assignment.
 - **FE-015** — Audit history. `TODO` — read-only, paginated/filtered.
