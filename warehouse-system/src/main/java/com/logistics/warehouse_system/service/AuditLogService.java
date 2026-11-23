@@ -28,7 +28,7 @@ public class AuditLogService {
 
     @Transactional
     public void record(String action, String entityType, Long entityId) {
-        record(action, entityType, entityId, null);
+        record(action, entityType, entityId, (String) null);
     }
 
     @Transactional
@@ -41,6 +41,19 @@ public class AuditLogService {
                 .entityType(entityType)
                 .entityId(entityId)
                 .metadata(metadata)
+                .occurredAt(Instant.now())
+                .build();
+        auditLogRepository.save(log);
+    }
+
+    @Transactional
+    public void record(String action, String entityType, Long entityId, Long actorId) {
+        User actor = actorId == null ? null : userRepository.getReferenceById(actorId);
+        AuditLog log = AuditLog.builder()
+                .actor(actor)
+                .action(action)
+                .entityType(entityType)
+                .entityId(entityId)
                 .occurredAt(Instant.now())
                 .build();
         auditLogRepository.save(log);

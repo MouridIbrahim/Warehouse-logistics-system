@@ -29,15 +29,22 @@ docker compose up --build
 
 Stop: `docker compose down` (keeps data) · `docker compose down -v` (drops the volume).
 
-## Demo accounts (development only — change before any production use)
+## First-time setup (registration)
 
-| Username   | Password     | Role              |
-|------------|--------------|-------------------|
-| admin      | admin123     | ADMINISTRATOR     |
-| manager    | manager123   | WAREHOUSE_MANAGER |
-| employee   | employee123  | WAREHOUSE_EMPLOYEE|
-| shipment   | shipment123  | SHIPMENT_MANAGER  |
-| viewer     | viewer123    | VIEWER_AUDITOR    |
+There are **no pre-seeded user accounts**. The first person to register becomes the **Administrator**:
+
+```powershell
+# Register the first admin (only works while no admin exists)
+Invoke-RestMethod http://localhost:8080/api/v1/auth/register `
+  -Method Post -ContentType "application/json" `
+  -Body '{"username":"admin","password":"admin123","displayName":"System Administrator"}'
+```
+
+Then log in with those credentials, and use the admin **Users** endpoints
+(`POST /api/v1/users`) to create accounts for other roles
+(WAREHOUSE_MANAGER, WAREHOUSE_EMPLOYEE, SHIPMENT_MANAGER, VIEWER_AUDITOR).
+
+> Tip: to seed demo users for testing, start the backend with `app.seed.enabled=true`.
 
 ## Build / test the backend locally (outside Docker)
 

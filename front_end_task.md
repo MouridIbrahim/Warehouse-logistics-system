@@ -42,14 +42,15 @@ Status legend: `TODO` / `IN_PROGRESS` / `BLOCKED` / `DONE`.
 
 ### Phase 0 — Scaffolding
 
-- **FE-001** — Vite + TS project setup. `TODO`
+- **FE-001** — Vite + TS project setup + Tailwind design system (Industrial
+  Orange tokens, Inter, Material Symbols) + Login page. `DONE`
   - Objective: `package.json`, `vite.config.ts`, `tsconfig` (strict),
     `index.html`, `src/main.tsx`, `.env.example`, lint config.
   - Acceptance: `npm install`, `npm run dev`, type check, and build all
     succeed.
   - Verify: `npm run build`, `npx tsc --noEmit`.
 
-- **FE-002** — App shell, router, providers. `TODO`
+- **FE-002** — App shell, router, providers (sidebar + topbar + layout). `DONE`
   - Objective: React Router with protected/role-aware routes, an
     auth/theme provider, base layout (sidebar nav + topbar).
   - Acceptance: navigation map from §2 renders; unknown routes show
@@ -57,14 +58,14 @@ Status legend: `TODO` / `IN_PROGRESS` / `BLOCKED` / `DONE`.
 
 ### Phase 1 — API layer and auth
 
-- **FE-003** — HTTP client + typed API modules. `TODO`
+- **FE-003** — HTTP client + typed API modules (axios, types, auth/dashboard api). `DONE`
   - Objective: shared `fetch`/axios wrapper with auth header injection,
     error normalization, and per-feature API modules matching the backend
     contract.
   - Acceptance: 401/403/409/validation errors surface as typed messages;
     base URL read from env.
 
-- **FE-004** — Authentication flow. `TODO`
+- **FE-004** — Authentication flow (login/register + auth context + protected routes). `DONE`
   - Objective: sign-in page, auth context/state, token handling, logout,
     session expiry handling.
   - Acceptance: login/logout work; protected routes gate on auth; token
@@ -72,7 +73,8 @@ Status legend: `TODO` / `IN_PROGRESS` / `BLOCKED` / `DONE`.
 
 ### Phase 2 — Reusable UI
 
-- **FE-005** — UI primitives. `TODO`
+- **FE-005** — UI primitives (Button, StatusBadge, PageHeader, SearchInput,
+  Select, Pagination, EmptyState, Modal). `DONE`
   - Objective: buttons, inputs, selects, modal/confirm, toast/feedback,
     status badges, table with pagination/sort/filter, empty/error/loading
     states.
@@ -80,19 +82,19 @@ Status legend: `TODO` / `IN_PROGRESS` / `BLOCKED` / `DONE`.
 
 ### Phase 3 — Feature screens (page + forms + API wiring)
 
-- **FE-006** — Dashboard. `TODO`
+- **FE-006** — Dashboard (live KPI cards + throughput + quick actions). `DONE`
   - Objective: operational summary cards + report figures from
     `/reports/dashboard`; date-range filters.
   - Acceptance: real data only; no static mock metrics.
-- **FE-007** — Products. `TODO` — CRUD + deactivate + search; SKU
+- **FE-007** — Products (list + search + pagination + create). `DONE` — CRUD + deactivate + search; SKU
   uniqueness error shown.
-- **FE-008** — Warehouses & locations. `TODO` — warehouse CRUD; locations
+- **FE-008** — Warehouses & locations (list + details + nested locations). `DONE` — warehouse CRUD; locations
   scoped per warehouse.
-- **FE-009** — Inbound. `TODO` — create draft, add items, confirm;
+- **FE-009** — Inbound (list + create with items editor + details/confirm). `DONE` — create draft, add items, confirm;
   success/failure feedback; quantity validation.
 - **FE-010** — Inventory. `TODO` — balances list/filter/paginate;
   movement history; authorized manual adjustment.
-- **FE-011** — Outbound. `TODO` — create draft, dispatch; show conflict
+- **FE-011** — Outbound (list + create + details/dispatch). `DONE` — create draft, dispatch; show conflict
   on insufficient stock without partial dispatch.
 - **FE-012** — Shipments. `TODO` — create, list, status updates via the
   allowed transitions only; status history view.

@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_dashboard" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base { html, body { margin: 0; padding: 0; } body { overscroll-behavior: none; } main > :first-child { margin-top: 0 !important; } main > :last-child { margin-bottom: 0 !important; } } ::-webkit-scrollbar { display: none; }</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { colors: { "status-info-text": "#1D4ED8", "on-tertiary-container": "#fffbff", "sidebar-text": "#E2E8F0", "text-secondary": "#64748B", "status-info-bg": "#DBEAFE", "on-secondary-fixed-variant": "#404752", "on-background": "#0b1c30", "tertiary-fixed": "#ffdcc3", "surface-container-highest": "#d3e4fe", "status-danger-text": "#991B1B", "inverse-surface": "#213145", "status-warning-text": "#92400E", "on-tertiary-fixed-variant": "#6e3900", "status-neutral-bg": "#F1F5F9", "on-secondary-fixed": "#151c26", "primary-fixed-dim": "#ffb68f", "inverse-primary": "#ffb68f", "app-bg": "#F6F7F9", "surface-container-lowest": "#ffffff", "primary-hover": "#A94B0D", "status-success-bg": "#DCFCE7", "on-surface": "#0b1c30", "surface-tint": "#9c4400", "on-surface-variant": "#564238", "on-secondary-container": "#5c636e", "status-danger-bg": "#FEE2E2", "on-error": "#ffffff", "secondary": "#585f6a", "on-primary": "#ffffff", "secondary-container": "#d9e0ed", "surface-bright": "#f8f9ff", "status-neutral-text": "#475569", "tertiary": "#8d4b00", "secondary-fixed": "#dce3f0", "outline": "#8a7266", "primary-fixed": "#ffdbca", "surface-container-low": "#eff4ff", "background": "#f8f9ff", "tertiary-fixed-dim": "#ffb77d", "sidebar-muted": "#94A3B8", "surface-container-high": "#dce9ff", "surface": "#FFFFFF", "status-warning-bg": "#FEF3C7", "on-tertiary-fixed": "#2f1500", "text-primary": "#18212F", "inverse-on-surface": "#eaf1ff", "secondary-fixed-dim": "#c0c7d4", "outline-variant": "#ddc1b3", "on-primary-fixed-variant": "#773200", "tertiary-container": "#b15f00", "error-container": "#ffdad6", "primary-container": "#bc570f", "primary": "#984200", "on-secondary": "#ffffff", "on-primary-fixed": "#331200", "border-default": "#E2E8F0", "error": "#ba1a1a", "surface-dim": "#cbdbf5", "on-error-container": "#93000a", "status-success-text": "#166534", "on-primary-container": "#fffbff", "sidebar-bg": "#242B35", "on-tertiary": "#ffffff", "surface-variant": "#d3e4fe", "surface-container": "#e5eeff" }, borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, spacing: { "margin": "2rem", "margin-mobile": "1rem", "space-lg": "1.5rem", "space-xs": "0.25rem", "space-xl": "2rem", "gutter": "1.5rem", "space-sm": "0.5rem", "space-md": "1rem", "gutter-mobile": "1rem" }, fontFamily: { "table-header": ["Inter"], "headline-h1": ["Inter"], "display-kpi-mobile": ["Inter"], "headline-h1-mobile": ["Inter"], "headline-h3": ["Inter"], "body-semibold": ["Inter"], "caption-meta": ["Inter"], "headline-h2": ["Inter"], "button-text": ["Inter"], "form-label": ["Inter"], "display-kpi": ["Inter"], "body-default": ["Inter"], "table-data": ["Inter"] }, fontSize: { "table-header": ["12px", { "lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "600" }], "headline-h1": ["28px", { "lineHeight": "36px", "letterSpacing": "-0.02em", "fontWeight": "700" }], "display-kpi-mobile": ["26px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700" }], "headline-h1-mobile": ["22px", { "lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "700" }], "headline-h3": ["16px", { "lineHeight": "24px", "letterSpacing": "-0.005em", "fontWeight": "600" }], "body-semibold": ["14px", { "lineHeight": "20px", "fontWeight": "600" }], "caption-meta": ["12px", { "lineHeight": "16px", "fontWeight": "400" }], "headline-h2": ["20px", { "lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600" }], "button-text": ["14px", { "lineHeight": "20px", "fontWeight": "600" }], "form-label": ["13px", { "lineHeight": "18px", "fontWeight": "500" }], "display-kpi": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }], "body-default": ["14px", { "lineHeight": "20px", "fontWeight": "400" }], "table-data": ["13px", { "lineHeight": "18px", "fontWeight": "400" }] } } } };</script></head><body class="bg-app-bg text-text-primary antialiased"><aside class="fixed left-0 top-0 h-screen w-[250px] bg-sidebar-bg text-sidebar-text z-50 flex flex-col justify-between border-r border-border-default/20"><div class="flex flex-col flex-1 min-h-0"><div class="h-16 px-space-md flex items-center gap-space-sm border-b border-border-default/20 shrink-0"><img alt="Logistics Brand Mark" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/ALJJyrBIIjTx9TJyaLvDoO3WBkgxTJtN5pX7Jsi9HcxR_YMth4Fw5SB1h6d45hF55umb91ZHS_7iiuxcK3gsTD4jsBWsUR3S5StgJwEFYSfFOUCbpXbnseB2H1exYiZ95-BcxwF9xKKVX0ckAfZcbij8HvqSpCzHsRTXO-yXJrOZ-t3FlfcNNNmDBSMN0GZpSxhf3Qs87Aoe4k7dR8QIQzEmWycADB2a5sF2w5gTKdctH3gP"/><div class="flex flex-col"><span class="text-xs font-bold tracking-wider text-sidebar-text leading-none uppercase font-caption-meta">LOGISTICS</span><span class="text-[10px] font-semibold text-sidebar-muted tracking-widest mt-0.5 font-caption-meta">WAREHOUSE SYSTEM</span></div></div><div class="flex-1 overflow-y-auto px-space-sm py-space-md space-y-space-md"><div class="space-y-1"><div class="px-space-sm text-[11px] font-bold text-sidebar-muted tracking-wider uppercase font-caption-meta">OVERVIEW</div><nav class="space-y-0.5" data-active-classes="bg-[#C45D16] text-white font-semibold rounded-lg shadow-sm"><a class="flex items-center px-space-sm py-2 rounded-lg text-sidebar-text text-sm hover:bg-primary-hover hover:text-on-primary transition-colors font-body-default" data-path="dashboard" href="#"><span>Dashboard</span></a></nav></div><div class="space-y-1"><div class="px-space-sm text-[11px] font-bold text-sidebar-muted tracking-wider uppercase font-caption-meta">CATALOG &amp; STORAGE</div><nav class="space-y-0.5" data-active-classes="bg-[#C45D16] text-white font-semibold rounded-lg shadow-sm"><a class="flex items-center px-space-sm py-2 rounded-lg text-sidebar-text text-sm hover:bg-primary-hover hover:text-on-primary transition-colors font-body-default" data-path="products" href="#"><span>Products</span></a><a class="flex items-center px-space-sm py-2 rounded-lg text-sidebar-text text-sm hover:bg-primary-hover hover:text-on-primary transition-colors font-body-default" data-path="warehouses" href="#"><span>Warehouses</span></a><a class="flex items-center px-space-sm py-2 rounded-lg text-sidebar-text text-sm hover:bg-primary-hover hover:text-on-primary transition-colors font-body-default" data-path="inventory" href="#"><span>Inventory</span></a></nav></div><div class="space-y-1"><div class="px-space-sm text-[11px] font-bold text-sidebar-muted tracking-wider uppercase font-caption-meta">OPERATIONS</div><nav class="space-y-0.5" data-active-classes="bg-[#C45D16] text-white font-semibold rounded-lg shadow-sm"><a class="flex items-center px-space-sm py-2 rounded-lg text-sidebar-text text-sm hover:bg-primary-hover hover:text-on-primary transition-colors font-body-default" data-path="inbound-operations" href="#"><span>Inbound Operations</span></a><a class="flex items-center px-space-sm py-2 rounded-lg text-sidebar-text text-sm hover:bg-primary-hover hover:text-on-primary transition-colors font-body-default" data-path="outbound-operations" href="#"><span>Outbound Operations</span></a><a class="flex items-center px-space-sm py-2 rounded-lg text-sidebar-text text-sm hover:bg-primary-hover hover:text-on-primary transition-colors font-body-default" data-path="shipments" href="#"><span>Shipments</span></a></nav></div><div class="space-y-1"><div class="px-space-sm text-[11px] font-bold text-sidebar-muted tracking-wider uppercase font-caption-meta">INSIGHTS</div><nav class="space-y-0.5" data-active-classes="bg-[#C45D16] text-white font-semibold rounded-lg shadow-sm"><a class="flex items-center px-space-sm py-2 rounded-lg text-sidebar-text text-sm hover:bg-primary-hover hover:text-on-primary transition-colors font-body-default" data-path="reports-and-analytics" href="#"><span>Reports &amp; Analytics</span></a><a class="flex items-center px-space-sm py-2 rounded-lg text-sidebar-text text-sm hover:bg-primary-hover hover:text-on-primary transition-colors font-body-default" data-path="audit-logs" href="#"><span>Audit Logs</span></a></nav></div><div class="space-y-1"><div class="px-space-sm text-[11px] font-bold text-sidebar-muted tracking-wider uppercase font-caption-meta">ADMINISTRATION</div><nav class="space-y-0.5" data-active-classes="bg-[#C45D16] text-white font-semibold rounded-lg shadow-sm"><a class="flex items-center px-space-sm py-2 rounded-lg text-sidebar-text text-sm hover:bg-primary-hover hover:text-on-primary transition-colors font-body-default" data-path="user-management" href="#"><span>User Management</span></a><a class="flex items-center px-space-sm py-2 rounded-lg text-sidebar-text text-sm hover:bg-primary-hover hover:text-on-primary transition-colors font-body-default" data-path="roles-and-permissions" href="#"><span>Roles &amp; Permissions</span></a><a class="flex items-center px-space-sm py-2 rounded-lg text-sidebar-text text-sm hover:bg-primary-hover hover:text-on-primary transition-colors font-body-default" data-path="system-settings" href="#"><span>System Settings</span></a></nav></div></div></div><div class="p-space-sm border-t border-border-default/20 bg-sidebar-bg shrink-0"><div class="space-y-1 mb-2"><div class="px-space-sm text-[11px] font-bold text-sidebar-muted tracking-wider uppercase font-caption-meta">ACCOUNT</div><nav class="space-y-0.5" data-active-classes="bg-[#C45D16] text-white font-semibold rounded-lg shadow-sm"><a class="flex items-center px-space-sm py-2 rounded-lg text-sidebar-text text-sm hover:bg-primary-hover hover:text-on-primary transition-colors font-body-default" data-path="my-profile" href="#"><span>My Profile</span></a></nav></div><div class="flex items-center justify-between p-space-sm rounded-lg bg-inverse-surface/40"><div class="flex items-center gap-space-sm"><img alt="Marcus Vance" class="w-8 h-8 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDpJz5Ls2ywARcAECd_jYcyZHGBDfEL_b4f4aVJ4mEEd3MQJnxtzu-2lOE3PbHZphx3RQF8w1yhT-huSPglZYuxsgyhlzhQdkz8ahqCxjyLBF0O7A-pcOY3ZttTTrbeAcDDWHCZpXK8-OsbjLVs9ZolkuocYtJfSxcuc2-S6tq6rh3Uj091DeFL_nfGOzTbGfMgtGS6OpTQ30y4vXstBnvRqIUiCw9NQWfGM1_Z9WrJ"/><div class="flex flex-col min-w-0"><span class="text-xs font-semibold text-sidebar-text truncate leading-tight font-caption-meta">Marcus Vance</span><span class="text-[11px] text-sidebar-muted truncate leading-tight font-caption-meta">Warehouse Operations Lead</span></div></div><button class="text-sidebar-muted hover:text-on-primary p-1 rounded-md transition-colors" type="button"><span class="material-symbols-outlined text-[18px]">logout</span></button></div></div></aside><div class="pl-[250px]"><header class="fixed top-0 left-[250px] right-0 h-16 bg-surface z-40 border-b border-border-default flex items-center justify-between px-space-xl"><div class="flex items-center text-xs font-semibold text-text-secondary gap-2 font-caption-meta"><span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-status-success-bg text-status-success-text text-[11px] font-semibold"><span class="w-1.5 h-1.5 rounded-full bg-status-success-text"></span>Warehouse Status: Operational</span><span class="text-border-default">/</span><span class="text-text-primary font-bold">Reports &amp; Analytics</span></div><div class="flex items-center gap-space-md"><div class="relative w-80"><span class="material-symbols-outlined absolute left-3 top-2.5 text-text-secondary text-[18px]">search</span><input class="w-full pl-9 pr-3 py-1.5 text-xs bg-app-bg border border-border-default rounded-lg focus:outline-none focus:border-primary text-text-primary placeholder:text-text-secondary transition-all font-body-default" placeholder="Search reports, metrics, KPIs, exports..." type="text"/></div><div class="flex items-center gap-1"><button class="relative p-2 text-text-secondary hover:text-text-primary rounded-lg transition-colors" type="button"><span class="material-symbols-outlined text-[20px]">notifications</span><span class="absolute top-1.5 right-1.5 w-2 h-2 bg-primary rounded-full ring-2 ring-surface"></span></button><button class="p-2 text-text-secondary hover:text-text-primary rounded-lg transition-colors" type="button"><span class="material-symbols-outlined text-[20px]">help</span></button></div><div class="h-5 w-px bg-border-default mx-1"></div><div class="flex items-center gap-space-sm pl-1"><img alt="Marcus Vance" class="w-8 h-8 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDpJz5Ls2ywARcAECd_jYcyZHGBDfEL_b4f4aVJ4mEEd3MQJnxtzu-2lOE3PbHZphx3RQF8w1yhT-huSPglZYuxsgyhlzhQdkz8ahqCxjyLBF0O7A-pcOY3ZttTTrbeAcDDWHCZpXK8-OsbjLVs9ZolkuocYtJfSxcuc2-S6tq6rh3Uj091DeFL_nfGOzTbGfMgtGS6OpTQ30y4vXstBnvRqIUiCw9NQWfGM1_Z9WrJ"/><div class="hidden sm:flex flex-col text-left"><span class="text-xs font-bold text-text-primary leading-tight font-caption-meta">Marcus Vance</span><span class="text-[10px] text-text-secondary leading-tight font-caption-meta">Warehouse Operations Lead / Manager</span></div><span class="material-symbols-outlined text-text-secondary text-[16px]">expand_more</span></div></div></header><main class="relative pt-16 min-h-screen bg-app-bg px-space-xl py-space-lg"><div class="flex flex-col w-full space-y-space-lg">
+<!-- Top Command & Action Bar -->
+<div class="flex flex-col lg:flex-row lg:items-center justify-between gap-space-md">
+<div class="space-y-1">
+<div class="flex items-center gap-space-xs text-text-secondary">
+<span class="font-caption-meta text-caption-meta uppercase tracking-wider text-text-secondary">Warehouse Intelligence</span>
+<span class="text-text-secondary">/</span>
+<span class="font-caption-meta text-caption-meta text-primary font-semibold">Executive Terminal</span>
+</div>
+<h1 class="font-headline-h1 text-headline-h1 text-text-primary tracking-tight">Reports &amp; Analytics</h1>
+<p class="font-body-default text-body-default text-text-secondary max-w-3xl">Executive operational performance, inventory turnover, freight throughput, and audit metrics across facility networks.</p>
+</div>
+<!-- Filters and Primary Controls -->
+<div class="flex flex-wrap items-center gap-space-sm">
+<!-- Date Range Button -->
+<button class="inline-flex items-center gap-2 h-10 px-3.5 bg-surface text-text-primary rounded-lg shadow-sm hover:bg-app-bg transition-colors font-body-semibold text-body-semibold" type="button">
+<span class="material-symbols-outlined text-[18px] text-text-secondary">calendar_today</span>
+<span>Oct 01, 2024 – Oct 24, 2024</span>
+<span class="px-1.5 py-0.5 rounded text-[11px] font-bold bg-status-neutral-bg text-status-neutral-text font-caption-meta">24D</span>
+<span class="material-symbols-outlined text-[16px] text-text-secondary">expand_more</span>
+</button>
+<!-- Facility Dropdown Selector -->
+<button class="inline-flex items-center gap-2 h-10 px-3.5 bg-surface text-text-primary rounded-lg shadow-sm hover:bg-app-bg transition-colors font-body-semibold text-body-semibold" type="button">
+<span class="material-symbols-outlined text-[18px] text-text-secondary">warehouse</span>
+<span>All Warehouses (4)</span>
+<span class="material-symbols-outlined text-[16px] text-text-secondary">expand_more</span>
+</button>
+<!-- Export Summary Action -->
+<button class="inline-flex items-center gap-1.5 h-10 px-3.5 bg-surface text-text-primary rounded-lg shadow-sm hover:bg-app-bg transition-colors font-button-text text-button-text" type="button">
+<span class="material-symbols-outlined text-[18px] text-text-secondary">picture_as_pdf</span>
+<span>Export Executive (PDF)</span>
+</button>
+<!-- Primary Action: Schedule -->
+<button class="inline-flex items-center gap-2 h-10 px-4 bg-primary text-on-primary hover:bg-primary-hover rounded-lg shadow-sm transition-all font-button-text text-button-text" type="button">
+<span class="material-symbols-outlined text-[18px]">add_circle</span>
+<span>Schedule Automated Report</span>
+</button>
+</div>
+</div>
+<!-- Executive KPI Strip (4 Cards) -->
+<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-space-md">
+<!-- KPI 1 -->
+<div class="bg-surface rounded-xl p-space-lg shadow-sm hover:shadow-md transition-shadow relative overflow-hidden flex flex-col justify-between">
+<div class="flex items-start justify-between">
+<div class="space-y-1">
+<span class="font-caption-meta text-caption-meta font-semibold uppercase tracking-wider text-text-secondary">Monthly Throughput Velocity</span>
+<div class="font-display-kpi text-display-kpi text-text-primary tracking-tight font-bold tabular-nums">1,248,600 <span class="text-xs font-semibold text-text-secondary uppercase">Units</span></div>
+</div>
+<div class="w-10 h-10 rounded-lg bg-status-neutral-bg flex items-center justify-center text-primary shrink-0">
+<span class="material-symbols-outlined text-[22px]">swap_vert</span>
+</div>
+</div>
+<!-- Sparkline & Trend Subtext -->
+<div class="mt-4 pt-3 flex flex-col gap-2">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-status-success-bg text-status-success-text text-[11px] font-semibold font-caption-meta">
+<span class="material-symbols-outlined text-[14px]">trending_up</span>
+<span>+8.4% vs prev 30D</span>
+</div>
+<!-- Inline Sparkline -->
+<svg class="h-6 w-24 text-primary" fill="none" stroke="currentColor" viewbox="0 0 100 24">
+<polyline points="0,20 15,16 30,18 45,11 60,14 75,6 90,8 100,2" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></polyline>
+</svg>
+</div>
+<span class="font-caption-meta text-caption-meta text-text-secondary leading-tight">Inbound vs Outbound delta positive (+12.3k units)</span>
+</div>
+</div>
+<!-- KPI 2 -->
+<div class="bg-surface rounded-xl p-space-lg shadow-sm hover:shadow-md transition-shadow relative overflow-hidden flex flex-col justify-between">
+<div class="flex items-start justify-between">
+<div class="space-y-1">
+<span class="font-caption-meta text-caption-meta font-semibold uppercase tracking-wider text-text-secondary">Avg Dock Turnaround</span>
+<div class="font-display-kpi text-display-kpi text-text-primary tracking-tight font-bold tabular-nums">42 <span class="text-xs font-semibold text-text-secondary uppercase">mins</span></div>
+</div>
+<div class="w-10 h-10 rounded-lg bg-status-neutral-bg flex items-center justify-center text-primary shrink-0">
+<span class="material-symbols-outlined text-[22px]">timer</span>
+</div>
+</div>
+<div class="mt-4 pt-3 flex flex-col gap-2">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-status-success-bg text-status-success-text text-[11px] font-semibold font-caption-meta">
+<span class="material-symbols-outlined text-[14px]">trending_down</span>
+<span>-6m (94.2% SLA Met)</span>
+</div>
+<span class="text-[11px] font-bold text-text-secondary tabular-nums font-caption-meta">Target: &lt;45m</span>
+</div>
+<span class="font-caption-meta text-caption-meta text-text-secondary leading-tight">Cross-dock queue dwell dropped across Central &amp; East</span>
+</div>
+</div>
+<!-- KPI 3 -->
+<div class="bg-surface rounded-xl p-space-lg shadow-sm hover:shadow-md transition-shadow relative overflow-hidden flex flex-col justify-between">
+<div class="flex items-start justify-between">
+<div class="space-y-1">
+<span class="font-caption-meta text-caption-meta font-semibold uppercase tracking-wider text-text-secondary">Order Fulfillment Accuracy</span>
+<div class="font-display-kpi text-display-kpi text-text-primary tracking-tight font-bold tabular-nums">99.82%</div>
+</div>
+<div class="w-10 h-10 rounded-lg bg-status-neutral-bg flex items-center justify-center text-primary shrink-0">
+<span class="material-symbols-outlined text-[22px]">verified</span>
+</div>
+</div>
+<div class="mt-4 pt-3 flex flex-col gap-2">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-status-success-bg text-status-success-text text-[11px] font-semibold font-caption-meta">
+<span class="material-symbols-outlined text-[14px]">arrow_upward</span>
+<span>+0.14% MoM</span>
+</div>
+<span class="text-[11px] font-bold text-status-neutral-text tabular-nums font-caption-meta">482k Picks</span>
+</div>
+<span class="font-caption-meta text-caption-meta text-text-secondary leading-tight">0.03% physical variance across periodic cycle counts</span>
+</div>
+</div>
+<!-- KPI 4 -->
+<div class="bg-surface rounded-xl p-space-lg shadow-sm hover:shadow-md transition-shadow relative overflow-hidden flex flex-col justify-between">
+<div class="flex items-start justify-between">
+<div class="space-y-1">
+<span class="font-caption-meta text-caption-meta font-semibold uppercase tracking-wider text-text-secondary">Carrier On-Time Delivery</span>
+<div class="font-display-kpi text-display-kpi text-text-primary tracking-tight font-bold tabular-nums">97.8%</div>
+</div>
+<div class="w-10 h-10 rounded-lg bg-status-neutral-bg flex items-center justify-center text-primary shrink-0">
+<span class="material-symbols-outlined text-[22px]">local_shipping</span>
+</div>
+</div>
+<div class="mt-4 pt-3 flex flex-col gap-2">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-status-warning-bg text-status-warning-text text-[11px] font-semibold font-caption-meta">
+<span class="material-symbols-outlined text-[14px]">warning</span>
+<span>-0.4% Weather Hold</span>
+</div>
+<span class="text-[11px] font-bold text-text-secondary font-caption-meta">4 Freight Lines</span>
+</div>
+<span class="font-caption-meta text-caption-meta text-text-secondary leading-tight">I-35 regional storm caused temporary trailer rerouting</span>
+</div>
+</div>
+</div>
+<!-- Operational Report Categories Grid (5 Cards) -->
+<div class="space-y-3">
+<div class="flex items-center justify-between">
+<div>
+<h2 class="font-headline-h2 text-headline-h2 text-text-primary">Operational Category Reports</h2>
+<p class="font-caption-meta text-caption-meta text-text-secondary">Deep telemetry drill-downs partitioned by active warehouse subsystem nodes.</p>
+</div>
+<div class="flex items-center gap-2">
+<button class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-surface text-text-secondary hover:text-text-primary shadow-sm font-button-text" type="button">Manage Subscriptions</button>
+<button class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-surface text-text-secondary hover:text-text-primary shadow-sm font-button-text" type="button">Export All (ZIP)</button>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-space-md">
+<!-- Report 1: Inventory Summary & Stock Aging -->
+<div class="bg-surface rounded-xl p-space-md shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow group">
+<div class="space-y-3">
+<div class="flex items-center justify-between">
+<div class="w-8 h-8 rounded-lg bg-surface-container flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[18px]">inventory_2</span>
+</div>
+<span class="px-2 py-0.5 text-[10px] font-bold rounded uppercase bg-status-neutral-bg text-status-neutral-text font-caption-meta">Storage Ops</span>
+</div>
+<div>
+<h3 class="font-headline-h3 text-headline-h3 text-text-primary group-hover:text-primary transition-colors leading-snug">Inventory Summary &amp; Stock Aging</h3>
+<p class="font-caption-meta text-caption-meta text-text-secondary mt-1">Dead stock volume, storage index, and velocity curves.</p>
+</div>
+<div class="pt-2 space-y-2">
+<div class="flex justify-between items-center text-xs">
+<span class="text-text-secondary font-caption-meta">Annual Turnover</span>
+<span class="font-semibold text-text-primary font-caption-meta tabular-nums">6.4x / yr</span>
+</div>
+<div class="flex justify-between items-center text-xs">
+<span class="text-text-secondary font-caption-meta">Capacity Saturation</span>
+<span class="font-semibold text-primary font-caption-meta tabular-nums">91.4%</span>
+</div>
+<div class="flex justify-between items-center text-xs">
+<span class="text-text-secondary font-caption-meta">Aging &gt; 90 Days</span>
+<span class="font-semibold text-status-warning-text font-caption-meta tabular-nums">1.8% ($24.1k)</span>
+</div>
+</div>
+</div>
+<div class="pt-4 mt-3">
+<a class="inline-flex items-center gap-1 font-button-text text-button-text text-primary hover:text-primary-hover font-semibold" href="#">
+<span>View Detailed Report</span>
+<span class="material-symbols-outlined text-[16px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</a>
+</div>
+</div>
+<!-- Report 2: Inbound Receiving & Vendor Compliance -->
+<div class="bg-surface rounded-xl p-space-md shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow group">
+<div class="space-y-3">
+<div class="flex items-center justify-between">
+<div class="w-8 h-8 rounded-lg bg-surface-container flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[18px]">call_received</span>
+</div>
+<span class="px-2 py-0.5 text-[10px] font-bold rounded uppercase bg-status-neutral-bg text-status-neutral-text font-caption-meta">Inbound</span>
+</div>
+<div>
+<h3 class="font-headline-h3 text-headline-h3 text-text-primary group-hover:text-primary transition-colors leading-snug">Inbound Receiving &amp; Vendor</h3>
+<p class="font-caption-meta text-caption-meta text-text-secondary mt-1">Vendor arrival punctuality and freight check-in latency.</p>
+</div>
+<div class="pt-2 space-y-2">
+<div class="flex justify-between items-center text-xs">
+<span class="text-text-secondary font-caption-meta">Supplier On-Time</span>
+<span class="font-semibold text-status-success-text font-caption-meta tabular-nums">98.4%</span>
+</div>
+<div class="flex justify-between items-center text-xs">
+<span class="text-text-secondary font-caption-meta">Discrepancy Rate</span>
+<span class="font-semibold text-status-warning-text font-caption-meta tabular-nums">1.2% Count Mis</span>
+</div>
+<div class="flex justify-between items-center text-xs">
+<span class="text-text-secondary font-caption-meta">Avg Check-in Dwell</span>
+<span class="font-semibold text-text-primary font-caption-meta tabular-nums">19.2 mins</span>
+</div>
+</div>
+</div>
+<div class="pt-4 mt-3">
+<a class="inline-flex items-center gap-1 font-button-text text-button-text text-primary hover:text-primary-hover font-semibold" href="#">
+<span>View Detailed Report</span>
+<span class="material-symbols-outlined text-[16px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</a>
+</div>
+</div>
+<!-- Report 3: Outbound Wave Picking & Dispatch -->
+<div class="bg-surface rounded-xl p-space-md shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow group">
+<div class="space-y-3">
+<div class="flex items-center justify-between">
+<div class="w-8 h-8 rounded-lg bg-surface-container flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[18px]">shopping_cart_checkout</span>
+</div>
+<span class="px-2 py-0.5 text-[10px] font-bold rounded uppercase bg-status-neutral-bg text-status-neutral-text font-caption-meta">Fulfillment</span>
+</div>
+<div>
+<h3 class="font-headline-h3 text-headline-h3 text-text-primary group-hover:text-primary transition-colors leading-snug">Outbound Wave Picking</h3>
+<p class="font-caption-meta text-caption-meta text-text-secondary mt-1">Picker line velocities, staging dwell, and marshalling pace.</p>
+</div>
+<div class="pt-2 space-y-2">
+<div class="flex justify-between items-center text-xs">
+<span class="text-text-secondary font-caption-meta">Picking Velocity</span>
+<span class="font-semibold text-text-primary font-caption-meta tabular-nums">142 lines/hr</span>
+</div>
+<div class="flex justify-between items-center text-xs">
+<span class="text-text-secondary font-caption-meta">Wave SLA Target</span>
+<span class="font-semibold text-status-success-text font-caption-meta tabular-nums">98.9% Met</span>
+</div>
+<div class="flex justify-between items-center text-xs">
+<span class="text-text-secondary font-caption-meta">Staging Bottleneck</span>
+<span class="font-semibold text-status-success-text font-caption-meta">Low (2 bays)</span>
+</div>
+</div>
+</div>
+<div class="pt-4 mt-3">
+<a class="inline-flex items-center gap-1 font-button-text text-button-text text-primary hover:text-primary-hover font-semibold" href="#">
+<span>View Detailed Report</span>
+<span class="material-symbols-outlined text-[16px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</a>
+</div>
+</div>
+<!-- Report 4: Carrier & Freight Performance -->
+<div class="bg-surface rounded-xl p-space-md shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow group">
+<div class="space-y-3">
+<div class="flex items-center justify-between">
+<div class="w-8 h-8 rounded-lg bg-surface-container flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[18px]">local_shipping</span>
+</div>
+<span class="px-2 py-0.5 text-[10px] font-bold rounded uppercase bg-status-neutral-bg text-status-neutral-text font-caption-meta">Logistics</span>
+</div>
+<div>
+<h3 class="font-headline-h3 text-headline-h3 text-text-primary group-hover:text-primary transition-colors leading-snug">Carrier &amp; Freight Metrics</h3>
+<p class="font-caption-meta text-caption-meta text-text-secondary mt-1">Linehaul reliability, freight rates, and loss incidents.</p>
+</div>
+<div class="pt-2 space-y-2">
+<div class="flex justify-between items-center text-xs">
+<span class="text-text-secondary font-caption-meta">Damage-Free Rate</span>
+<span class="font-semibold text-status-success-text font-caption-meta tabular-nums">99.91%</span>
+</div>
+<div class="flex justify-between items-center text-xs">
+<span class="text-text-secondary font-caption-meta">Cost per Net Kg</span>
+<span class="font-semibold text-text-primary font-caption-meta tabular-nums">$0.42 / kg</span>
+</div>
+<div class="flex justify-between items-center text-xs">
+<span class="text-text-secondary font-caption-meta">Active Freight Lines</span>
+<span class="font-semibold text-text-primary font-caption-meta tabular-nums">14 Routes</span>
+</div>
+</div>
+</div>
+<div class="pt-4 mt-3">
+<a class="inline-flex items-center gap-1 font-button-text text-button-text text-primary hover:text-primary-hover font-semibold" href="#">
+<span>View Detailed Report</span>
+<span class="material-symbols-outlined text-[16px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</a>
+</div>
+</div>
+<!-- Report 5: Stock Movement & Auditing -->
+<div class="bg-surface rounded-xl p-space-md shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow group">
+<div class="space-y-3">
+<div class="flex items-center justify-between">
+<div class="w-8 h-8 rounded-lg bg-surface-container flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[18px]">verified_user</span>
+</div>
+<span class="px-2 py-0.5 text-[10px] font-bold rounded uppercase bg-status-neutral-bg text-status-neutral-text font-caption-meta">Audit</span>
+</div>
+<div>
+<h3 class="font-headline-h3 text-headline-h3 text-text-primary group-hover:text-primary transition-colors leading-snug">Stock Movement &amp; Audit</h3>
+<p class="font-caption-meta text-caption-meta text-text-secondary mt-1">Immutable ledger integrity and RFID automated gate logs.</p>
+</div>
+<div class="pt-2 space-y-2">
+<div class="flex justify-between items-center text-xs">
+<span class="text-text-secondary font-caption-meta">Verified Records</span>
+<span class="font-semibold text-text-primary font-caption-meta tabular-nums">4,892 Logs</span>
+</div>
+<div class="flex justify-between items-center text-xs">
+<span class="text-text-secondary font-caption-meta">RFID Gate Accuracy</span>
+<span class="font-semibold text-status-success-text font-caption-meta tabular-nums">99.98%</span>
+</div>
+<div class="flex justify-between items-center text-xs">
+<span class="text-text-secondary font-caption-meta">Reconciliation Delta</span>
+<span class="font-semibold text-status-success-text font-caption-meta tabular-nums">0.00% Zero</span>
+</div>
+</div>
+</div>
+<div class="pt-4 mt-3">
+<a class="inline-flex items-center gap-1 font-button-text text-button-text text-primary hover:text-primary-hover font-semibold" href="#">
+<span>View Detailed Report</span>
+<span class="material-symbols-outlined text-[16px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+<!-- Analytical Visualizations Strip (2 Primary Cards) -->
+<div class="grid grid-cols-1 xl:grid-cols-12 gap-space-lg">
+<!-- Chart Card 1: Inbound vs Outbound Velocity -->
+<div class="xl:col-span-7 bg-surface rounded-xl p-space-lg shadow-sm flex flex-col justify-between">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between pb-space-sm gap-2">
+<div>
+<div class="flex items-center gap-2">
+<h3 class="font-headline-h3 text-headline-h3 text-text-primary">Cross-Facility Velocity (30-Day Trend)</h3>
+<span class="px-2 py-0.5 rounded text-[11px] font-bold bg-status-success-bg text-status-success-text font-caption-meta">Net Inventory Accretion: +1.4%</span>
+</div>
+<p class="font-caption-meta text-caption-meta text-text-secondary mt-0.5">Dual-channel unit flow telemetry comparing dock intake to fleet dispatch.</p>
+</div>
+<div class="flex items-center gap-4 text-xs font-caption-meta">
+<div class="flex items-center gap-1.5">
+<span class="w-3 h-3 rounded bg-status-info-text inline-block"></span>
+<span class="text-text-secondary">Inbound Intake</span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="w-3 h-3 rounded bg-primary inline-block"></span>
+<span class="text-text-secondary">Outbound Dispatched</span>
+</div>
+</div>
+</div>
+<!-- Peak Volume Callout Overlay -->
+<div class="my-2 p-2.5 bg-app-bg rounded-lg flex items-center justify-between text-xs">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px] text-primary">priority_high</span>
+<span class="font-body-semibold text-body-semibold text-text-primary">Peak Aggregate Throughput:</span>
+<span class="text-text-secondary font-caption-meta">Oct 18, 2024 — 58,400 Total Handling Units (Seasonal restocking surge)</span>
+</div>
+<span class="text-[11px] font-bold text-text-secondary uppercase tracking-wider font-caption-meta">SLA Nominal</span>
+</div>
+<!-- Interactive SVG Chart Visual -->
+<div class="relative w-full h-64 pt-4 flex flex-col justify-end">
+<svg class="w-full h-full overflow-visible" preserveaspectratio="none" viewbox="0 0 700 200">
+<defs>
+<lineargradient id="inboundFill" x1="0" x2="0" y1="0" y2="1">
+<stop offset="0%" stop-color="#1D4ED8" stop-opacity="0.15"></stop>
+<stop offset="100%" stop-color="#1D4ED8" stop-opacity="0"></stop>
+</lineargradient>
+<lineargradient id="outboundFill" x1="0" x2="0" y1="0" y2="1">
+<stop offset="0%" stop-color="#984200" stop-opacity="0.18"></stop>
+<stop offset="100%" stop-color="#984200" stop-opacity="0"></stop>
+</lineargradient>
+</defs>
+<!-- Horizontal reference lines -->
+<line stroke="#E2E8F0" stroke-dasharray="3,3" stroke-width="1" x1="0" x2="700" y1="30"></line>
+<line stroke="#E2E8F0" stroke-dasharray="3,3" stroke-width="1" x1="0" x2="700" y1="80"></line>
+<line stroke="#E2E8F0" stroke-dasharray="3,3" stroke-width="1" x1="0" x2="700" y1="130"></line>
+<line stroke="#E2E8F0" stroke-width="1" x1="0" x2="700" y1="180"></line>
+<!-- Inbound Area & Line (Teal/Blue) -->
+<path d="M 0,140 Q 60,150 120,110 T 240,120 T 360,70 T 480,45 T 600,85 T 700,60 L 700,180 L 0,180 Z" fill="url(#inboundFill)"></path>
+<path d="M 0,140 Q 60,150 120,110 T 240,120 T 360,70 T 480,45 T 600,85 T 700,60" fill="none" stroke="#1D4ED8" stroke-width="2.5"></path>
+<!-- Outbound Area & Line (Industrial Orange) -->
+<path d="M 0,160 Q 60,130 120,135 T 240,105 T 360,95 T 480,30 T 600,90 T 700,75 L 700,180 L 0,180 Z" fill="url(#outboundFill)"></path>
+<path d="M 0,160 Q 60,130 120,135 T 240,105 T 360,95 T 480,30 T 600,90 T 700,75" fill="none" stroke="#984200" stroke-width="2.5"></path>
+<!-- Peak Node Circle -->
+<circle cx="480" cy="30" fill="#984200" r="4" stroke="#ffffff" stroke-width="2"></circle>
+<circle cx="480" cy="45" fill="#1D4ED8" r="4" stroke="#ffffff" stroke-width="2"></circle>
+</svg>
+<!-- Date Axis Legend -->
+<div class="flex justify-between items-center text-[11px] font-caption-meta text-text-secondary pt-2 tabular-nums">
+<span>Oct 01</span>
+<span>Oct 05</span>
+<span>Oct 09</span>
+<span>Oct 13</span>
+<span class="font-bold text-text-primary">Oct 18 (Peak Surge)</span>
+<span>Oct 21</span>
+<span>Oct 24 (Today)</span>
+</div>
+</div>
+</div>
+<!-- Chart Card 2: Facility Capacity & Space Utilization -->
+<div class="xl:col-span-5 bg-surface rounded-xl p-space-lg shadow-sm flex flex-col justify-between">
+<div class="flex items-center justify-between pb-space-sm">
+<div>
+<h3 class="font-headline-h3 text-headline-h3 text-text-primary">Facility Capacity &amp; Space Saturation</h3>
+<p class="font-caption-meta text-caption-meta text-text-secondary mt-0.5">Physical pallet footprint &amp; vertical rack volumetrics.</p>
+</div>
+<button class="text-text-secondary hover:text-text-primary p-1 rounded-md" type="button">
+<span class="material-symbols-outlined text-[20px]">filter_list</span>
+</button>
+</div>
+<!-- Facility Capacity Stacked Visual Bars -->
+<div class="space-y-4 my-2">
+<!-- Hub 1: Central Hub WH-KM-001 (High Saturation Warning) -->
+<div class="space-y-1.5">
+<div class="flex justify-between items-center text-xs">
+<div class="flex items-center gap-2">
+<span class="font-body-semibold text-body-semibold text-text-primary">Central Hub WH-KM-001</span>
+<span class="px-1.5 py-0.2 rounded text-[10px] font-bold bg-status-danger-bg text-status-danger-text uppercase font-caption-meta">Critical Buffer</span>
+</div>
+<div class="flex items-center gap-1 font-caption-meta">
+<span class="font-bold text-text-primary tabular-nums">91.4%</span>
+<span class="text-text-secondary">(842,000 / 920,000 units)</span>
+</div>
+</div>
+<div class="w-full bg-status-neutral-bg h-3 rounded-full overflow-hidden flex">
+<div class="bg-primary h-full rounded-full transition-all" style="width: 91.4%"></div>
+</div>
+<div class="flex justify-between text-[10px] text-text-secondary font-caption-meta">
+<span>Buffer Threshold: 85%</span>
+<span class="text-status-danger-text font-semibold">+6.4% above safety waterline</span>
+</div>
+</div>
+<!-- Hub 2: East Transit WH-ET-002 -->
+<div class="space-y-1.5">
+<div class="flex justify-between items-center text-xs">
+<div class="flex items-center gap-2">
+<span class="font-body-semibold text-body-semibold text-text-primary">East Transit WH-ET-002</span>
+<span class="px-1.5 py-0.2 rounded text-[10px] font-bold bg-status-warning-bg text-status-warning-text uppercase font-caption-meta">Moderate</span>
+</div>
+<div class="flex items-center gap-1 font-caption-meta">
+<span class="font-bold text-text-primary tabular-nums">78.2%</span>
+<span class="text-text-secondary">(469,200 / 600,000 units)</span>
+</div>
+</div>
+<div class="w-full bg-status-neutral-bg h-3 rounded-full overflow-hidden flex">
+<div class="bg-primary/80 h-full rounded-full transition-all" style="width: 78.2%"></div>
+</div>
+<div class="flex justify-between text-[10px] text-text-secondary font-caption-meta">
+<span>Available: 130,800 units</span>
+<span class="text-status-success-text font-semibold">Nominal Throughput</span>
+</div>
+</div>
+<!-- Hub 3: South Terminal WH-ST-003 -->
+<div class="space-y-1.5">
+<div class="flex justify-between items-center text-xs">
+<div class="flex items-center gap-2">
+<span class="font-body-semibold text-body-semibold text-text-primary">South Terminal WH-ST-003</span>
+<span class="px-1.5 py-0.2 rounded text-[10px] font-bold bg-status-success-bg text-status-success-text uppercase font-caption-meta">Optimal</span>
+</div>
+<div class="flex items-center gap-1 font-caption-meta">
+<span class="font-bold text-text-primary tabular-nums">64.5%</span>
+<span class="text-text-secondary">(258,000 / 400,000 units)</span>
+</div>
+</div>
+<div class="w-full bg-status-neutral-bg h-3 rounded-full overflow-hidden flex">
+<div class="bg-status-success-text h-full rounded-full transition-all" style="width: 64.5%"></div>
+</div>
+<div class="flex justify-between text-[10px] text-text-secondary font-caption-meta">
+<span>Available: 142,000 units</span>
+<span class="text-text-secondary">Accepting Inter-facility Re-routes</span>
+</div>
+</div>
+<!-- Hub 4: North Facility WH-NF-004 -->
+<div class="space-y-1.5">
+<div class="flex justify-between items-center text-xs">
+<div class="flex items-center gap-2">
+<span class="font-body-semibold text-body-semibold text-text-primary">North Facility WH-NF-004</span>
+<span class="px-1.5 py-0.2 rounded text-[10px] font-bold bg-status-info-bg text-status-info-text uppercase font-caption-meta">High Availability</span>
+</div>
+<div class="flex items-center gap-1 font-caption-meta">
+<span class="font-bold text-text-primary tabular-nums">48.1%</span>
+<span class="text-text-secondary">(192,400 / 400,000 units)</span>
+</div>
+</div>
+<div class="w-full bg-status-neutral-bg h-3 rounded-full overflow-hidden flex">
+<div class="bg-status-info-text h-full rounded-full transition-all" style="width: 48.1%"></div>
+</div>
+<div class="flex justify-between text-[10px] text-text-secondary font-caption-meta">
+<span>Available: 207,600 units</span>
+<span class="text-status-info-text font-semibold">Staging Bay Space Free</span>
+</div>
+</div>
+</div>
+<!-- Action Note / Recommendation -->
+<div class="mt-2 pt-3 flex items-center justify-between text-xs">
+<span class="text-text-secondary font-caption-meta">Recommended: Offload 35k pallet positions to WH-NF-004.</span>
+<button class="text-primary hover:text-primary-hover font-semibold font-button-text" type="button">Initiate Balancing →</button>
+</div>
+</div>
+</div>
+<!-- Operational Audit & Telemetry Log Table -->
+<div class="bg-surface rounded-xl shadow-sm overflow-hidden">
+<div class="px-space-lg py-space-md flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[20px]">assignment</span>
+<h3 class="font-headline-h3 text-headline-h3 text-text-primary">Recent Automated Metric Exports &amp; Audit Manifests</h3>
+</div>
+<div class="flex items-center gap-2">
+<div class="relative">
+<input class="pl-8 pr-3 py-1.5 text-xs bg-app-bg rounded-lg text-text-primary placeholder:text-text-secondary focus:outline-none font-body-default" placeholder="Filter manifests..." type="text"/>
+<span class="material-symbols-outlined absolute left-2.5 top-2 text-[15px] text-text-secondary">search</span>
+</div>
+<button class="px-3 py-1.5 text-xs font-semibold rounded-lg bg-surface text-text-secondary hover:text-text-primary shadow-sm font-button-text flex items-center gap-1" type="button">
+<span class="material-symbols-outlined text-[16px]">file_download</span>
+<span>Download All</span>
+</button>
+</div>
+</div>
+<!-- Clean Enterprise Table -->
+<div class="overflow-x-auto">
+<table class="w-full text-left font-body-default text-body-default">
+<thead class="bg-app-bg text-text-secondary font-table-header text-table-header uppercase">
+<tr>
+<th class="py-3 px-space-lg">Report Identifier / Scope</th>
+<th class="py-3 px-space-md">Target Facility</th>
+<th class="py-3 px-space-md">Cadence</th>
+<th class="py-3 px-space-md">Last Generated</th>
+<th class="py-3 px-space-md text-right">Data Volume</th>
+<th class="py-3 px-space-md text-center">Status</th>
+<th class="py-3 px-space-lg text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-border-default/50 text-table-data text-table-data">
+<!-- Row 1 -->
+<tr class="hover:bg-app-bg/50 transition-colors">
+<td class="py-3 px-space-lg">
+<div class="flex flex-col">
+<span class="font-body-semibold text-body-semibold text-text-primary">REP-2024-Q3-TURNOVER</span>
+<span class="text-[11px] text-text-secondary font-caption-meta">Quarterly Velocity &amp; Stock Stagnation</span>
+</div>
+</td>
+<td class="py-3 px-space-md text-text-secondary font-caption-meta">Global Enterprise (All 4 Sites)</td>
+<td class="py-3 px-space-md text-text-secondary font-caption-meta">Scheduled Weekly (Mon)</td>
+<td class="py-3 px-space-md text-text-primary tabular-nums">Oct 21, 2024 06:00</td>
+<td class="py-3 px-space-md text-right tabular-nums text-text-primary">14.8 MB (CSV/PDF)</td>
+<td class="py-3 px-space-md text-center">
+<span class="inline-flex items-center px-2 py-0.5 rounded-full bg-status-success-bg text-status-success-text text-[11px] font-semibold font-caption-meta">Ready</span>
+</td>
+<td class="py-3 px-space-lg text-right">
+<div class="flex items-center justify-end gap-2">
+<button class="text-primary hover:text-primary-hover p-1 rounded transition-colors" title="Download" type="button">
+<span class="material-symbols-outlined text-[18px]">download</span>
+</button>
+<button class="text-text-secondary hover:text-text-primary p-1 rounded transition-colors" title="Settings" type="button">
+<span class="material-symbols-outlined text-[18px]">more_vert</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-app-bg/50 transition-colors">
+<td class="py-3 px-space-lg">
+<div class="flex flex-col">
+<span class="font-body-semibold text-body-semibold text-text-primary">REP-2024-DOCK-SLA-DAILY</span>
+<span class="text-[11px] text-text-secondary font-caption-meta">Driver Check-in to Release Performance</span>
+</div>
+</td>
+<td class="py-3 px-space-md text-text-secondary font-caption-meta">Central Hub WH-KM-001</td>
+<td class="py-3 px-space-md text-text-secondary font-caption-meta">Daily Automated (00:00)</td>
+<td class="py-3 px-space-md text-text-primary tabular-nums">Oct 24, 2024 00:05</td>
+<td class="py-3 px-space-md text-right tabular-nums text-text-primary">2.1 MB (XLSX)</td>
+<td class="py-3 px-space-md text-center">
+<span class="inline-flex items-center px-2 py-0.5 rounded-full bg-status-success-bg text-status-success-text text-[11px] font-semibold font-caption-meta">Ready</span>
+</td>
+<td class="py-3 px-space-lg text-right">
+<div class="flex items-center justify-end gap-2">
+<button class="text-primary hover:text-primary-hover p-1 rounded transition-colors" title="Download" type="button">
+<span class="material-symbols-outlined text-[18px]">download</span>
+</button>
+<button class="text-text-secondary hover:text-text-primary p-1 rounded transition-colors" title="Settings" type="button">
+<span class="material-symbols-outlined text-[18px]">more_vert</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-app-bg/50 transition-colors">
+<td class="py-3 px-space-lg">
+<div class="flex flex-col">
+<span class="font-body-semibold text-body-semibold text-text-primary">AUD-RFID-DISCREPANCY-LOG</span>
+<span class="text-[11px] text-text-secondary font-caption-meta">Portal Reader Miss Rate &amp; Manual Tagging</span>
+</div>
+</td>
+<td class="py-3 px-space-md text-text-secondary font-caption-meta">East Transit WH-ET-002</td>
+<td class="py-3 px-space-md text-text-secondary font-caption-meta">On-Demand Trigger</td>
+<td class="py-3 px-space-md text-text-primary tabular-nums">Oct 23, 2024 16:42</td>
+<td class="py-3 px-space-md text-right tabular-nums text-text-primary">840 KB (JSON)</td>
+<td class="py-3 px-space-md text-center">
+<span class="inline-flex items-center px-2 py-0.5 rounded-full bg-status-info-bg text-status-info-text text-[11px] font-semibold font-caption-meta">Archived</span>
+</td>
+<td class="py-3 px-space-lg text-right">
+<div class="flex items-center justify-end gap-2">
+<button class="text-primary hover:text-primary-hover p-1 rounded transition-colors" title="Download" type="button">
+<span class="material-symbols-outlined text-[18px]">download</span>
+</button>
+<button class="text-text-secondary hover:text-text-primary p-1 rounded transition-colors" title="Settings" type="button">
+<span class="material-symbols-outlined text-[18px]">more_vert</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 4 -->
+<tr class="hover:bg-app-bg/50 transition-colors">
+<td class="py-3 px-space-lg">
+<div class="flex flex-col">
+<span class="font-body-semibold text-body-semibold text-text-primary">REP-FREIGHT-COST-PER-KG</span>
+<span class="text-[11px] text-text-secondary font-caption-meta">Fuel Surcharge &amp; Linehaul Tariff Variance</span>
+</div>
+</td>
+<td class="py-3 px-space-md text-text-secondary font-caption-meta">All Regional Freight Lanes</td>
+<td class="py-3 px-space-md text-text-secondary font-caption-meta">Bi-Weekly</td>
+<td class="py-3 px-space-md text-text-primary tabular-nums">Oct 15, 2024 08:30</td>
+<td class="py-3 px-space-md text-right tabular-nums text-text-primary">6.4 MB (PDF)</td>
+<td class="py-3 px-space-md text-center">
+<span class="inline-flex items-center px-2 py-0.5 rounded-full bg-status-success-bg text-status-success-text text-[11px] font-semibold font-caption-meta">Ready</span>
+</td>
+<td class="py-3 px-space-lg text-right">
+<div class="flex items-center justify-end gap-2">
+<button class="text-primary hover:text-primary-hover p-1 rounded transition-colors" title="Download" type="button">
+<span class="material-symbols-outlined text-[18px]">download</span>
+</button>
+<button class="text-text-secondary hover:text-text-primary p-1 rounded transition-colors" title="Settings" type="button">
+<span class="material-symbols-outlined text-[18px]">more_vert</span>
+</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Operational Footer & BI Connection Status -->
+<div class="p-space-md bg-surface rounded-xl shadow-sm flex flex-col md:flex-row items-center justify-between gap-space-md">
+<div class="flex items-center gap-space-sm text-xs font-caption-meta">
+<div class="flex items-center gap-1.5 text-status-success-text font-semibold">
+<span class="w-2 h-2 rounded-full bg-status-success-text animate-pulse"></span>
+<span>Connected to Enterprise BI Engine (Snowflake Data Lakehouse)</span>
+</div>
+<span class="text-text-secondary">•</span>
+<span class="text-text-secondary">Data refreshed 3 mins ago</span>
+<span class="text-text-secondary">•</span>
+<span class="text-text-secondary">Sync latency: 240ms</span>
+</div>
+<div class="flex items-center gap-space-sm">
+<button class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg bg-surface text-text-secondary hover:text-text-primary shadow-sm font-button-text" type="button">
+<span class="material-symbols-outlined text-[16px]">file_download</span>
+<span>Download CSV Raw Data</span>
+</button>
+<button class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg bg-surface text-text-secondary hover:text-text-primary shadow-sm font-button-text" type="button">
+<span class="material-symbols-outlined text-[16px]">dashboard_customize</span>
+<span>Customize Dashboard</span>
+</button>
+</div>
+</div>
+</div></main></div></body></html>

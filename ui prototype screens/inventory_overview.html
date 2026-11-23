@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_dashboard" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base { html, body { margin: 0; padding: 0; } body { overscroll-behavior: none; } main > :first-child { margin-top: 0 !important; } main > :last-child { margin-bottom: 0 !important; } } ::-webkit-scrollbar { display: none; }</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { colors: { "status-info-text": "#1D4ED8", "on-tertiary-container": "#fffbff", "sidebar-text": "#E2E8F0", "text-secondary": "#64748B", "status-info-bg": "#DBEAFE", "on-secondary-fixed-variant": "#404752", "on-background": "#0b1c30", "tertiary-fixed": "#ffdcc3", "surface-container-highest": "#d3e4fe", "status-danger-text": "#991B1B", "inverse-surface": "#213145", "status-warning-text": "#92400E", "on-tertiary-fixed-variant": "#6e3900", "status-neutral-bg": "#F1F5F9", "on-secondary-fixed": "#151c26", "primary-fixed-dim": "#ffb68f", "inverse-primary": "#ffb68f", "app-bg": "#F6F7F9", "surface-container-lowest": "#ffffff", "primary-hover": "#A94B0D", "status-success-bg": "#DCFCE7", "on-surface": "#0b1c30", "surface-tint": "#9c4400", "on-surface-variant": "#564238", "on-secondary-container": "#5c636e", "status-danger-bg": "#FEE2E2", "on-error": "#ffffff", "secondary": "#585f6a", "on-primary": "#ffffff", "secondary-container": "#d9e0ed", "surface-bright": "#f8f9ff", "status-neutral-text": "#475569", "tertiary": "#8d4b00", "secondary-fixed": "#dce3f0", "outline": "#8a7266", "primary-fixed": "#ffdbca", "surface-container-low": "#eff4ff", "background": "#f8f9ff", "tertiary-fixed-dim": "#ffb77d", "sidebar-muted": "#94A3B8", "surface-container-high": "#dce9ff", "surface": "#FFFFFF", "status-warning-bg": "#FEF3C7", "on-tertiary-fixed": "#2f1500", "text-primary": "#18212F", "inverse-on-surface": "#eaf1ff", "secondary-fixed-dim": "#c0c7d4", "outline-variant": "#ddc1b3", "on-primary-fixed-variant": "#773200", "tertiary-container": "#b15f00", "error-container": "#ffdad6", "primary-container": "#bc570f", "primary": "#984200", "on-secondary": "#ffffff", "on-primary-fixed": "#331200", "border-default": "#E2E8F0", "error": "#ba1a1a", "surface-dim": "#cbdbf5", "on-error-container": "#93000a", "status-success-text": "#166534", "on-primary-container": "#fffbff", "sidebar-bg": "#242B35", "on-tertiary": "#ffffff", "surface-variant": "#d3e4fe", "surface-container": "#e5eeff" }, borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, spacing: { "margin": "2rem", "margin-mobile": "1rem", "space-lg": "1.5rem", "space-xs": "0.25rem", "space-xl": "2rem", "gutter": "1.5rem", "space-sm": "0.5rem", "space-md": "1rem", "gutter-mobile": "1rem" }, fontFamily: { "table-header": ["Inter"], "headline-h1": ["Inter"], "display-kpi-mobile": ["Inter"], "headline-h1-mobile": ["Inter"], "headline-h3": ["Inter"], "body-semibold": ["Inter"], "caption-meta": ["Inter"], "headline-h2": ["Inter"], "button-text": ["Inter"], "form-label": ["Inter"], "display-kpi": ["Inter"], "body-default": ["Inter"], "table-data": ["Inter"] }, fontSize: { "table-header": ["12px", { "lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "600" }], "headline-h1": ["28px", { "lineHeight": "36px", "letterSpacing": "-0.02em", "fontWeight": "700" }], "display-kpi-mobile": ["26px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700" }], "headline-h1-mobile": ["22px", { "lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "700" }], "headline-h3": ["16px", { "lineHeight": "24px", "letterSpacing": "-0.005em", "fontWeight": "600" }], "body-semibold": ["14px", { "lineHeight": "20px", "fontWeight": "600" }], "caption-meta": ["12px", { "lineHeight": "16px", "fontWeight": "400" }], "headline-h2": ["20px", { "lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600" }], "button-text": ["14px", { "lineHeight": "20px", "fontWeight": "600" }], "form-label": ["13px", { "lineHeight": "18px", "fontWeight": "500" }], "display-kpi": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }], "body-default": ["14px", { "lineHeight": "20px", "fontWeight": "400" }], "table-data": ["13px", { "lineHeight": "18px", "fontWeight": "400" }] } } } };</script></head><body class="bg-app-bg text-text-primary antialiased"><aside class="fixed left-0 top-0 h-screen w-[250px] bg-sidebar-bg text-sidebar-text z-50 flex flex-col justify-between border-r border-border-default/20"><div class="flex flex-col flex-1 min-h-0"><div class="h-16 px-space-md flex items-center gap-space-sm border-b border-border-default/20 shrink-0"><img alt="Logistics Brand Mark" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/ALJJyrBIIjTx9TJyaLvDoO3WBkgxTJtN5pX7Jsi9HcxR_YMth4Fw5SB1h6d45hF55umb91ZHS_7iiuxcK3gsTD4jsBWsUR3S5StgJwEFYSfFOUCbpXbnseB2H1exYiZ95-BcxwF9xKKVX0ckAfZcbij8HvqSpCzHsRTXO-yXJrOZ-t3FlfcNNNmDBSMN0GZpSxhf3Qs87Aoe4k7dR8QIQzEmWycADB2a5sF2w5gTKdctH3gP"/><div class="flex flex-col"><span class="text-xs font-bold tracking-wider text-sidebar-text leading-none uppercase">LOGISTICS</span><span class="text-[10px] font-semibold text-sidebar-muted tracking-widest mt-0.5">WAREHOUSE SYSTEM</span></div></div><div class="flex-1 overflow-y-auto px-space-sm py-space-md space-y-space-md"><div class="space-y-1"><div class="px-space-sm text-[11px] font-bold text-sidebar-muted tracking-wider uppercase font-caption-meta">OVERVIEW</div><nav class="space-y-0.5" data-active-classes="bg-primary text-on-primary font-semibold rounded-lg shadow-sm"><a class="flex items-center gap-space-sm px-space-sm py-2 transition-colors text-on-surface-variant" data-path="dashboard" href="#"><span class="material-symbols-outlined text-[18px]">dashboard</span><span>Dashboard</span></a></nav></div><div class="space-y-1"><div class="px-space-sm text-[11px] font-bold text-sidebar-muted tracking-wider uppercase font-caption-meta">CATALOG &amp; STORAGE</div><nav class="space-y-0.5" data-active-classes="bg-primary text-on-primary font-semibold rounded-lg shadow-sm"><a class="flex items-center gap-space-sm px-space-sm py-2 rounded-lg text-sidebar-text text-sm hover:bg-primary-hover hover:text-on-primary transition-colors" data-path="products" href="#"><span class="material-symbols-outlined text-[18px]">inventory_2</span><span>Products</span></a><a class="flex items-center gap-space-sm px-space-sm py-2 rounded-lg text-sidebar-text text-sm hover:bg-primary-hover hover:text-on-primary transition-colors" data-path="warehouses" href="#"><span class="material-symbols-outlined text-[18px]">warehouse</span><span>Warehouses</span></a><a class="flex items-center gap-space-sm px-space-sm py-2 rounded-lg text-sidebar-text text-sm hover:bg-primary-hover hover:text-on-primary transition-colors" data-path="inventory" href="#"><span class="material-symbols-outlined text-[18px]">package</span><span>Inventory</span></a></nav></div><div class="space-y-1"><div class="px-space-sm text-[11px] font-bold text-sidebar-muted tracking-wider uppercase font-caption-meta">OPERATIONS</div><nav class="space-y-0.5" data-active-classes="bg-primary text-on-primary font-semibold rounded-lg shadow-sm"><a class="flex items-center gap-space-sm px-space-sm py-2 rounded-lg text-sidebar-text text-sm hover:bg-primary-hover hover:text-on-primary transition-colors" data-path="inbound-operations" href="#"><span class="material-symbols-outlined text-[18px]">south_west</span><span>Inbound Operations</span></a><a class="flex items-center gap-space-sm px-space-sm py-2 rounded-lg text-sidebar-text text-sm hover:bg-primary-hover hover:text-on-primary transition-colors" data-path="outbound-operations" href="#"><span class="material-symbols-outlined text-[18px]">north_east</span><span>Outbound Operations</span></a><a class="flex items-center gap-space-sm px-space-sm py-2 rounded-lg text-sidebar-text text-sm hover:bg-primary-hover hover:text-on-primary transition-colors" data-path="shipments" href="#"><span class="material-symbols-outlined text-[18px]">local_shipping</span><span>Shipments</span></a></nav></div><div class="space-y-1"><div class="px-space-sm text-[11px] font-bold text-sidebar-muted tracking-wider uppercase font-caption-meta">INSIGHTS</div><nav class="space-y-0.5" data-active-classes="bg-primary text-on-primary font-semibold rounded-lg shadow-sm"><a class="flex items-center gap-space-sm px-space-sm py-2 rounded-lg text-sidebar-text text-sm hover:bg-primary-hover hover:text-on-primary transition-colors" data-path="reports-and-analytics" href="#"><span class="material-symbols-outlined text-[18px]">query_stats</span><span>Reports &amp; Analytics</span></a><a class="flex items-center gap-space-sm px-space-sm py-2 rounded-lg text-sidebar-text text-sm hover:bg-primary-hover hover:text-on-primary transition-colors" data-path="audit-logs" href="#"><span class="material-symbols-outlined text-[18px]">history_edu</span><span>Audit Logs</span></a></nav></div><div class="space-y-1"><div class="px-space-sm text-[11px] font-bold text-sidebar-muted tracking-wider uppercase font-caption-meta">ADMINISTRATION</div><nav class="space-y-0.5" data-active-classes="bg-primary text-on-primary font-semibold rounded-lg shadow-sm"><a class="flex items-center gap-space-sm px-space-sm py-2 rounded-lg text-sidebar-text text-sm hover:bg-primary-hover hover:text-on-primary transition-colors" data-path="user-management" href="#"><span class="material-symbols-outlined text-[18px]">group</span><span>User Management</span></a><a class="flex items-center gap-space-sm px-space-sm py-2 rounded-lg text-sidebar-text text-sm hover:bg-primary-hover hover:text-on-primary transition-colors" data-path="roles-and-permissions" href="#"><span class="material-symbols-outlined text-[18px]">verified_user</span><span>Roles &amp; Permissions</span></a><a class="flex items-center gap-space-sm px-space-sm py-2 rounded-lg text-sidebar-text text-sm hover:bg-primary-hover hover:text-on-primary transition-colors" data-path="system-settings" href="#"><span class="material-symbols-outlined text-[18px]">settings</span><span>System Settings</span></a></nav></div></div></div><div class="p-space-sm border-t border-border-default/20 bg-sidebar-bg shrink-0"><div class="mb-2"><nav data-active-classes="bg-primary text-on-primary font-semibold rounded-lg shadow-sm"><a class="flex items-center gap-space-sm px-space-sm py-2 rounded-lg text-sidebar-text text-sm hover:bg-primary-hover hover:text-on-primary transition-colors" data-path="my-profile" href="#"><span class="material-symbols-outlined text-[18px]">person</span><span>My Profile</span></a></nav></div><div class="flex items-center justify-between p-space-sm rounded-lg bg-inverse-surface/40"><div class="flex items-center gap-space-sm"><img alt="Profile" class="w-8 h-8 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDpJz5Ls2ywARcAECd_jYcyZHGBDfEL_b4f4aVJ4mEEd3MQJnxtzu-2lOE3PbHZphx3RQF8w1yhT-huSPglZYuxsgyhlzhQdkz8ahqCxjyLBF0O7A-pcOY3ZttTTrbeAcDDWHCZpXK8-OsbjLVs9ZolkuocYtJfSxcuc2-S6tq6rh3Uj091DeFL_nfGOzTbGfMgtGS6OpTQ30y4vXstBnvRqIUiCw9NQWfGM1_Z9WrJ"/><div class="flex flex-col min-w-0"><span class="text-xs font-semibold text-sidebar-text truncate leading-tight">Marcus Vance</span><span class="text-[11px] text-sidebar-muted truncate leading-tight">Warehouse Manager</span></div></div><button class="text-sidebar-muted hover:text-on-primary p-1 rounded-md transition-colors" type="button"><span class="material-symbols-outlined text-[18px]">logout</span></button></div></div></aside><div class="pl-[250px]"><header class="fixed top-0 left-[250px] right-0 h-16 bg-surface z-40 border-b border-border-default flex items-center justify-between px-space-xl"><div class="flex items-center text-xs font-semibold text-text-secondary gap-1.5"><span class="hover:text-text-primary transition-colors cursor-pointer">Warehouse Core</span><span class="text-border-default">/</span><span class="text-text-primary font-bold">Live Operations</span></div><div class="flex items-center gap-space-md"><div class="relative w-80"><span class="material-symbols-outlined absolute left-3 top-2.5 text-text-secondary text-[18px]">search</span><input class="w-full pl-9 pr-3 py-1.5 text-xs bg-app-bg border border-border-default rounded-lg focus:outline-none focus:border-primary text-text-primary placeholder:text-text-secondary transition-all" placeholder="Search products, orders, SKU..." type="text"/></div><div class="flex items-center gap-1"><button class="relative p-2 text-text-secondary hover:text-text-primary rounded-lg transition-colors" type="button"><span class="material-symbols-outlined text-[20px]">notifications</span><span class="absolute top-1.5 right-1.5 w-2 h-2 bg-primary rounded-full ring-2 ring-surface"></span></button><button class="p-2 text-text-secondary hover:text-text-primary rounded-lg transition-colors" type="button"><span class="material-symbols-outlined text-[20px]">help</span></button></div><div class="h-5 w-px bg-border-default mx-1"></div><div class="flex items-center gap-space-sm pl-1"><img alt="Profile" class="w-8 h-8 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDpJz5Ls2ywARcAECd_jYcyZHGBDfEL_b4f4aVJ4mEEd3MQJnxtzu-2lOE3PbHZphx3RQF8w1yhT-huSPglZYuxsgyhlzhQdkz8ahqCxjyLBF0O7A-pcOY3ZttTTrbeAcDDWHCZpXK8-OsbjLVs9ZolkuocYtJfSxcuc2-S6tq6rh3Uj091DeFL_nfGOzTbGfMgtGS6OpTQ30y4vXstBnvRqIUiCw9NQWfGM1_Z9WrJ"/><div class="hidden sm:flex flex-col text-left"><span class="text-xs font-bold text-text-primary leading-tight">Marcus Vance</span><span class="text-[10px] text-text-secondary leading-tight">Operations Lead</span></div><span class="material-symbols-outlined text-text-secondary text-[16px]">expand_more</span></div></div></header><main class="relative pt-16 min-h-screen bg-app-bg px-space-xl py-space-lg"><div class="flex flex-col w-full gap-6">
+<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+<div class="flex flex-col gap-1">
+<h1 class="font-headline-h1 text-headline-h1 text-text-primary">Inventory</h1>
+<p class="font-body-default text-body-default text-text-secondary">Monitor stock across warehouses.</p>
+</div>
+<div class="flex flex-wrap items-center gap-3">
+<button class="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-surface text-text-primary shadow-sm hover:bg-surface-container-low transition-colors font-button-text text-button-text" id="btn-export-csv" type="button">
+<span class="material-symbols-outlined text-[18px] text-text-secondary">download</span>
+<span>Export CSV</span>
+</button>
+<button class="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-surface text-text-primary shadow-sm hover:bg-surface-container-low transition-colors font-button-text text-button-text" id="btn-stock-manifest" type="button">
+<span class="material-symbols-outlined text-[18px] text-text-secondary">description</span>
+<span>Stock Manifest</span>
+</button>
+<button class="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-primary text-on-primary hover:bg-primary-hover transition-colors shadow-sm font-button-text text-button-text" id="btn-adjust-stock" type="button">
+<span class="material-symbols-outlined text-[18px]">add</span>
+<span>Adjust Stock</span>
+</button>
+</div>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
+<div class="bg-surface rounded-xl p-6 shadow-sm flex flex-col justify-between gap-4 hover:shadow-md transition-shadow">
+<div class="flex items-center justify-between">
+<span class="font-table-header text-table-header uppercase text-text-secondary">Total Active SKUs</span>
+<div class="w-9 h-9 rounded-lg bg-status-info-bg text-status-info-text flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]">inventory_2</span>
+</div>
+</div>
+<div class="flex flex-col gap-1">
+<div class="font-display-kpi text-display-kpi text-text-primary tabular-nums">1,428</div>
+<div class="flex items-center gap-1.5 font-caption-meta text-caption-meta text-status-success-text">
+<span class="material-symbols-outlined text-[14px]">trending_up</span>
+<span>+14 catalog additions this month</span>
+</div>
+</div>
+</div>
+<div class="bg-surface rounded-xl p-6 shadow-sm flex flex-col justify-between gap-4 hover:shadow-md transition-shadow">
+<div class="flex items-center justify-between">
+<span class="font-table-header text-table-header uppercase text-text-secondary">On-Hand Inventory</span>
+<div class="w-9 h-9 rounded-lg bg-status-success-bg text-status-success-text flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]">package_2</span>
+</div>
+</div>
+<div class="flex flex-col gap-2">
+<div class="font-display-kpi text-display-kpi text-text-primary tabular-nums">842,500 <span class="font-body-semibold text-body-semibold text-text-secondary">Units</span></div>
+<div class="flex flex-col gap-1.5">
+<div class="w-full h-1.5 rounded-full bg-status-neutral-bg overflow-hidden">
+<div class="h-full bg-primary rounded-full" style="width: 91.4%"></div>
+</div>
+<span class="font-caption-meta text-caption-meta text-text-secondary">91.4% warehouse capacity utilized</span>
+</div>
+</div>
+</div>
+<div class="bg-surface rounded-xl p-6 shadow-sm flex flex-col justify-between gap-4 hover:shadow-md transition-shadow">
+<div class="flex items-center justify-between">
+<span class="font-table-header text-table-header uppercase text-text-secondary">Low-Stock Alert</span>
+<div class="w-9 h-9 rounded-lg bg-status-warning-bg text-status-warning-text flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]">warning</span>
+</div>
+</div>
+<div class="flex flex-col gap-1">
+<div class="font-display-kpi text-display-kpi text-status-warning-text tabular-nums">96 <span class="font-body-semibold text-body-semibold">SKUs</span></div>
+<div class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-status-warning-bg text-status-warning-text w-fit font-caption-meta text-caption-meta font-semibold">
+<span>Requires reorder review</span>
+</div>
+</div>
+</div>
+<div class="bg-surface rounded-xl p-6 shadow-sm flex flex-col justify-between gap-4 hover:shadow-md transition-shadow">
+<div class="flex items-center justify-between">
+<span class="font-table-header text-table-header uppercase text-text-secondary">Reserved &amp; Allocated</span>
+<div class="w-9 h-9 rounded-lg bg-status-neutral-bg text-status-neutral-text flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]">local_shipping</span>
+</div>
+</div>
+<div class="flex flex-col gap-1">
+<div class="font-display-kpi text-display-kpi text-text-primary tabular-nums">114,200 <span class="font-body-semibold text-body-semibold text-text-secondary">Units</span></div>
+<div class="flex items-center gap-1.5 font-caption-meta text-caption-meta text-text-secondary">
+<span class="material-symbols-outlined text-[14px] text-primary">schedule</span>
+<span>28 dispatches queued</span>
+</div>
+</div>
+</div>
+</div>
+<div class="bg-surface rounded-xl p-5 shadow-sm flex flex-col gap-4">
+<div class="flex flex-col lg:flex-row lg:items-center gap-3">
+<div class="relative flex-1 min-w-0">
+<span class="material-symbols-outlined absolute left-3 top-2.5 text-text-secondary text-[18px]">search</span>
+<input class="w-full h-[38px] pl-9 pr-4 rounded-lg bg-app-bg text-text-primary placeholder:text-text-secondary font-body-default text-body-default focus:outline-none focus:bg-surface focus:shadow-sm transition-all" id="inventory-search" placeholder="Search by product name, SKU, or barcode..." type="text"/>
+</div>
+<div class="flex flex-wrap items-center gap-3">
+<select class="h-[38px] px-3 rounded-lg bg-app-bg text-text-primary font-body-default text-body-default focus:outline-none cursor-pointer" id="filter-facility">
+<option value="all">All Facilities</option>
+<option value="North Hub (WH-01)">North Hub (WH-01)</option>
+<option value="East Terminal (WH-02)">East Terminal (WH-02)</option>
+<option value="South Depot (WH-03)">South Depot (WH-03)</option>
+</select>
+<select class="h-[38px] px-3 rounded-lg bg-app-bg text-text-primary font-body-default text-body-default focus:outline-none cursor-pointer" id="filter-category">
+<option value="all">All Categories</option>
+<option value="Packaging">Packaging</option>
+<option value="Fasteners">Fasteners</option>
+<option value="Lubricants">Lubricants</option>
+</select>
+<select class="h-[38px] px-3 rounded-lg bg-app-bg text-text-primary font-body-default text-body-default focus:outline-none cursor-pointer" id="filter-status">
+<option value="all">All Stock Statuses</option>
+<option value="In Stock">In Stock</option>
+<option value="Low Stock">Low Stock</option>
+<option value="Out of Stock">Out of Stock</option>
+</select>
+</div>
+</div>
+<div class="flex flex-wrap items-center justify-between gap-2 pt-1" id="active-filters-bar">
+<div class="flex flex-wrap items-center gap-2" id="filter-chips">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-status-neutral-bg text-status-neutral-text font-caption-meta text-caption-meta font-semibold">
+<span>Facility: All</span>
+</span>
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-status-neutral-bg text-status-neutral-text font-caption-meta text-caption-meta font-semibold">
+<span>Status: All</span>
+</span>
+</div>
+<button class="font-caption-meta text-caption-meta font-semibold text-primary hover:text-primary-hover transition-colors" id="btn-clear-filters" type="button">
+        Clear all filters
+      </button>
+</div>
+</div>
+<div class="bg-surface rounded-xl shadow-sm overflow-hidden">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-app-bg h-10">
+<th class="pl-6 pr-3 w-10">
+<input class="w-4 h-4 rounded accent-primary cursor-pointer" id="select-all-rows" type="checkbox"/>
+</th>
+<th class="px-4 font-table-header text-table-header uppercase text-text-secondary">Product Specification</th>
+<th class="px-4 font-table-header text-table-header uppercase text-text-secondary">SKU &amp; Barcode</th>
+<th class="px-4 font-table-header text-table-header uppercase text-text-secondary">Facility &amp; Location</th>
+<th class="px-4 font-table-header text-table-header uppercase text-text-secondary text-right">On-Hand</th>
+<th class="px-4 font-table-header text-table-header uppercase text-text-secondary text-right">Reserved</th>
+<th class="px-4 font-table-header text-table-header uppercase text-text-secondary text-right">Available</th>
+<th class="px-4 font-table-header text-table-header uppercase text-text-secondary">Stock Status</th>
+<th class="pl-4 pr-6 font-table-header text-table-header uppercase text-text-secondary text-right">Actions</th>
+</tr>
+</thead>
+<tbody id="inventory-table-body">
+<tr class="inventory-row h-14 hover:bg-surface-container-low/60 transition-colors" data-category="Packaging" data-facility="North Hub (WH-01)" data-status="In Stock">
+<td class="pl-6 pr-3">
+<input class="row-checkbox w-4 h-4 rounded accent-primary cursor-pointer" type="checkbox"/>
+</td>
+<td class="px-4 py-3">
+<div class="flex flex-col">
+<span class="font-body-semibold text-body-semibold text-text-primary">Heavy Duty Pallet Straps 19mm</span>
+<span class="font-caption-meta text-caption-meta text-text-secondary">Packaging • PET Strapping, 1000m/roll</span>
+</div>
+</td>
+<td class="px-4 py-3">
+<div class="flex flex-col">
+<span class="font-table-data text-table-data font-semibold text-text-primary tabular-nums">SKU-8842</span>
+<span class="font-caption-meta text-caption-meta text-text-secondary tabular-nums">8901245884201</span>
+</div>
+</td>
+<td class="px-4 py-3">
+<div class="flex items-center gap-2">
+<span class="font-table-data text-table-data text-text-primary">North Hub (WH-01)</span>
+<span class="px-2 py-0.5 rounded bg-status-neutral-bg text-status-neutral-text font-caption-meta text-caption-meta font-semibold">Bay A-12</span>
+</div>
+</td>
+<td class="px-4 py-3 text-right font-table-data text-table-data text-text-primary tabular-nums">12,400</td>
+<td class="px-4 py-3 text-right font-table-data text-table-data text-text-secondary tabular-nums">1,850</td>
+<td class="px-4 py-3 text-right font-table-data text-table-data font-semibold text-text-primary tabular-nums">10,550</td>
+<td class="px-4 py-3">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full bg-status-success-bg text-status-success-text font-caption-meta text-caption-meta font-semibold">In Stock</span>
+</td>
+<td class="pl-4 pr-6 py-3 text-right">
+<button class="p-1.5 rounded-lg text-text-secondary hover:text-primary hover:bg-surface-container-low transition-colors" type="button">
+<span class="material-symbols-outlined text-[18px]">more_horiz</span>
+</button>
+</td>
+</tr>
+<tr class="inventory-row h-14 bg-app-bg/40 hover:bg-surface-container-low/60 transition-colors" data-category="Packaging" data-facility="East Terminal (WH-02)" data-status="In Stock">
+<td class="pl-6 pr-3">
+<input class="row-checkbox w-4 h-4 rounded accent-primary cursor-pointer" type="checkbox"/>
+</td>
+<td class="px-4 py-3">
+<div class="flex flex-col">
+<span class="font-body-semibold text-body-semibold text-text-primary">Industrial Shrink Film 23 Micron</span>
+<span class="font-caption-meta text-caption-meta text-text-secondary">Packaging • Cast LLDPE, 500mm x 1500m</span>
+</div>
+</td>
+<td class="px-4 py-3">
+<div class="flex flex-col">
+<span class="font-table-data text-table-data font-semibold text-text-primary tabular-nums">SKU-7721</span>
+<span class="font-caption-meta text-caption-meta text-text-secondary tabular-nums">8901245772109</span>
+</div>
+</td>
+<td class="px-4 py-3">
+<div class="flex items-center gap-2">
+<span class="font-table-data text-table-data text-text-primary">East Terminal (WH-02)</span>
+<span class="px-2 py-0.5 rounded bg-status-neutral-bg text-status-neutral-text font-caption-meta text-caption-meta font-semibold">Bay C-04</span>
+</div>
+</td>
+<td class="px-4 py-3 text-right font-table-data text-table-data text-text-primary tabular-nums">8,920</td>
+<td class="px-4 py-3 text-right font-table-data text-table-data text-text-secondary tabular-nums">1,120</td>
+<td class="px-4 py-3 text-right font-table-data text-table-data font-semibold text-text-primary tabular-nums">7,800</td>
+<td class="px-4 py-3">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full bg-status-success-bg text-status-success-text font-caption-meta text-caption-meta font-semibold">In Stock</span>
+</td>
+<td class="pl-4 pr-6 py-3 text-right">
+<button class="p-1.5 rounded-lg text-text-secondary hover:text-primary hover:bg-surface-container-low transition-colors" type="button">
+<span class="material-symbols-outlined text-[18px]">more_horiz</span>
+</button>
+</td>
+</tr>
+<tr class="inventory-row h-14 hover:bg-surface-container-low/60 transition-colors" data-category="Fasteners" data-facility="North Hub (WH-01)" data-status="Low Stock">
+<td class="pl-6 pr-3">
+<input class="row-checkbox w-4 h-4 rounded accent-primary cursor-pointer" type="checkbox"/>
+</td>
+<td class="px-4 py-3">
+<div class="flex flex-col">
+<span class="font-body-semibold text-body-semibold text-text-primary">Steel Hex Bolts M12 x 50mm</span>
+<span class="font-caption-meta text-caption-meta text-text-secondary">Fasteners • Grade 8.8 Zinc Plated</span>
+</div>
+</td>
+<td class="px-4 py-3">
+<div class="flex flex-col">
+<span class="font-table-data text-table-data font-semibold text-text-primary tabular-nums">SKU-9914</span>
+<span class="font-caption-meta text-caption-meta text-text-secondary tabular-nums">8901245991404</span>
+</div>
+</td>
+<td class="px-4 py-3">
+<div class="flex items-center gap-2">
+<span class="font-table-data text-table-data text-text-primary">North Hub (WH-01)</span>
+<span class="px-2 py-0.5 rounded bg-status-neutral-bg text-status-neutral-text font-caption-meta text-caption-meta font-semibold">Bin B-08</span>
+</div>
+</td>
+<td class="px-4 py-3 text-right font-table-data text-table-data text-text-primary tabular-nums">420</td>
+<td class="px-4 py-3 text-right font-table-data text-table-data text-text-secondary tabular-nums">180</td>
+<td class="px-4 py-3 text-right font-table-data text-table-data font-semibold text-status-warning-text tabular-nums">240</td>
+<td class="px-4 py-3">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full bg-status-warning-bg text-status-warning-text font-caption-meta text-caption-meta font-semibold">Low Stock</span>
+</td>
+<td class="pl-4 pr-6 py-3 text-right">
+<button class="p-1.5 rounded-lg text-text-secondary hover:text-primary hover:bg-surface-container-low transition-colors" type="button">
+<span class="material-symbols-outlined text-[18px]">more_horiz</span>
+</button>
+</td>
+</tr>
+<tr class="inventory-row h-14 bg-app-bg/40 hover:bg-surface-container-low/60 transition-colors" data-category="Lubricants" data-facility="South Depot (WH-03)" data-status="Out of Stock">
+<td class="pl-6 pr-3">
+<input class="row-checkbox w-4 h-4 rounded accent-primary cursor-pointer" type="checkbox"/>
+</td>
+<td class="px-4 py-3">
+<div class="flex flex-col">
+<span class="font-body-semibold text-body-semibold text-text-primary">Hydraulic Fluid ISO VG 46</span>
+<span class="font-caption-meta text-caption-meta text-text-secondary">Lubricants • 208L Steel Drum</span>
+</div>
+</td>
+<td class="px-4 py-3">
+<div class="flex flex-col">
+<span class="font-table-data text-table-data font-semibold text-text-primary tabular-nums">SKU-3320</span>
+<span class="font-caption-meta text-caption-meta text-text-secondary tabular-nums">8901245332007</span>
+</div>
+</td>
+<td class="px-4 py-3">
+<div class="flex items-center gap-2">
+<span class="font-table-data text-table-data text-text-primary">South Depot (WH-03)</span>
+<span class="px-2 py-0.5 rounded bg-status-neutral-bg text-status-neutral-text font-caption-meta text-caption-meta font-semibold">Zone D-02</span>
+</div>
+</td>
+<td class="px-4 py-3 text-right font-table-data text-table-data text-text-primary tabular-nums">0</td>
+<td class="px-4 py-3 text-right font-table-data text-table-data text-text-secondary tabular-nums">0</td>
+<td class="px-4 py-3 text-right font-table-data text-table-data font-semibold text-status-danger-text tabular-nums">0</td>
+<td class="px-4 py-3">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full bg-status-danger-bg text-status-danger-text font-caption-meta text-caption-meta font-semibold">Out of Stock</span>
+</td>
+<td class="pl-4 pr-6 py-3 text-right">
+<button class="p-1.5 rounded-lg text-text-secondary hover:text-primary hover:bg-surface-container-low transition-colors" type="button">
+<span class="material-symbols-outlined text-[18px]">more_horiz</span>
+</button>
+</td>
+</tr>
+<tr class="inventory-row h-14 hover:bg-surface-container-low/60 transition-colors" data-category="Packaging" data-facility="East Terminal (WH-02)" data-status="In Stock">
+<td class="pl-6 pr-3">
+<input class="row-checkbox w-4 h-4 rounded accent-primary cursor-pointer" type="checkbox"/>
+</td>
+<td class="px-4 py-3">
+<div class="flex flex-col">
+<span class="font-body-semibold text-body-semibold text-text-primary">Corrugated Shipping Boxes</span>
+<span class="font-caption-meta text-caption-meta text-text-secondary">Packaging • Double-Wall 600x400x400mm</span>
+</div>
+</td>
+<td class="px-4 py-3">
+<div class="flex flex-col">
+<span class="font-table-data text-table-data font-semibold text-text-primary tabular-nums">SKU-4402</span>
+<span class="font-caption-meta text-caption-meta text-text-secondary tabular-nums">8901245440203</span>
+</div>
+</td>
+<td class="px-4 py-3">
+<div class="flex items-center gap-2">
+<span class="font-table-data text-table-data text-text-primary">East Terminal (WH-02)</span>
+<span class="px-2 py-0.5 rounded bg-status-neutral-bg text-status-neutral-text font-caption-meta text-caption-meta font-semibold">Bay A-03</span>
+</div>
+</td>
+<td class="px-4 py-3 text-right font-table-data text-table-data text-text-primary tabular-nums">24,600</td>
+<td class="px-4 py-3 text-right font-table-data text-table-data text-text-secondary tabular-nums">3,400</td>
+<td class="px-4 py-3 text-right font-table-data text-table-data font-semibold text-text-primary tabular-nums">21,200</td>
+<td class="px-4 py-3">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full bg-status-success-bg text-status-success-text font-caption-meta text-caption-meta font-semibold">In Stock</span>
+</td>
+<td class="pl-4 pr-6 py-3 text-right">
+<button class="p-1.5 rounded-lg text-text-secondary hover:text-primary hover:bg-surface-container-low transition-colors" type="button">
+<span class="material-symbols-outlined text-[18px]">more_horiz</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="px-6 py-4 bg-app-bg/50 flex flex-col sm:flex-row items-center justify-between gap-4">
+<span class="font-caption-meta text-caption-meta text-text-secondary" id="pagination-summary">Showing 1 to 5 of 1,428 SKUs</span>
+<div class="flex items-center gap-1.5">
+<button class="px-3 py-1.5 rounded-lg bg-surface text-text-secondary shadow-sm hover:text-text-primary font-caption-meta text-caption-meta font-semibold transition-colors" type="button">Previous</button>
+<button class="w-8 h-8 rounded-lg bg-primary text-on-primary font-caption-meta text-caption-meta font-semibold shadow-sm" type="button">1</button>
+<button class="w-8 h-8 rounded-lg bg-surface text-text-primary hover:bg-surface-container-low font-caption-meta text-caption-meta font-semibold shadow-sm transition-colors" type="button">2</button>
+<button class="w-8 h-8 rounded-lg bg-surface text-text-primary hover:bg-surface-container-low font-caption-meta text-caption-meta font-semibold shadow-sm transition-colors" type="button">3</button>
+<span class="px-1.5 text-text-secondary font-caption-meta text-caption-meta">...</span>
+<button class="w-8 h-8 rounded-lg bg-surface text-text-primary hover:bg-surface-container-low font-caption-meta text-caption-meta font-semibold shadow-sm transition-colors" type="button">286</button>
+<button class="px-3 py-1.5 rounded-lg bg-surface text-text-primary shadow-sm hover:bg-surface-container-low font-caption-meta text-caption-meta font-semibold transition-colors" type="button">Next</button>
+</div>
+</div>
+</div>
+</div>
+<script>
+  (function () {
+    const inventoryLink = document.querySelector('a[data-path="inventory"]');
+    if (inventoryLink) {
+      inventoryLink.className = 'flex items-center gap-space-sm px-space-sm py-2 bg-primary text-on-primary font-semibold rounded-lg shadow-sm transition-colors';
+    }
+
+    const searchInput = document.getElementById('inventory-search');
+    const facilitySelect = document.getElementById('filter-facility');
+    const categorySelect = document.getElementById('filter-category');
+    const statusSelect = document.getElementById('filter-status');
+    const clearBtn = document.getElementById('btn-clear-filters');
+    const rows = document.querySelectorAll('.inventory-row');
+    const selectAll = document.getElementById('select-all-rows');
+    const rowCheckboxes = document.querySelectorAll('.row-checkbox');
+
+    function applyFilters() {
+      const q = (searchInput.value || '').toLowerCase().trim();
+      const fac = facilitySelect.value;
+      const cat = categorySelect.value;
+      const st = statusSelect.value;
+
+      rows.forEach((row) => {
+        const text = row.textContent.toLowerCase();
+        const matchSearch = !q || text.includes(q);
+        const matchFac = fac === 'all' || row.dataset.facility === fac;
+        const matchCat = cat === 'all' || row.dataset.category === cat;
+        const matchSt = st === 'all' || row.dataset.status === st;
+        row.style.display = matchSearch && matchFac && matchCat && matchSt ? '' : 'none';
+      });
+    }
+
+    [searchInput, facilitySelect, categorySelect, statusSelect].forEach((el) => {
+      if (el) el.addEventListener('input', applyFilters);
+      if (el) el.addEventListener('change', applyFilters);
+    });
+
+    if (clearBtn) {
+      clearBtn.addEventListener('click', () => {
+        searchInput.value = '';
+        facilitySelect.value = 'all';
+        categorySelect.value = 'all';
+        statusSelect.value = 'all';
+        applyFilters();
+      });
+    }
+
+    if (selectAll) {
+      selectAll.addEventListener('change', (e) => {
+        rowCheckboxes.forEach((cb) => {
+          cb.checked = e.target.checked;
+        });
+      });
+    }
+  })();
+</script></main></div></body></html>

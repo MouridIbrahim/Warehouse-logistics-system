@@ -102,6 +102,15 @@ intent, and unnecessary abstraction layers.
 The final module boundaries must reflect the approved requirements and
 existing code.
 
+Authentication bootstrap: there are no pre-seeded user accounts. The
+first user registers via `POST /api/v1/auth/register` and becomes an
+`ADMINISTRATOR`; the endpoint is rejected with 409 once an administrator
+already exists. The administrator then provisions every other account and
+role through `POST /api/v1/users`. The five roles (`ADMINISTRATOR`,
+`WAREHOUSE_MANAGER`, `WAREHOUSE_EMPLOYEE`, `SHIPMENT_MANAGER`,
+`VIEWER_AUDITOR`) are defined in `PROJECT_DETAILS.md` §4.2 and the
+permission matrix in `SECURITY_AND_TESTING.md` §3.
+
 ## 6. REST API design
 
 -   Use resource-oriented REST endpoints and consistent naming.
@@ -120,6 +129,20 @@ contract): - `/api/v1/auth` - `/api/v1/users` - `/api/v1/roles` -
 `/api/v1/products` - `/api/v1/warehouses` - `/api/v1/inbound-orders` -
 `/api/v1/inventory` - `/api/v1/outbound-orders` - `/api/v1/shipments` -
 `/api/v1/reports` - `/api/v1/audit-logs`
+
+Public endpoints: `POST /api/v1/auth/register` (first-admin bootstrap)
+and `POST /api/v1/auth/login`. Every other endpoint requires a valid JWT
+bearer token.
+
+Account security endpoints: `POST /api/v1/auth/change-password`
+(authenticated self-service) and `PATCH /api/v1/users/{id}/password`
+(administrator reset).
+
+Rate limiting: `register` and `login` are throttled by an in-memory
+sliding-window limiter, configurable via `app.rate-limit.max-requests`
+and `app.rate-limit.window-seconds` (default 10 per 60 seconds);
+exceeding the limit returns `429`. The limiter honors the
+`X-Forwarded-For` header when deployed behind a reverse proxy.
 
 Do not implement every illustrative endpoint without checking the
 approved scope.

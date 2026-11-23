@@ -34,8 +34,8 @@ What happens automatically:
 
 1. `db` (PostgreSQL 17) starts and waits until it is healthy.
 2. `backend` builds (Maven + Temurin JDK 25) and starts.
-3. **Flyway** runs migrations `V1`–`V6`, then seeds roles, permissions,
-   and demo users on the first boot.
+3. **Flyway** runs migrations `V1`–`V6`, seeding roles and permissions
+   (no user accounts — register the first admin, see below).
 
 ### Verify
 
@@ -50,27 +50,31 @@ docker compose logs -f backend # watch startup logs
 | Swagger UI  | http://localhost:8080/swagger-ui.html |
 | Database    | localhost:5432 (db `logistics_db`, user `postgres`) |
 
-### Quick login test
+### Register the first administrator
+
+There are **no pre-seeded user accounts**. The first person to register
+becomes the Administrator (this only works while no admin exists):
+
+```powershell
+Invoke-RestMethod http://localhost:8080/api/v1/auth/register `
+  -Method Post -ContentType "application/json" `
+  -Body '{"username":"admin","password":"admin123","displayName":"System Administrator"}'
+```
+
+Then log in:
 
 ```powershell
 Invoke-RestMethod http://localhost:8080/api/v1/auth/login `
-  -Method Post `
-  -ContentType "application/json" `
+  -Method Post -ContentType "application/json" `
   -Body '{"username":"admin","password":"admin123"}'
 ```
 
-## 3. Demo accounts (development only)
+The admin then creates accounts for the other roles via
+`POST /api/v1/users` (WAREHOUSE_MANAGER, WAREHOUSE_EMPLOYEE,
+SHIPMENT_MANAGER, VIEWER_AUDITOR).
 
-| Username | Password   | Role              |
-|----------|------------|-------------------|
-| admin    | admin123   | ADMINISTRATOR     |
-| manager  | manager123 | WAREHOUSE_MANAGER |
-| employee | employee123| WAREHOUSE_EMPLOYEE|
-| shipment | shipment123| SHIPMENT_MANAGER  |
-| viewer   | viewer123  | VIEWER_AUDITOR    |
-
-> These credentials are for local development only. Never enable them in
-> production.
+> Tip: to seed demo users for testing, start the backend with
+> `app.seed.enabled=true`.
 
 ## 4. Run the frontend (local, not Docker)
 

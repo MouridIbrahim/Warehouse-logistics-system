@@ -76,6 +76,7 @@ hooks, and validation schemas. Keep shared UI primitives in
 Create only screens required by the approved scope. A suggested
 navigation map is:
 
+-   Register (first administrator)
 -   Sign in
 -   Dashboard
 -   Products / Goods
@@ -126,7 +127,7 @@ production-facing screens. Clearly label any demo seed data.
 -   Agree request/response DTOs with the backend agent before
     implementing integration.
 -   Handle loading, empty, validation, unauthorized, forbidden,
-    not-found, conflict, and server-error responses.
+    not-found, conflict, rate-limited (429), and server-error responses.
 -   Avoid assuming response shapes. Use the actual documented OpenAPI
     contract or agreed DTOs.
 -   Use pagination and filters supported by the API rather than
@@ -142,6 +143,17 @@ that hostname is only resolvable inside the Docker network.
 
 ## 7. Authentication and authorization behavior
 
+-   On first use, show the registration screen: the first registered user
+    becomes the administrator via `POST /api/v1/auth/register`. Once an
+    administrator exists, the backend rejects further registration (409),
+    so hide or disable the registration screen accordingly.
+-   Provide a change-password form for the signed-in user
+    (`POST /api/v1/auth/change-password`), and an administrator-only
+    reset in the user management screen
+    (`PATCH /api/v1/users/{id}/password`).
+-   Handle `429 Too Many Requests` on the sign-in/registration forms —
+    the backend rate-limits those endpoints; show a friendly retry
+    message instead of failing silently.
 -   Follow the authentication contract defined by the backend.
 -   Do not invent token storage or refresh behavior.
 -   Do not store passwords or secrets in browser storage.

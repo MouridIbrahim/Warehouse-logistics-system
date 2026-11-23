@@ -1,7 +1,10 @@
 package com.logistics.warehouse_system.service;
 
+import com.logistics.warehouse_system.dto.ChangePasswordRequest;
 import com.logistics.warehouse_system.dto.CreateUserRequest;
 import com.logistics.warehouse_system.dto.PageResponse;
+import com.logistics.warehouse_system.dto.RegisterRequest;
+import com.logistics.warehouse_system.dto.ResetPasswordRequest;
 import com.logistics.warehouse_system.dto.RoleDto;
 import com.logistics.warehouse_system.dto.UpdateUserRequest;
 import com.logistics.warehouse_system.dto.UserDto;
@@ -12,6 +15,7 @@ import com.logistics.warehouse_system.exception.ConflictException;
 import com.logistics.warehouse_system.exception.NotFoundException;
 import com.logistics.warehouse_system.repository.RoleRepository;
 import com.logistics.warehouse_system.repository.UserRepository;
+import com.logistics.warehouse_system.security.SecurityUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -92,6 +96,51 @@ public class UserService {
         userRepository.save(user);
         auditLogService.record("USER_UPDATED", "USER", user.getId());
         return UserDto.from(user);
+    }
+
+    @Transactional
+    public UserDto register(RegisterRequest request) {
+        if (userRepository.existsByRoleName("ADMINISTRATOR")) {
+            throw new ConflictException(
+                    "An administrator already exists. Ask an administrator to create your account.");
+        }
+        if (userRepository.existsByUsername(request.username())) {
+            throw new ConflictException("Username already exists: " + request.username());
+        }
+        Role adminRole = roleRepository.findByName("ADMINISTRATOR")
+                .orElseThrow(() -> new IllegalStateException("ADMINISTRATOR role is not seeded"));
+        User user = User.builder()
+                .username(request.username())
+                .passwordHash(passwordEncoder.encode(request.password()))
+                .displayName(request.displayName())
+                .active(true)
+                .build();
+        user.getRoles().add(adminRole);
+        userRepository.save(user);
+        auditLogService.record("USER_REGISTERED", "USER", user.getId(), user.getId());
+        return UserDto.from(user);
+    }
+
+    @Transactional
+    public void changeOwnPassword(ChangePasswordRequest request) {
+        Long userId = SecurityUtils.currentUserId();
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException("User", userId));
+        if (!passwordEncoder.matches(request.currentPassword(), user.getPasswordHash())) {
+            throw new BadRequestException("Current password is incorrect");
+        }
+        user.setPasswordHash(passwordEncoder.encode(request.newPassword()));
+        userRepository.save(user);
+        auditLogService.record("PASSWORD_CHANGED", "USER", userId);
+    }
+
+    @Transactional
+    public void resetPassword(Long userId, ResetPasswordRequest request) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException("User", userId));
+        user.setPasswordHash(passwordEncoder.encode(request.newPassword()));
+        userRepository.save(user);
+        auditLogService.record("PASSWORD_RESET", "USER", userId);
     }
 
     @Transactional(readOnly = true)

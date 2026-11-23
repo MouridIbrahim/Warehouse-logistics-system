@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_dashboard" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base { html, body { margin: 0; padding: 0; } body { overscroll-behavior: none; } main > :first-child { margin-top: 0 !important; } main > :last-child { margin-bottom: 0 !important; } } ::-webkit-scrollbar { display: none; }</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { colors: { "status-info-text": "#1D4ED8", "on-tertiary-container": "#fffbff", "sidebar-text": "#E2E8F0", "text-secondary": "#64748B", "status-info-bg": "#DBEAFE", "on-secondary-fixed-variant": "#404752", "on-background": "#0b1c30", "tertiary-fixed": "#ffdcc3", "surface-container-highest": "#d3e4fe", "status-danger-text": "#991B1B", "inverse-surface": "#213145", "status-warning-text": "#92400E", "on-tertiary-fixed-variant": "#6e3900", "status-neutral-bg": "#F1F5F9", "on-secondary-fixed": "#151c26", "primary-fixed-dim": "#ffb68f", "inverse-primary": "#ffb68f", "app-bg": "#F6F7F9", "surface-container-lowest": "#ffffff", "primary-hover": "#A94B0D", "status-success-bg": "#DCFCE7", "on-surface": "#0b1c30", "surface-tint": "#9c4400", "on-surface-variant": "#564238", "on-secondary-container": "#5c636e", "status-danger-bg": "#FEE2E2", "on-error": "#ffffff", "secondary": "#585f6a", "on-primary": "#ffffff", "secondary-container": "#d9e0ed", "surface-bright": "#f8f9ff", "status-neutral-text": "#475569", "tertiary": "#8d4b00", "secondary-fixed": "#dce3f0", "outline": "#8a7266", "primary-fixed": "#ffdbca", "surface-container-low": "#eff4ff", "background": "#f8f9ff", "tertiary-fixed-dim": "#ffb77d", "sidebar-muted": "#94A3B8", "surface-container-high": "#dce9ff", "surface": "#FFFFFF", "status-warning-bg": "#FEF3C7", "on-tertiary-fixed": "#2f1500", "text-primary": "#18212F", "inverse-on-surface": "#eaf1ff", "secondary-fixed-dim": "#c0c7d4", "outline-variant": "#ddc1b3", "on-primary-fixed-variant": "#773200", "tertiary-container": "#b15f00", "error-container": "#ffdad6", "primary-container": "#bc570f", "primary": "#984200", "on-secondary": "#ffffff", "on-primary-fixed": "#331200", "border-default": "#E2E8F0", "error": "#ba1a1a", "surface-dim": "#cbdbf5", "on-error-container": "#93000a", "status-success-text": "#166534", "on-primary-container": "#fffbff", "sidebar-bg": "#242B35", "on-tertiary": "#ffffff", "surface-variant": "#d3e4fe", "surface-container": "#e5eeff" }, borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, spacing: { "margin": "2rem", "margin-mobile": "1rem", "space-lg": "1.5rem", "space-xs": "0.25rem", "space-xl": "2rem", "gutter": "1.5rem", "space-sm": "0.5rem", "space-md": "1rem", "gutter-mobile": "1rem" }, fontFamily: { "table-header": ["Inter"], "headline-h1": ["Inter"], "display-kpi-mobile": ["Inter"], "headline-h1-mobile": ["Inter"], "headline-h3": ["Inter"], "body-semibold": ["Inter"], "caption-meta": ["Inter"], "headline-h2": ["Inter"], "button-text": ["Inter"], "form-label": ["Inter"], "display-kpi": ["Inter"], "body-default": ["Inter"], "table-data": ["Inter"] }, fontSize: { "table-header": ["12px", { "lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "600" }], "headline-h1": ["28px", { "lineHeight": "36px", "letterSpacing": "-0.02em", "fontWeight": "700" }], "display-kpi-mobile": ["26px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700" }], "headline-h1-mobile": ["22px", { "lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "700" }], "headline-h3": ["16px", { "lineHeight": "24px", "letterSpacing": "-0.005em", "fontWeight": "600" }], "body-semibold": ["14px", { "lineHeight": "20px", "fontWeight": "600" }], "caption-meta": ["12px", { "lineHeight": "16px", "fontWeight": "400" }], "headline-h2": ["20px", { "lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600" }], "button-text": ["14px", { "lineHeight": "20px", "fontWeight": "600" }], "form-label": ["13px", { "lineHeight": "18px", "fontWeight": "500" }], "display-kpi": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }], "body-default": ["14px", { "lineHeight": "20px", "fontWeight": "400" }], "table-data": ["13px", { "lineHeight": "18px", "fontWeight": "400" }] } } } };</script></head><body class="bg-app-bg text-text-primary antialiased"><aside class="fixed left-0 top-0 h-screen w-[250px] bg-sidebar-bg text-sidebar-text z-50 flex flex-col justify-between border-r border-border-default/20"><div class="flex flex-col flex-1 min-h-0"><div class="h-16 px-space-md flex items-center gap-space-sm border-b border-border-default/20 shrink-0"><img alt="Logistics Brand Mark" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/ALJJyrBIIjTx9TJyaLvDoO3WBkgxTJtN5pX7Jsi9HcxR_YMth4Fw5SB1h6d45hF55umb91ZHS_7iiuxcK3gsTD4jsBWsUR3S5StgJwEFYSfFOUCbpXbnseB2H1exYiZ95-BcxwF9xKKVX0ckAfZcbij8HvqSpCzHsRTXO-yXJrOZ-t3FlfcNNNmDBSMN0GZpSxhf3Qs87Aoe4k7dR8QIQzEmWycADB2a5sF2w5gTKdctH3gP"/><div class="flex flex-col"><span class="text-xs font-bold tracking-wider text-sidebar-text leading-none uppercase">LOGISTICS</span><span class="text-[10px] font-semibold text-sidebar-muted tracking-widest mt-0.5">WAREHOUSE SYSTEM</span></div></div><div class="flex-1 overflow-y-auto px-space-sm py-space-md space-y-space-md"><div class="space-y-1"><div class="px-space-sm text-[11px] font-bold text-sidebar-muted tracking-wider uppercase font-caption-meta">OVERVIEW</div><nav class="space-y-0.5" data-active-classes="bg-[#C45D16] text-white font-semibold rounded-lg shadow-sm"><a class="flex items-center px-space-sm py-2 rounded-lg text-sidebar-text text-sm hover:bg-primary-hover hover:text-on-primary transition-colors" data-path="dashboard" href="#"><span>Dashboard</span></a></nav></div><div class="space-y-1"><div class="px-space-sm text-[11px] font-bold text-sidebar-muted tracking-wider uppercase font-caption-meta">CATALOG &amp; STORAGE</div><nav class="space-y-0.5" data-active-classes="bg-[#C45D16] text-white font-semibold rounded-lg shadow-sm"><a class="flex items-center px-space-sm py-2 rounded-lg text-sidebar-text text-sm hover:bg-primary-hover hover:text-on-primary transition-colors" data-path="products" href="#"><span>Products</span></a><a class="flex items-center px-space-sm py-2 rounded-lg text-sidebar-text text-sm hover:bg-primary-hover hover:text-on-primary transition-colors" data-path="warehouses" href="#"><span>Warehouses</span></a><a class="flex items-center px-space-sm py-2 rounded-lg text-sidebar-text text-sm hover:bg-primary-hover hover:text-on-primary transition-colors" data-path="inventory" href="#"><span>Inventory</span></a></nav></div><div class="space-y-1"><div class="px-space-sm text-[11px] font-bold text-sidebar-muted tracking-wider uppercase font-caption-meta">OPERATIONS</div><nav class="space-y-0.5" data-active-classes="bg-[#C45D16] text-white font-semibold rounded-lg shadow-sm"><a class="flex items-center px-space-sm py-2 rounded-lg text-sidebar-text text-sm hover:bg-primary-hover hover:text-on-primary transition-colors" data-path="inbound-operations" href="#"><span>Inbound Operations</span></a><a class="flex items-center px-space-sm py-2 rounded-lg text-sidebar-text text-sm hover:bg-primary-hover hover:text-on-primary transition-colors" data-path="outbound-operations" href="#"><span>Outbound Operations</span></a><a class="flex items-center px-space-sm py-2 rounded-lg text-sidebar-text text-sm hover:bg-primary-hover hover:text-on-primary transition-colors" data-path="shipments" href="#"><span>Shipments</span></a></nav></div><div class="space-y-1"><div class="px-space-sm text-[11px] font-bold text-sidebar-muted tracking-wider uppercase font-caption-meta">INSIGHTS</div><nav class="space-y-0.5" data-active-classes="bg-[#C45D16] text-white font-semibold rounded-lg shadow-sm"><a class="flex items-center px-space-sm py-2 rounded-lg text-sidebar-text text-sm hover:bg-primary-hover hover:text-on-primary transition-colors" data-path="reports-and-analytics" href="#"><span>Reports &amp; Analytics</span></a><a class="flex items-center px-space-sm py-2 rounded-lg text-sidebar-text text-sm hover:bg-primary-hover hover:text-on-primary transition-colors" data-path="audit-logs" href="#"><span>Audit Logs</span></a></nav></div><div class="space-y-1"><div class="px-space-sm text-[11px] font-bold text-sidebar-muted tracking-wider uppercase font-caption-meta">ADMINISTRATION</div><nav class="space-y-0.5" data-active-classes="bg-[#C45D16] text-white font-semibold rounded-lg shadow-sm"><a class="flex items-center px-space-sm py-2 rounded-lg text-sidebar-text text-sm hover:bg-primary-hover hover:text-on-primary transition-colors" data-path="user-management" href="#"><span>User Management</span></a><a class="flex items-center px-space-sm py-2 rounded-lg text-sidebar-text text-sm hover:bg-primary-hover hover:text-on-primary transition-colors" data-path="roles-and-permissions" href="#"><span>Roles &amp; Permissions</span></a><a class="flex items-center px-space-sm py-2 rounded-lg text-sidebar-text text-sm hover:bg-primary-hover hover:text-on-primary transition-colors" data-path="system-settings" href="#"><span>System Settings</span></a></nav></div></div></div><div class="p-space-sm border-t border-border-default/20 bg-sidebar-bg shrink-0"><div class="space-y-1 mb-2"><div class="px-space-sm text-[11px] font-bold text-sidebar-muted tracking-wider uppercase font-caption-meta">ACCOUNT</div><nav class="space-y-0.5" data-active-classes="bg-[#C45D16] text-white font-semibold rounded-lg shadow-sm"><a class="flex items-center px-space-sm py-2 rounded-lg text-sidebar-text text-sm hover:bg-primary-hover hover:text-on-primary transition-colors" data-path="my-profile" href="#"><span>My Profile</span></a></nav></div><div class="flex items-center justify-between p-space-sm rounded-lg bg-inverse-surface/40"><div class="flex items-center gap-space-sm"><img alt="Marcus Vance" class="w-8 h-8 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDpJz5Ls2ywARcAECd_jYcyZHGBDfEL_b4f4aVJ4mEEd3MQJnxtzu-2lOE3PbHZphx3RQF8w1yhT-huSPglZYuxsgyhlzhQdkz8ahqCxjyLBF0O7A-pcOY3ZttTTrbeAcDDWHCZpXK8-OsbjLVs9ZolkuocYtJfSxcuc2-S6tq6rh3Uj091DeFL_nfGOzTbGfMgtGS6OpTQ30y4vXstBnvRqIUiCw9NQWfGM1_Z9WrJ"/><div class="flex flex-col min-w-0"><span class="text-xs font-semibold text-sidebar-text truncate leading-tight">Marcus Vance</span><span class="text-[11px] text-sidebar-muted truncate leading-tight">Warehouse Manager</span></div></div><button class="text-sidebar-muted hover:text-on-primary p-1 rounded-md transition-colors" type="button"><span class="material-symbols-outlined text-[18px]">logout</span></button></div></div></aside><div class="pl-[250px]"><header class="fixed top-0 left-[250px] right-0 h-16 bg-surface z-40 border-b border-border-default flex items-center justify-between px-space-xl"><div class="flex items-center text-xs font-semibold text-text-secondary gap-2"><span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-status-success-bg text-status-success-text text-[11px] font-semibold"><span class="w-1.5 h-1.5 rounded-full bg-status-success-text"></span>Warehouse Status: Operational</span><span class="text-border-default">/</span><span class="text-text-primary font-bold">Outbound Operations</span></div><div class="flex items-center gap-space-md"><div class="relative w-80"><span class="material-symbols-outlined absolute left-3 top-2.5 text-text-secondary text-[18px]">search</span><input class="w-full pl-9 pr-3 py-1.5 text-xs bg-app-bg border border-border-default rounded-lg focus:outline-none focus:border-primary text-text-primary placeholder:text-text-secondary transition-all" placeholder="Search products, orders, SKU..." type="text"/></div><div class="flex items-center gap-1"><button class="relative p-2 text-text-secondary hover:text-text-primary rounded-lg transition-colors" type="button"><span class="material-symbols-outlined text-[20px]">notifications</span><span class="absolute top-1.5 right-1.5 w-2 h-2 bg-primary rounded-full ring-2 ring-surface"></span></button><button class="p-2 text-text-secondary hover:text-text-primary rounded-lg transition-colors" type="button"><span class="material-symbols-outlined text-[20px]">help</span></button></div><div class="h-5 w-px bg-border-default mx-1"></div><div class="flex items-center gap-space-sm pl-1"><img alt="Marcus Vance" class="w-8 h-8 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDpJz5Ls2ywARcAECd_jYcyZHGBDfEL_b4f4aVJ4mEEd3MQJnxtzu-2lOE3PbHZphx3RQF8w1yhT-huSPglZYuxsgyhlzhQdkz8ahqCxjyLBF0O7A-pcOY3ZttTTrbeAcDDWHCZpXK8-OsbjLVs9ZolkuocYtJfSxcuc2-S6tq6rh3Uj091DeFL_nfGOzTbGfMgtGS6OpTQ30y4vXstBnvRqIUiCw9NQWfGM1_Z9WrJ"/><div class="hidden sm:flex flex-col text-left"><span class="text-xs font-bold text-text-primary leading-tight">Marcus Vance</span><span class="text-[10px] text-text-secondary leading-tight">Operations Lead / Warehouse Manager</span></div><span class="material-symbols-outlined text-text-secondary text-[16px]">expand_more</span></div></div></header><main class="relative pt-16 min-h-screen bg-app-bg px-space-xl py-space-lg"><div class="flex flex-col w-full">
+<!-- Top Command & Action Bar -->
+<div class="flex flex-col md:flex-row md:items-center justify-between pb-space-lg mb-space-lg">
+<div class="flex flex-col">
+<div class="flex items-center gap-2 mb-1.5 text-caption-meta font-caption-meta text-text-secondary">
+<span>Operations</span>
+<span class="material-symbols-outlined text-[13px] text-text-secondary">chevron_right</span>
+<span>Outbound Operations</span>
+<span class="material-symbols-outlined text-[13px] text-text-secondary">chevron_right</span>
+<span class="text-text-primary font-body-semibold">New Outbound Order</span>
+</div>
+<h1 class="text-headline-h1 font-headline-h1 text-text-primary tracking-tight">Create Outbound Order</h1>
+<p class="text-body-default font-body-default text-text-secondary mt-1">
+        Configure customer destination, source fulfillment warehouse, allocation priority, and requested line items.
+      </p>
+</div>
+<!-- Quick Action Controls -->
+<div class="flex items-center gap-space-sm mt-4 md:mt-0">
+<button class="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-lg bg-surface text-text-primary font-button-text text-button-text shadow-sm hover:bg-surface-container-low transition-colors duration-150" type="button">
+<span class="material-symbols-outlined text-[18px] text-text-secondary">save</span>
+<span>Save as Draft</span>
+</button>
+<button class="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-primary-container text-on-primary-container font-button-text text-button-text shadow-sm hover:bg-primary transition-all duration-150" type="button">
+<span class="material-symbols-outlined text-[18px]">verified</span>
+<span>Create &amp; Authorize Order</span>
+</button>
+</div>
+</div>
+<!-- 2-Column Ergonomic Form Layout -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-lg items-start">
+<!-- LEFT MAIN COLUMN (~65%) -->
+<div class="lg:col-span-8 flex flex-col gap-space-lg">
+<!-- Card 1: General Information -->
+<div class="bg-surface rounded-xl p-space-lg shadow-sm flex flex-col">
+<!-- Card Top Bar: Title & Stage Indicator -->
+<div class="flex flex-col sm:flex-row sm:items-center justify-between pb-space-md mb-space-md bg-surface-container-low rounded-lg p-3">
+<div class="flex items-center gap-2.5">
+<div class="w-8 h-8 rounded-lg bg-primary-container/10 flex items-center justify-center text-primary-container">
+<span class="material-symbols-outlined text-[20px]">local_shipping</span>
+</div>
+<div>
+<span class="text-headline-h3 font-headline-h3 text-text-primary block">General Information</span>
+<span class="text-caption-meta font-caption-meta text-text-secondary">Primary outbound parameters and logistics lane</span>
+</div>
+</div>
+<div class="mt-2 sm:mt-0 flex items-center gap-2">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-status-info-bg text-status-info-text text-caption-meta font-body-semibold">
+<span class="w-2 h-2 rounded-full bg-status-info-text animate-pulse"></span>
+              Stage: Order Draft &amp; Stock Allocation
+            </span>
+</div>
+</div>
+<!-- Order Form Fields Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-space-md">
+<!-- Outbound Reference ID -->
+<div class="flex flex-col gap-1.5">
+<label class="text-form-label font-form-label text-text-primary flex items-center justify-between">
+<span>Outbound Reference ID</span>
+<span class="text-caption-meta font-caption-meta text-text-secondary flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">lock</span> Auto-generated
+              </span>
+</label>
+<div class="relative">
+<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-text-secondary">
+<span class="material-symbols-outlined text-[18px]">tag</span>
+</div>
+<input class="w-full pl-9 pr-3 py-2 bg-surface-container-low text-text-primary font-body-semibold text-body-semibold rounded-lg focus:outline-none cursor-not-allowed" readonly="" type="text" value="#OUT-2024-9415"/>
+</div>
+</div>
+<!-- Customer PO / Reference -->
+<div class="flex flex-col gap-1.5">
+<label class="text-form-label font-form-label text-text-primary flex items-center justify-between">
+<span>Customer PO / Reference</span>
+<span class="text-caption-meta font-caption-meta text-text-secondary">Required</span>
+</label>
+<div class="relative">
+<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-text-secondary">
+<span class="material-symbols-outlined text-[18px]">receipt_long</span>
+</div>
+<input class="w-full pl-9 pr-3 py-2 bg-surface-container-lowest text-text-primary font-body-default text-body-default rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-container/20 transition-all" type="text" value="PO-APEX-9921"/>
+</div>
+</div>
+<!-- Customer / Destination Picker -->
+<div class="flex flex-col gap-1.5 md:col-span-2">
+<label class="text-form-label font-form-label text-text-primary flex items-center justify-between">
+<span>Customer / Destination Consignee</span>
+<span class="inline-flex items-center gap-1 text-[11px] font-body-semibold text-status-success-text bg-status-success-bg px-2 py-0.5 rounded-full">
+<span class="material-symbols-outlined text-[13px]">verified</span> Verified Partner
+              </span>
+</label>
+<div class="relative">
+<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-primary-container">
+<span class="material-symbols-outlined text-[20px]">domain</span>
+</div>
+<select class="w-full pl-10 pr-10 py-2.5 bg-surface-container-lowest text-text-primary font-body-semibold text-body-semibold rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-container/20 appearance-none cursor-pointer">
+<option selected="">Apex Retail Logistics (Consignee: CL-8841 - Dallas, TX)</option>
+<option>Summit Freight Consolidators (Consignee: SF-4120 - Austin, TX)</option>
+<option>Pinnacle Commerce Direct (Consignee: PC-1049 - Houston, TX)</option>
+</select>
+<div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none text-text-secondary">
+<span class="material-symbols-outlined text-[20px]">unfold_more</span>
+</div>
+</div>
+<p class="text-caption-meta font-caption-meta text-text-secondary pl-1">Delivery Dock: 1400 Mountain Creek Pkwy, Bldg 4, Dock Doors 12-16, Dallas TX 75236</p>
+</div>
+<!-- Source Fulfillment Warehouse -->
+<div class="flex flex-col gap-1.5">
+<label class="text-form-label font-form-label text-text-primary">Source Fulfillment Warehouse</label>
+<div class="relative">
+<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-text-secondary">
+<span class="material-symbols-outlined text-[18px]">warehouse</span>
+</div>
+<select class="w-full pl-9 pr-9 py-2 bg-surface-container-lowest text-text-primary font-body-default text-body-default rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-container/20 appearance-none cursor-pointer">
+<option selected="">Central Logistics Hub (WH-KM-001 - Kansas City)</option>
+<option>Midwest Distribution Depot (WH-IL-002 - Chicago)</option>
+<option>Southern Gateway Terminal (WH-TX-004 - Fort Worth)</option>
+</select>
+<div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none text-text-secondary">
+<span class="material-symbols-outlined text-[18px]">expand_more</span>
+</div>
+</div>
+</div>
+<!-- Destination Dock / Departure Bay -->
+<div class="flex flex-col gap-1.5">
+<label class="text-form-label font-form-label text-text-primary">Destination Dock / Departure Bay</label>
+<div class="relative">
+<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-text-secondary">
+<span class="material-symbols-outlined text-[18px]">rv_hookup</span>
+</div>
+<select class="w-full pl-9 pr-9 py-2 bg-surface-container-lowest text-text-primary font-body-default text-body-default rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-container/20 appearance-none cursor-pointer">
+<option selected="">Dock Gate 05 (Outbound Marshalling)</option>
+<option>Dock Gate 06 (Outbound High-Volume)</option>
+<option>Dock Gate 07 (Express Cross-Dock)</option>
+<option>Dock Gate 08 (Direct Intermodal Staging)</option>
+</select>
+<div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none text-text-secondary">
+<span class="material-symbols-outlined text-[18px]">expand_more</span>
+</div>
+</div>
+</div>
+<!-- Requested Delivery Date -->
+<div class="flex flex-col gap-1.5">
+<label class="text-form-label font-form-label text-text-primary">Requested Delivery Date</label>
+<div class="relative">
+<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-text-secondary">
+<span class="material-symbols-outlined text-[18px]">calendar_today</span>
+</div>
+<input class="w-full pl-9 pr-3 py-2 bg-surface-container-lowest text-text-primary font-body-default text-body-default rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-container/20" type="text" value="Oct 26, 2024"/>
+</div>
+</div>
+<!-- Fulfillment Priority -->
+<div class="flex flex-col gap-1.5">
+<label class="text-form-label font-form-label text-text-primary">Fulfillment Priority</label>
+<div class="relative">
+<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-status-warning-text">
+<span class="material-symbols-outlined text-[18px]">bolt</span>
+</div>
+<select class="w-full pl-9 pr-9 py-2 bg-surface-container-lowest text-text-primary font-body-semibold text-body-semibold rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-container/20 appearance-none cursor-pointer">
+<option selected="">Urgent (Express Dispatch)</option>
+<option>Standard (Next Scheduled Wave)</option>
+<option>Economy (Buffer Backlog)</option>
+</select>
+<div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none text-text-secondary">
+<span class="material-symbols-outlined text-[18px]">expand_more</span>
+</div>
+</div>
+</div>
+<!-- Assigned Freight Carrier -->
+<div class="flex flex-col gap-1.5 md:col-span-2">
+<label class="text-form-label font-form-label text-text-primary">Assigned Freight Carrier</label>
+<div class="flex items-center gap-3 p-3 bg-surface-container-low rounded-lg">
+<div class="w-10 h-10 rounded-md bg-surface flex items-center justify-center text-text-primary shrink-0 shadow-sm font-bold text-xs tracking-wider">
+                KS
+              </div>
+<div class="flex-1 min-w-0">
+<div class="flex items-center gap-2">
+<span class="font-body-semibold text-body-semibold text-text-primary truncate">Knight-Swift Logistics</span>
+<span class="px-2 py-0.5 bg-status-neutral-bg text-status-neutral-text text-[11px] font-body-semibold rounded">Contracted Lane</span>
+</div>
+<span class="text-caption-meta font-caption-meta text-text-secondary truncate block">Service: TL Dry Van 53' Dedicated | Lane: KC-MCI → DAL-DFW (Est. 9.5 hrs transit)</span>
+</div>
+<button class="text-caption-meta font-body-semibold text-primary hover:text-primary-hover px-2 py-1 rounded hover:bg-surface transition-colors shrink-0" type="button">
+                Change Carrier
+              </button>
+</div>
+</div>
+<!-- Special Dispatch Instructions -->
+<div class="flex flex-col gap-1.5 md:col-span-2">
+<label class="text-form-label font-form-label text-text-primary flex items-center justify-between">
+<span>Special Dispatch &amp; Handling Instructions</span>
+<span class="text-caption-meta font-caption-meta text-text-secondary">Staging Bay Alert</span>
+</label>
+<div class="relative">
+<textarea class="w-full p-3 bg-surface-container-lowest text-text-primary font-body-default text-body-default rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-container/20 resize-none" rows="2">Fragile electronic sensors. Pallet wrap double-banded. Forklift side-entry only.</textarea>
+</div>
+</div>
+</div>
+</div>
+<!-- Card 2: Requested Line Items Manifest -->
+<div class="bg-surface rounded-xl p-space-lg shadow-sm flex flex-col">
+<!-- Header -->
+<div class="flex flex-col sm:flex-row sm:items-center justify-between pb-space-md mb-space-md gap-3">
+<div class="flex items-center gap-2.5">
+<div class="w-8 h-8 rounded-lg bg-surface-container flex items-center justify-center text-text-primary">
+<span class="material-symbols-outlined text-[20px]">inventory_2</span>
+</div>
+<div>
+<div class="flex items-center gap-2">
+<h3 class="text-headline-h3 font-headline-h3 text-text-primary">Requested Line Items Manifest</h3>
+<span class="px-2 py-0.5 rounded-full bg-status-info-bg text-status-info-text text-[11px] font-body-semibold">3 Line Items Selected</span>
+</div>
+<span class="text-caption-meta font-caption-meta text-text-secondary">Wave reservation will lock inventory upon creation</span>
+</div>
+</div>
+<button class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface text-primary-container font-button-text text-button-text shadow-sm hover:bg-surface-container-low transition-colors self-start sm:self-auto" type="button">
+<span class="material-symbols-outlined text-[18px]">add</span>
+<span>Add Product Line</span>
+</button>
+</div>
+<!-- Table Container -->
+<div class="overflow-x-auto rounded-lg bg-surface">
+<table class="w-full text-left">
+<thead>
+<tr class="bg-surface-container-low text-text-secondary text-table-header font-table-header">
+<th class="py-3 px-3">PRODUCT / SKU</th>
+<th class="py-3 px-3">ON-HAND NET AVAILABILITY</th>
+<th class="py-3 px-3 w-32">REQUESTED QTY</th>
+<th class="py-3 px-3">ALLOCATION STATUS</th>
+<th class="py-3 px-3 text-right">EST. UNIT</th>
+<th class="py-3 px-3 text-right">SUBTOTAL</th>
+<th class="py-3 px-2 w-10 text-center"></th>
+</tr>
+</thead>
+<tbody class="text-table-data font-table-data">
+<!-- Item 1 -->
+<tr class="hover:bg-surface-container-low/50 transition-colors">
+<td class="py-3.5 px-3">
+<div class="flex items-center gap-3">
+<div class="w-9 h-9 rounded bg-surface-container-high/40 flex items-center justify-center text-text-secondary shrink-0">
+<span class="material-symbols-outlined text-[20px]">layers</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-body-semibold text-body-semibold text-text-primary truncate">Heavy Duty Pallet Straps 19mm</span>
+<span class="text-caption-meta font-caption-meta text-text-secondary">SKU-8842 • Zone A, Bay 04-B</span>
+</div>
+</div>
+</td>
+<td class="py-3.5 px-3">
+<div class="flex flex-col">
+<span class="font-body-semibold text-text-primary">18 Rolls</span>
+<span class="text-caption-meta text-status-success-text font-caption-meta flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-status-success-text"></span> Stock Healthy
+                    </span>
+</div>
+</td>
+<td class="py-3.5 px-3">
+<div class="flex items-center gap-1.5">
+<input class="w-20 px-2.5 py-1 text-center font-body-semibold text-text-primary bg-surface-container-lowest rounded-md focus:outline-none focus:ring-2 focus:ring-primary-container/20 text-xs" max="18" min="1" type="number" value="12"/>
+<span class="text-caption-meta text-text-secondary">Rolls</span>
+</div>
+</td>
+<td class="py-3.5 px-3">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-status-success-bg text-status-success-text text-caption-meta font-body-semibold whitespace-nowrap">
+<span class="material-symbols-outlined text-[14px]">check_circle</span>
+                    100% Reserved
+                  </span>
+</td>
+<td class="py-3.5 px-3 text-right font-table-data tabular-nums text-text-secondary">
+                  $42.50
+                </td>
+<td class="py-3.5 px-3 text-right font-body-semibold tabular-nums text-text-primary">
+                  $510.00
+                </td>
+<td class="py-3.5 px-2 text-center">
+<button class="text-text-secondary hover:text-error transition-colors p-1 rounded" type="button">
+<span class="material-symbols-outlined text-[16px]">close</span>
+</button>
+</td>
+</tr>
+<!-- Item 2 -->
+<tr class="hover:bg-surface-container-low/50 transition-colors">
+<td class="py-3.5 px-3">
+<div class="flex items-center gap-3">
+<div class="w-9 h-9 rounded bg-surface-container-high/40 flex items-center justify-center text-text-secondary shrink-0">
+<span class="material-symbols-outlined text-[20px]">texture</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-body-semibold text-body-semibold text-text-primary truncate">Industrial Shrink Film 23 Micron</span>
+<span class="text-caption-meta font-caption-meta text-text-secondary">SKU-7721 • Zone A, Bay 11-A</span>
+</div>
+</div>
+</td>
+<td class="py-3.5 px-3">
+<div class="flex flex-col">
+<span class="font-body-semibold text-text-primary">480 Rolls</span>
+<span class="text-caption-meta text-status-success-text font-caption-meta flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-status-success-text"></span> Stock Healthy
+                    </span>
+</div>
+</td>
+<td class="py-3.5 px-3">
+<div class="flex items-center gap-1.5">
+<input class="w-20 px-2.5 py-1 text-center font-body-semibold text-text-primary bg-surface-container-lowest rounded-md focus:outline-none focus:ring-2 focus:ring-primary-container/20 text-xs" max="480" min="1" type="number" value="40"/>
+<span class="text-caption-meta text-text-secondary">Rolls</span>
+</div>
+</td>
+<td class="py-3.5 px-3">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-status-success-bg text-status-success-text text-caption-meta font-body-semibold whitespace-nowrap">
+<span class="material-symbols-outlined text-[14px]">check_circle</span>
+                    100% Reserved
+                  </span>
+</td>
+<td class="py-3.5 px-3 text-right font-table-data tabular-nums text-text-secondary">
+                  $28.00
+                </td>
+<td class="py-3.5 px-3 text-right font-body-semibold tabular-nums text-text-primary">
+                  $1,120.00
+                </td>
+<td class="py-3.5 px-2 text-center">
+<button class="text-text-secondary hover:text-error transition-colors p-1 rounded" type="button">
+<span class="material-symbols-outlined text-[16px]">close</span>
+</button>
+</td>
+</tr>
+<!-- Item 3 -->
+<tr class="hover:bg-surface-container-low/50 transition-colors">
+<td class="py-3.5 px-3">
+<div class="flex items-center gap-3">
+<div class="w-9 h-9 rounded bg-surface-container-high/40 flex items-center justify-center text-text-secondary shrink-0">
+<span class="material-symbols-outlined text-[20px]">package_2</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-body-semibold text-body-semibold text-text-primary truncate">Corrugated Shipping Boxes 400x300</span>
+<span class="text-caption-meta font-caption-meta text-text-secondary">SKU-4402 • Zone C, Bay 02-D</span>
+</div>
+</div>
+</td>
+<td class="py-3.5 px-3">
+<div class="flex flex-col">
+<span class="font-body-semibold text-text-primary">2,400 Bundles</span>
+<span class="text-caption-meta text-status-success-text font-caption-meta flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-status-success-text"></span> Stock Healthy
+                    </span>
+</div>
+</td>
+<td class="py-3.5 px-3">
+<div class="flex items-center gap-1.5">
+<input class="w-20 px-2.5 py-1 text-center font-body-semibold text-text-primary bg-surface-container-lowest rounded-md focus:outline-none focus:ring-2 focus:ring-primary-container/20 text-xs" max="2400" min="1" type="number" value="60"/>
+<span class="text-caption-meta text-text-secondary">Bundles</span>
+</div>
+</td>
+<td class="py-3.5 px-3">
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-status-success-bg text-status-success-text text-caption-meta font-body-semibold whitespace-nowrap">
+<span class="material-symbols-outlined text-[14px]">check_circle</span>
+                    100% Reserved
+                  </span>
+</td>
+<td class="py-3.5 px-3 text-right font-table-data tabular-nums text-text-secondary">
+                  $15.20
+                </td>
+<td class="py-3.5 px-3 text-right font-body-semibold tabular-nums text-text-primary">
+                  $912.00
+                </td>
+<td class="py-3.5 px-2 text-center">
+<button class="text-text-secondary hover:text-error transition-colors p-1 rounded" type="button">
+<span class="material-symbols-outlined text-[16px]">close</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Real-Time Stock Verification Banner -->
+<div class="mt-4 p-3.5 bg-status-success-bg/60 rounded-lg flex items-start gap-2.5">
+<span class="material-symbols-outlined text-status-success-text text-[20px] shrink-0 mt-0.5">verified_user</span>
+<div class="text-caption-meta font-caption-meta text-status-success-text leading-relaxed">
+<span class="font-body-semibold">Backend-verified real-time stock allocation check:</span> All 112 requested units are currently available for immediate wave reservation at Central Hub. No backorders detected.
+          </div>
+</div>
+</div>
+</div>
+<!-- RIGHT SUMMARY & ALLOCATION PANEL (~35%) -->
+<div class="lg:col-span-4 flex flex-col gap-space-lg">
+<!-- Card 1: Order Fulfillment Summary -->
+<div class="bg-surface rounded-xl p-space-lg shadow-sm flex flex-col">
+<div class="flex items-center justify-between pb-3 mb-space-md">
+<h2 class="text-headline-h2 font-headline-h2 text-text-primary">Order Fulfillment Summary</h2>
+<span class="material-symbols-outlined text-text-secondary text-[20px]">analytics</span>
+</div>
+<!-- Quantitative Metric Tiles -->
+<div class="flex flex-col gap-3">
+<div class="flex items-center justify-between p-3 rounded-lg bg-surface-container-low">
+<span class="text-caption-meta font-table-header uppercase text-text-secondary tracking-wider">Total Line Items</span>
+<span class="font-body-semibold text-body-semibold text-text-primary">3 SKUs</span>
+</div>
+<div class="flex items-center justify-between p-3 rounded-lg bg-surface-container-low">
+<span class="text-caption-meta font-table-header uppercase text-text-secondary tracking-wider">Total Requested Units</span>
+<div class="text-right">
+<span class="font-body-semibold text-body-semibold text-text-primary block">112 Units</span>
+<span class="text-[11px] font-caption-meta text-status-success-text">100% Allocated</span>
+</div>
+</div>
+<div class="flex items-center justify-between p-3 rounded-lg bg-surface-container-low">
+<span class="text-caption-meta font-table-header uppercase text-text-secondary tracking-wider">Est. Cargo Weight</span>
+<div class="text-right">
+<span class="font-body-semibold text-body-semibold text-text-primary block">1,840 kg</span>
+<span class="text-[11px] font-caption-meta text-text-secondary">Gross Tare + Pack</span>
+</div>
+</div>
+<div class="flex items-center justify-between p-3 rounded-lg bg-surface-container-low">
+<span class="text-caption-meta font-table-header uppercase text-text-secondary tracking-wider">Total Volume</span>
+<div class="text-right">
+<span class="font-body-semibold text-body-semibold text-text-primary block">8.6 m³</span>
+<span class="text-[11px] font-caption-meta text-text-secondary">~4 Standard Pallets</span>
+</div>
+</div>
+<!-- Total Highlight Box -->
+<div class="p-4 rounded-xl bg-surface-container-high/50 flex items-center justify-between mt-1">
+<div class="flex flex-col">
+<span class="text-caption-meta font-table-header uppercase text-text-secondary tracking-wider">Est. Consignment Value</span>
+<span class="text-caption-meta font-caption-meta text-text-secondary">Pre-freight billing</span>
+</div>
+<span class="text-display-kpi font-display-kpi text-text-primary tracking-tight">$2,542.00</span>
+</div>
+</div>
+<!-- Fulfillment Stepper -->
+<div class="mt-space-lg pt-space-md">
+<span class="text-caption-meta font-table-header uppercase text-text-secondary tracking-wider block mb-3">Fulfillment Lifecycle</span>
+<div class="relative pl-6 space-y-4">
+<!-- Step 1 (Current) -->
+<div class="relative">
+<span class="absolute -left-6 top-0.5 w-4 h-4 rounded-full bg-primary-container ring-4 ring-primary-container/20 flex items-center justify-center">
+<span class="w-1.5 h-1.5 rounded-full bg-on-primary-container"></span>
+</span>
+<div class="flex flex-col">
+<span class="text-body-semibold font-body-semibold text-text-primary leading-tight">1. Order Created</span>
+<span class="text-caption-meta font-caption-meta text-primary-container font-medium">Draft active &amp; validation in progress</span>
+</div>
+</div>
+<!-- Step 2 -->
+<div class="relative">
+<span class="absolute -left-6 top-0.5 w-4 h-4 rounded-full bg-surface-container-high flex items-center justify-center">
+<span class="w-1.5 h-1.5 rounded-full bg-text-secondary"></span>
+</span>
+<div class="flex flex-col">
+<span class="text-body-default font-body-default text-text-secondary leading-tight">2. Stock Allocation &amp; Reservation</span>
+<span class="text-caption-meta font-caption-meta text-text-secondary">Locks 112 inventory roll/bundles</span>
+</div>
+</div>
+<!-- Step 3 -->
+<div class="relative">
+<span class="absolute -left-6 top-0.5 w-4 h-4 rounded-full bg-surface-container-high flex items-center justify-center">
+<span class="w-1.5 h-1.5 rounded-full bg-text-secondary"></span>
+</span>
+<div class="flex flex-col">
+<span class="text-body-default font-body-default text-text-secondary leading-tight">3. Pick Wave Release</span>
+<span class="text-caption-meta font-caption-meta text-text-secondary">Terminal task assignment to floor</span>
+</div>
+</div>
+<!-- Step 4 -->
+<div class="relative">
+<span class="absolute -left-6 top-0.5 w-4 h-4 rounded-full bg-surface-container-high flex items-center justify-center">
+<span class="w-1.5 h-1.5 rounded-full bg-text-secondary"></span>
+</span>
+<div class="flex flex-col">
+<span class="text-body-default font-body-default text-text-secondary leading-tight">4. Packing &amp; Weight Verification</span>
+<span class="text-caption-meta font-caption-meta text-text-secondary">Scale check &amp; pallet banding</span>
+</div>
+</div>
+<!-- Step 5 -->
+<div class="relative">
+<span class="absolute -left-6 top-0.5 w-4 h-4 rounded-full bg-surface-container-high flex items-center justify-center">
+<span class="w-1.5 h-1.5 rounded-full bg-text-secondary"></span>
+</span>
+<div class="flex flex-col">
+<span class="text-body-default font-body-default text-text-secondary leading-tight">5. Staging &amp; Carrier Dispatch</span>
+<span class="text-caption-meta font-caption-meta text-text-secondary">Dock Gate 05 outbound trailer load</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Action Buttons -->
+<div class="flex flex-col gap-2 mt-space-lg pt-space-md">
+<button class="w-full py-3 rounded-lg bg-primary-container text-on-primary-container font-button-text text-button-text shadow-sm hover:bg-primary transition-colors flex items-center justify-center gap-2" type="button">
+<span class="material-symbols-outlined text-[18px]">outbox</span>
+<span>Confirm &amp; Release Wave</span>
+</button>
+<button class="w-full py-2.5 rounded-lg bg-surface text-text-secondary hover:text-text-primary font-button-text text-button-text transition-colors" type="button">
+            Cancel
+          </button>
+</div>
+</div>
+<!-- Card 2: Inventory Impact & Reserve Guard -->
+<div class="bg-surface rounded-xl p-space-lg shadow-sm flex flex-col gap-space-md">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary-container text-[20px]">shield_with_heart</span>
+<h3 class="text-headline-h3 font-headline-h3 text-text-primary">Inventory Impact &amp; Reserve Guard</h3>
+</div>
+<div class="space-y-3">
+<!-- Hub Capacity Check -->
+<div class="p-3 bg-surface-container-low rounded-lg flex items-start gap-2.5">
+<span class="material-symbols-outlined text-status-success-text text-[18px] shrink-0 mt-0.5">check_circle</span>
+<div class="flex flex-col min-w-0">
+<span class="text-form-label font-body-semibold text-text-primary">Central Hub Capacity Check</span>
+<span class="text-caption-meta font-caption-meta text-text-secondary">On-hand safety buffer preserved above target. Floor remaining headroom &gt;35%.</span>
+</div>
+</div>
+<!-- Outbound Wave Window -->
+<div class="p-3 bg-surface-container-low rounded-lg flex items-start gap-2.5">
+<span class="material-symbols-outlined text-status-warning-text text-[18px] shrink-0 mt-0.5">schedule</span>
+<div class="flex flex-col min-w-0">
+<span class="text-form-label font-body-semibold text-text-primary">Outbound Wave Cutoff Window</span>
+<span class="text-caption-meta font-caption-meta text-text-secondary">Next batch dispatch closes at <strong class="text-text-primary">16:00 CST today</strong> for scheduled overnight arrival.</span>
+</div>
+</div>
+<!-- Hazmat Certification -->
+<div class="p-3 bg-surface-container-low rounded-lg flex items-start gap-2.5">
+<span class="material-symbols-outlined text-text-secondary text-[18px] shrink-0 mt-0.5">verified</span>
+<div class="flex flex-col min-w-0">
+<span class="text-form-label font-body-semibold text-text-primary">Hazmat &amp; Compliance Tier</span>
+<span class="text-caption-meta font-caption-meta text-text-secondary">Ambient non-hazardous verified. Standard dry van transport protocols apply.</span>
+</div>
+</div>
+</div>
+<!-- Pallet Staging Utilization Visualizer (Inline SVG Micro-Chart) -->
+<div class="mt-2 p-3 bg-surface-container-low rounded-lg">
+<div class="flex items-center justify-between mb-2">
+<span class="text-caption-meta font-caption-meta text-text-secondary">Outbound Bay 05 Floor Staging</span>
+<span class="text-caption-meta font-body-semibold text-text-primary">4 / 12 Slots</span>
+</div>
+<div class="w-full bg-surface rounded-full h-2 overflow-hidden flex">
+<div class="bg-primary-container h-full rounded-full transition-all duration-500" style="width: 33.3%;"></div>
+</div>
+<div class="flex items-center justify-between text-[11px] text-text-secondary mt-1.5">
+<span>Staging load: 33%</span>
+<span class="text-status-success-text font-medium">Optimal flow</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div></main></div></body></html>

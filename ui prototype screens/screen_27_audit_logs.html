@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_dashboard" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{colors:{"primary-container":"#bc570f","surface-container-lowest":"#ffffff","secondary-container":"#d9e0ed","inverse-surface":"#213145","primary-hover":"#A94B0D","status-success-text":"#166534","status-danger-bg":"#FEE2E2","sidebar-bg":"#242B35","status-warning-text":"#92400E","surface-variant":"#d3e4fe","on-secondary":"#ffffff","secondary-fixed-dim":"#c0c7d4","secondary-fixed":"#dce3f0","status-danger-text":"#991B1B","text-primary":"#18212F","surface-container-low":"#eff4ff","on-primary":"#ffffff","surface-bright":"#f8f9ff","status-neutral-bg":"#F1F5F9","on-tertiary":"#ffffff","secondary":"#585f6a","on-surface":"#0b1c30","tertiary":"#8d4b00","sidebar-muted":"#94A3B8","on-tertiary-fixed":"#2f1500","background":"#f8f9ff","status-success-bg":"#DCFCE7","text-secondary":"#64748B","tertiary-fixed-dim":"#ffb77d","surface-dim":"#cbdbf5","surface-container-high":"#dce9ff","outline-variant":"#ddc1b3","on-primary-fixed":"#331200","error-container":"#ffdad6","on-error-container":"#93000a","on-background":"#0b1c30","surface-tint":"#9c4400","surface":"#FFFFFF","status-info-bg":"#DBEAFE","surface-container-highest":"#d3e4fe","error":"#ba1a1a","on-secondary-container":"#5c636e","tertiary-container":"#b15f00","app-bg":"#F6F7F9","primary-fixed":"#ffdbca","on-primary-fixed-variant":"#773200","inverse-primary":"#ffb68f","primary":"#984200","inverse-on-surface":"#eaf1ff","on-error":"#ffffff","surface-container":"#e5eeff","on-secondary-fixed":"#151c26","border-default":"#E2E8F0","on-surface-variant":"#564238","status-warning-bg":"#FEF3C7","on-tertiary-fixed-variant":"#6e3900","sidebar-text":"#E2E8F0","on-primary-container":"#fffbff","status-neutral-text":"#475569","tertiary-fixed":"#ffdcc3","status-info-text":"#1D4ED8","outline":"#8a7266","on-secondary-fixed-variant":"#404752","on-tertiary-container":"#fffbff","primary-fixed-dim":"#ffb68f"},borderRadius:{DEFAULT:"0.25rem",lg:"0.5rem",xl:"0.75rem",full:"9999px"},spacing:{"margin":"2rem","space-md":"1rem","space-xs":"0.25rem","space-xl":"2rem","gutter":"1.5rem","space-sm":"0.5rem","margin-mobile":"1rem","space-lg":"1.5rem","gutter-mobile":"1rem"},fontFamily:{"headline-h3":["Inter"],"body-semibold":["Inter"],"table-header":["Inter"],"headline-h1-mobile":["Inter"],"button-text":["Inter"],"display-kpi-mobile":["Inter"],"display-kpi":["Inter"],"caption-meta":["Inter"],"headline-h1":["Inter"],"form-label":["Inter"],"headline-h2":["Inter"],"table-data":["Inter"],"body-default":["Inter"]},fontSize:{"headline-h3":["16px",{lineHeight:"24px",letterSpacing:"-0.005em",fontWeight:"600"}],"body-semibold":["14px",{lineHeight:"20px",fontWeight:"600"}],"table-header":["12px",{lineHeight:"16px",letterSpacing:"0.04em",fontWeight:"600"}],"headline-h1-mobile":["22px",{lineHeight:"28px",letterSpacing:"-0.01em",fontWeight:"700"}],"button-text":["14px",{lineHeight:"20px",fontWeight:"600"}],"display-kpi-mobile":["26px",{lineHeight:"32px",letterSpacing:"-0.01em",fontWeight:"700"}],"display-kpi":["32px",{lineHeight:"40px",letterSpacing:"-0.02em",fontWeight:"700"}],"caption-meta":["12px",{lineHeight:"16px",fontWeight:"400"}],"headline-h1":["28px",{lineHeight:"36px",letterSpacing:"-0.02em",fontWeight:"700"}],"form-label":["13px",{lineHeight:"18px",fontWeight:"500"}],"headline-h2":["20px",{lineHeight:"28px",letterSpacing:"-0.01em",fontWeight:"600"}],"table-data":["13px",{lineHeight:"18px",fontWeight:"400"}],"body-default":["14px",{lineHeight:"20px",fontWeight:"400"}]}}}};</script></head><body class="bg-app-bg font-body-default text-text-primary antialiased"><aside class="fixed left-0 top-0 h-full w-[250px] bg-sidebar-bg z-50 flex flex-col justify-between overflow-y-auto"><div class="flex flex-col"><div class="h-16 px-space-lg flex items-center gap-space-sm bg-sidebar-bg"><div class="w-8 h-8 rounded bg-primary-container flex items-center justify-center shrink-0"><span class="material-symbols-outlined text-on-primary-container text-[20px]">warehouse</span></div><div class="flex flex-col min-w-0"><span class="text-[12px] font-headline-h3 font-bold uppercase tracking-wider text-sidebar-text truncate">Logistics WMS</span><span class="text-[10px] text-sidebar-muted tracking-tight truncate">Terminal Operations</span></div></div><div class="px-space-md py-space-sm"><nav class="space-y-space-md" data-active-classes="bg-primary-container text-on-primary-container font-body-semibold rounded shadow-sm"><div class="space-y-1"><div class="px-3 py-1 font-caption-meta text-caption-meta uppercase tracking-wider text-sidebar-muted font-semibold">Overview</div><a class="flex items-center px-3 py-2 text-sidebar-muted hover:bg-surface-variant/10 hover:text-sidebar-text rounded transition-colors text-body-default" data-path="dashboard" href="#">Dashboard</a></div><div class="space-y-1"><div class="px-3 py-1 font-caption-meta text-caption-meta uppercase tracking-wider text-sidebar-muted font-semibold">Catalog &amp; Storage</div><a class="flex items-center px-3 py-2 text-sidebar-muted hover:bg-surface-variant/10 hover:text-sidebar-text rounded transition-colors text-body-default" data-path="products" href="#">Products</a><a class="flex items-center px-3 py-2 text-sidebar-muted hover:bg-surface-variant/10 hover:text-sidebar-text rounded transition-colors text-body-default" data-path="warehouses" href="#">Warehouses</a><a class="flex items-center px-3 py-2 text-sidebar-muted hover:bg-surface-variant/10 hover:text-sidebar-text rounded transition-colors text-body-default" data-path="inventory" href="#">Inventory</a></div><div class="space-y-1"><div class="px-3 py-1 font-caption-meta text-caption-meta uppercase tracking-wider text-sidebar-muted font-semibold">Operations</div><a class="flex items-center px-3 py-2 text-sidebar-muted hover:bg-surface-variant/10 hover:text-sidebar-text rounded transition-colors text-body-default" data-path="inbound-operations" href="#">Inbound Operations</a><a class="flex items-center px-3 py-2 text-sidebar-muted hover:bg-surface-variant/10 hover:text-sidebar-text rounded transition-colors text-body-default" data-path="outbound-operations" href="#">Outbound Operations</a><a class="flex items-center px-3 py-2 text-sidebar-muted hover:bg-surface-variant/10 hover:text-sidebar-text rounded transition-colors text-body-default" data-path="shipments" href="#">Shipments</a></div><div class="space-y-1"><div class="px-3 py-1 font-caption-meta text-caption-meta uppercase tracking-wider text-sidebar-muted font-semibold">Insights</div><a class="flex items-center px-3 py-2 text-sidebar-muted hover:bg-surface-variant/10 hover:text-sidebar-text rounded transition-colors text-body-default" data-path="reports-and-analytics" href="#">Reports &amp; Analytics</a><a class="flex items-center px-3 py-2 text-sidebar-muted hover:bg-surface-variant/10 hover:text-sidebar-text rounded transition-colors text-body-default" data-path="screen-27-audit-logs" href="#">Audit Logs</a></div><div class="space-y-1"><div class="px-3 py-1 font-caption-meta text-caption-meta uppercase tracking-wider text-sidebar-muted font-semibold">Administration</div><a class="flex items-center px-3 py-2 text-sidebar-muted hover:bg-surface-variant/10 hover:text-sidebar-text rounded transition-colors text-body-default" data-path="screen-24-users-list" href="#">User Management</a><a class="flex items-center px-3 py-2 text-sidebar-muted hover:bg-surface-variant/10 hover:text-sidebar-text rounded transition-colors text-body-default" data-path="screen-26-roles-and-permissions" href="#">Roles &amp; Permissions</a><a class="flex items-center px-3 py-2 text-sidebar-muted hover:bg-surface-variant/10 hover:text-sidebar-text rounded transition-colors text-body-default" data-path="screen-29-system-settings" href="#">System Settings</a></div><div class="space-y-1"><div class="px-3 py-1 font-caption-meta text-caption-meta uppercase tracking-wider text-sidebar-muted font-semibold">Account</div><a class="flex items-center px-3 py-2 text-sidebar-muted hover:bg-surface-variant/10 hover:text-sidebar-text rounded transition-colors text-body-default" data-path="screen-28-my-profile" href="#">My Profile</a></div></nav></div></div><div class="p-space-md"><div class="flex items-center justify-between p-2 rounded bg-inverse-surface"><div class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-status-success-text"></span><span class="font-caption-meta text-caption-meta text-sidebar-muted">Dock Terminal A4</span></div><span class="font-caption-meta text-caption-meta text-sidebar-text font-bold">v3.4.2</span></div></div></aside><div class="pl-[250px]"><header class="fixed top-0 left-[250px] right-0 h-16 bg-surface z-40 flex items-center justify-between px-space-lg shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="flex items-center gap-space-lg"><div class="flex items-center gap-2 px-space-sm py-1 rounded bg-status-success-bg text-status-success-text font-body-semibold text-[12px]"><span class="w-2 h-2 rounded-full bg-status-success-text"></span><span>WH-01 Active</span></div><nav class="flex items-center gap-2 text-text-secondary font-caption-meta text-caption-meta"><span class="hover:text-text-primary transition-colors cursor-pointer">Console</span><span class="material-symbols-outlined text-[14px]">chevron_right</span><span class="hover:text-text-primary transition-colors cursor-pointer">Terminal</span></nav></div><div class="flex items-center gap-space-md"><div class="relative flex items-center"><span class="material-symbols-outlined absolute left-3 text-text-secondary text-[18px]">search</span><input class="w-64 h-9 pl-9 pr-3 rounded bg-app-bg text-text-primary font-body-default text-body-default placeholder:text-text-secondary focus:outline-none focus:ring-1 focus:ring-primary-container transition-all" placeholder="Search SKU, pallet, personnel..." type="text"/></div><button class="w-9 h-9 rounded bg-surface hover:bg-app-bg flex items-center justify-center text-text-secondary hover:text-text-primary transition-colors relative"><span class="material-symbols-outlined text-[20px]">notifications</span><span class="absolute top-2 right-2 w-2 h-2 rounded-full bg-primary-container"></span></button><button class="w-9 h-9 rounded bg-surface hover:bg-app-bg flex items-center justify-center text-text-secondary hover:text-text-primary transition-colors"><span class="material-symbols-outlined text-[20px]">help_outline</span></button><div class="h-6 w-[1px] bg-secondary-fixed"></div><div class="flex items-center gap-3 pl-1"><div class="text-right"><div class="font-body-semibold text-body-semibold text-text-primary leading-tight">Marcus Vance</div><div class="font-caption-meta text-caption-meta text-text-secondary leading-tight">Administrator / Operations Lead</div></div><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center shrink-0"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="relative pt-16 bg-app-bg min-h-screen"><div class="flex flex-col w-full">
+<!-- Top Utility Context Bar & Actions -->
+<div class="px-space-xl pt-space-lg pb-space-md flex flex-col md:flex-row md:items-center justify-between gap-space-md">
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-2 text-text-secondary font-caption-meta text-caption-meta mb-1">
+<span>Insights</span>
+<span class="material-symbols-outlined text-[13px]">chevron_right</span>
+<span class="text-text-primary font-body-semibold">Audit Logs</span>
+<span class="material-symbols-outlined text-[13px]">chevron_right</span>
+<span class="text-primary font-body-semibold">Ledger #WMS-SEC-2024-Q4</span>
+</div>
+<div class="flex items-center gap-space-sm flex-wrap">
+<h1 class="font-headline-h1 text-headline-h1 text-text-primary tracking-tight">Audit Logs &amp; Security Trail</h1>
+<span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-status-success-bg text-status-success-text font-caption-meta text-caption-meta font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-status-success-text animate-pulse"></span>
+          SOC 2 / ISO 9001 Compliant
+        </span>
+</div>
+<p class="font-body-default text-body-default text-text-secondary max-w-3xl mt-1">
+        Immutable cryptographic ledger of warehouse physical adjustments, authorization events, inventory movement overrides, and access control changes.
+      </p>
+</div>
+<!-- Header Operations Actions -->
+<div class="flex items-center gap-space-sm shrink-0 self-start md:self-auto">
+<button class="h-10 px-space-md bg-surface text-text-primary font-button-text text-button-text rounded-lg shadow-sm hover:bg-app-bg transition-colors flex items-center gap-2 border-0">
+<span class="material-symbols-outlined text-[18px] text-text-secondary">file_download</span>
+<span>Export Compliance Report</span>
+<span class="text-[11px] font-caption-meta text-text-secondary bg-app-bg px-1.5 py-0.5 rounded">CSV / JSON</span>
+</button>
+<button class="h-10 px-space-md bg-primary-container hover:bg-primary-hover text-on-primary-container font-button-text text-button-text rounded-lg shadow-sm transition-all flex items-center gap-2 border-0 active:scale-[0.98]">
+<span class="material-symbols-outlined text-[18px]">verified_user</span>
+<span>Generate Cryptographic Proof</span>
+</button>
+</div>
+</div>
+<!-- KPI Metrics Row -->
+<div class="px-space-xl pb-space-lg grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-space-md">
+<!-- Card 1 -->
+<div class="p-space-lg rounded-xl bg-surface shadow-sm relative overflow-hidden flex flex-col justify-between group">
+<div class="absolute -right-4 -top-4 w-20 h-20 bg-primary/5 rounded-full blur-xl pointer-events-none transition-transform group-hover:scale-125"></div>
+<div class="flex items-center justify-between mb-3">
+<span class="font-caption-meta text-caption-meta uppercase tracking-wider text-text-secondary font-semibold">Total Recorded Events (30D)</span>
+<div class="w-8 h-8 rounded-lg bg-surface-container flex items-center justify-center text-primary-container">
+<span class="material-symbols-outlined text-[18px]">shield</span>
+</div>
+</div>
+<div class="flex items-baseline gap-2 mb-1">
+<span class="font-display-kpi text-display-kpi text-text-primary tabular-nums">142,890</span>
+<span class="inline-flex items-center text-[12px] font-caption-meta font-semibold text-status-success-text bg-status-success-bg px-1.5 py-0.5 rounded">
+<span class="material-symbols-outlined text-[14px]">arrow_upward</span> 12.4%
+        </span>
+</div>
+<div class="flex items-center gap-1.5 text-text-secondary font-caption-meta text-caption-meta">
+<span class="w-1.5 h-1.5 rounded-full bg-status-success-text"></span>
+<span>100% Append-Only Integrity Sealed</span>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="p-space-lg rounded-xl bg-surface shadow-sm relative overflow-hidden flex flex-col justify-between group">
+<div class="absolute -right-4 -top-4 w-20 h-20 bg-status-info-bg/40 rounded-full blur-xl pointer-events-none transition-transform group-hover:scale-125"></div>
+<div class="flex items-center justify-between mb-3">
+<span class="font-caption-meta text-caption-meta uppercase tracking-wider text-text-secondary font-semibold">Security &amp; Auth Events</span>
+<div class="w-8 h-8 rounded-lg bg-status-info-bg text-status-info-text flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]">lock</span>
+</div>
+</div>
+<div class="flex items-baseline gap-2 mb-1">
+<span class="font-display-kpi text-display-kpi text-text-primary tabular-nums">1,420</span>
+<span class="text-[12px] font-caption-meta font-semibold text-text-secondary">24H Window</span>
+</div>
+<div class="flex items-center gap-1.5 text-text-secondary font-caption-meta text-caption-meta">
+<span class="text-status-success-text font-semibold">99.8% Success</span>
+<span>• 0 Breach Attempts</span>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="p-space-lg rounded-xl bg-surface shadow-sm relative overflow-hidden flex flex-col justify-between group">
+<div class="absolute -right-4 -top-4 w-20 h-20 bg-status-warning-bg/40 rounded-full blur-xl pointer-events-none transition-transform group-hover:scale-125"></div>
+<div class="flex items-center justify-between mb-3">
+<span class="font-caption-meta text-caption-meta uppercase tracking-wider text-text-secondary font-semibold">Stock Adjustments &amp; Overrides</span>
+<div class="w-8 h-8 rounded-lg bg-status-warning-bg text-status-warning-text flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]">scale</span>
+</div>
+</div>
+<div class="flex items-baseline gap-2 mb-1">
+<span class="font-display-kpi text-display-kpi text-text-primary tabular-nums">38</span>
+<span class="text-[12px] font-caption-meta font-semibold text-status-warning-text bg-status-warning-bg px-1.5 py-0.5 rounded">High Scrutiny</span>
+</div>
+<div class="flex items-center gap-1.5 text-text-secondary font-caption-meta text-caption-meta">
+<span class="material-symbols-outlined text-[14px] text-status-success-text">check_circle</span>
+<span>All physical count sign-offs logged</span>
+</div>
+</div>
+<!-- Card 4 -->
+<div class="p-space-lg rounded-xl bg-surface shadow-sm relative overflow-hidden flex flex-col justify-between group">
+<div class="absolute -right-4 -top-4 w-20 h-20 bg-surface-container rounded-full blur-xl pointer-events-none transition-transform group-hover:scale-125"></div>
+<div class="flex items-center justify-between mb-3">
+<span class="font-caption-meta text-caption-meta uppercase tracking-wider text-text-secondary font-semibold">Policy &amp; RBAC Updates</span>
+<div class="w-8 h-8 rounded-lg bg-surface-container flex items-center justify-center text-text-primary">
+<span class="material-symbols-outlined text-[18px]">admin_panel_settings</span>
+</div>
+</div>
+<div class="flex items-baseline gap-2 mb-1">
+<span class="font-display-kpi text-display-kpi text-text-primary tabular-nums">12</span>
+<span class="text-[12px] font-caption-meta text-text-secondary">Trailing 90D</span>
+</div>
+<div class="flex items-center gap-1.5 text-text-secondary font-caption-meta text-caption-meta">
+<span>Last change: 14d ago by</span>
+<span class="font-semibold text-text-primary">M. Vance</span>
+</div>
+</div>
+</div>
+<!-- Main Filter & Command Stream Bar -->
+<div class="px-space-xl mb-space-md">
+<div class="bg-surface rounded-xl p-space-md shadow-sm flex flex-col gap-3">
+<!-- Search & Primary Filter Drops -->
+<div class="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-space-md">
+<!-- Search input -->
+<div class="relative flex-1">
+<span class="material-symbols-outlined absolute left-3 top-2.5 text-text-secondary text-[18px]">search</span>
+<input class="w-full h-10 pl-9 pr-10 rounded-lg bg-app-bg text-text-primary font-body-default text-body-default placeholder:text-text-secondary focus:outline-none focus:ring-2 focus:ring-primary-container/20 focus:bg-surface transition-all" id="audit-search-input" placeholder="Search by user, IP address, entity ID, hash, or transaction reference..." type="text" value=""/>
+<span class="absolute right-3 top-2.5 text-[11px] font-caption-meta text-text-secondary bg-surface px-1.5 py-0.5 rounded shadow-xs">⌘K</span>
+</div>
+<!-- Filter Selects -->
+<div class="flex items-center gap-2 flex-wrap sm:flex-nowrap">
+<div class="relative shrink-0">
+<select class="h-10 pl-3 pr-8 rounded-lg bg-app-bg text-text-primary font-body-default text-body-default text-[13px] appearance-none focus:outline-none focus:ring-1 focus:ring-primary-container cursor-pointer font-medium">
+<option>All Modules (All)</option>
+<option>Inventory &amp; Storage</option>
+<option>Outbound Dispatch</option>
+<option>Inbound Receiving</option>
+<option>RBAC &amp; Access Controls</option>
+<option>Authentication (SSO)</option>
+<option>System Configuration</option>
+</select>
+<span class="material-symbols-outlined absolute right-2 top-2.5 text-text-secondary text-[18px] pointer-events-none">expand_more</span>
+</div>
+<div class="relative shrink-0">
+<select class="h-10 pl-3 pr-8 rounded-lg bg-app-bg text-text-primary font-body-default text-body-default text-[13px] appearance-none focus:outline-none focus:ring-1 focus:ring-primary-container cursor-pointer font-medium">
+<option>All Actions (Any)</option>
+<option>INVENTORY_ADJUST</option>
+<option>DISPATCH_CONFIRM</option>
+<option>USER_SUSPEND</option>
+<option>AUTH_LOGIN_SUCCESS</option>
+<option>RECEIVE_GOODS</option>
+<option>CONFIG_OVERRIDE</option>
+</select>
+<span class="material-symbols-outlined absolute right-2 top-2.5 text-text-secondary text-[18px] pointer-events-none">expand_more</span>
+</div>
+<div class="relative shrink-0">
+<select class="h-10 pl-3 pr-8 rounded-lg bg-app-bg text-text-primary font-body-default text-body-default text-[13px] appearance-none focus:outline-none focus:ring-1 focus:ring-primary-container cursor-pointer font-medium">
+<option>All Results (All)</option>
+<option>Success</option>
+<option>Warning / Override</option>
+<option>Failed / Rejected</option>
+<option>Critical Security Alert</option>
+</select>
+<span class="material-symbols-outlined absolute right-2 top-2.5 text-text-secondary text-[18px] pointer-events-none">expand_more</span>
+</div>
+<div class="relative shrink-0">
+<button class="h-10 px-3 rounded-lg bg-app-bg text-text-primary font-body-default text-body-default text-[13px] flex items-center gap-2 hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined text-[16px] text-text-secondary">calendar_today</span>
+<span class="font-medium">Oct 18 - Oct 25, 2024</span>
+<span class="material-symbols-outlined text-[16px] text-text-secondary">arrow_drop_down</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Secondary Stream & Active Filters Bar -->
+<div class="flex items-center justify-between pt-2 flex-wrap gap-2">
+<div class="flex items-center gap-2 flex-wrap">
+<span class="font-caption-meta text-caption-meta text-text-secondary font-semibold uppercase tracking-wider">Active Filters:</span>
+<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-app-bg text-text-primary font-caption-meta text-caption-meta font-medium">
+            Time: Last 7 Days
+            <button class="hover:text-primary transition-colors flex items-center"><span class="material-symbols-outlined text-[14px]">close</span></button>
+</span>
+<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-primary/10 text-primary font-caption-meta text-caption-meta font-semibold">
+            Status: Non-Deleted
+            <button class="hover:text-primary-hover transition-colors flex items-center"><span class="material-symbols-outlined text-[14px]">close</span></button>
+</span>
+<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-app-bg text-text-primary font-caption-meta text-caption-meta font-medium">
+            Node: WH-01 Terminal
+            <button class="hover:text-primary transition-colors flex items-center"><span class="material-symbols-outlined text-[14px]">close</span></button>
+</span>
+<button class="font-caption-meta text-caption-meta text-text-secondary hover:text-primary font-semibold underline underline-offset-2 ml-1">
+            Reset All
+          </button>
+</div>
+<!-- Telemetry Ingest Stream Indicator -->
+<div class="flex items-center gap-3 self-end sm:self-auto">
+<div class="flex items-center gap-2 px-2.5 py-1 rounded-full bg-status-success-bg/70 text-status-success-text font-caption-meta text-caption-meta font-semibold">
+<span class="relative flex h-2 w-2">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-status-success-text opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2 w-2 bg-status-success-text"></span>
+</span>
+<span>Live Telemetry Stream Active</span>
+</div>
+<div class="text-[11px] font-caption-meta text-text-secondary tabular-nums">
+            Buffer Lag: <span class="font-semibold text-text-primary">18ms</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Main Work Area: 2-Column Ledger & Inspector Drawer -->
+<div class="px-space-xl pb-space-xl flex flex-col xl:flex-row gap-space-md items-start">
+<!-- Left Column: Master Audit Data Table -->
+<div class="w-full xl:flex-1 bg-surface rounded-xl shadow-sm overflow-hidden flex flex-col">
+<!-- Table Header Bar -->
+<div class="px-space-lg py-space-sm bg-app-bg/60 flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="font-headline-h3 text-headline-h3 text-text-primary">Immutable Ledger Records</span>
+<span class="px-2 py-0.5 rounded text-[11px] font-caption-meta font-bold bg-surface text-text-secondary tabular-nums shadow-xs">
+            1,420 entries
+          </span>
+</div>
+<div class="flex items-center gap-2">
+<button class="w-8 h-8 rounded bg-surface hover:bg-app-bg text-text-secondary hover:text-text-primary flex items-center justify-center transition-colors" title="Refresh Feed">
+<span class="material-symbols-outlined text-[18px]">sync</span>
+</button>
+<button class="w-8 h-8 rounded bg-surface hover:bg-app-bg text-text-secondary hover:text-text-primary flex items-center justify-center transition-colors" title="Density Toggle">
+<span class="material-symbols-outlined text-[18px]">density_medium</span>
+</button>
+<button class="w-8 h-8 rounded bg-surface hover:bg-app-bg text-text-secondary hover:text-text-primary flex items-center justify-center transition-colors" title="Columns View">
+<span class="material-symbols-outlined text-[18px]">view_column</span>
+</button>
+</div>
+</div>
+<!-- Data Table Scroll Container -->
+<div class="w-full overflow-x-auto">
+<table class="w-full text-left border-collapse" id="audit-logs-table">
+<thead>
+<tr class="bg-app-bg text-text-secondary font-table-header text-table-header uppercase tracking-wider">
+<th class="py-3 px-4 font-semibold text-left">Timestamp (CST)</th>
+<th class="py-3 px-4 font-semibold text-left">Actor &amp; ID</th>
+<th class="py-3 px-4 font-semibold text-left">Action &amp; Domain</th>
+<th class="py-3 px-4 font-semibold text-left">Target Entity / Ref</th>
+<th class="py-3 px-4 font-semibold text-left">Origin / Client IP</th>
+<th class="py-3 px-4 font-semibold text-center">Status</th>
+<th class="py-3 px-4 font-semibold text-right">Inspect</th>
+</tr>
+</thead>
+<tbody class="divide-y-0 text-text-primary font-table-data text-table-data">
+<!-- Row 1: Active Selected Row -->
+<tr class="bg-primary/5 hover:bg-primary/10 transition-colors cursor-pointer group" onclick="selectAuditRecord('EVT-99201-B')">
+<td class="py-3.5 px-4 tabular-nums">
+<div class="font-body-semibold text-text-primary">Oct 24, 2024</div>
+<div class="font-caption-meta text-caption-meta text-text-secondary tabular-nums">16:42:15.104 CST</div>
+</td>
+<td class="py-3.5 px-4">
+<div class="flex items-center gap-2.5">
+<div class="w-7 h-7 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-bold text-[11px] shrink-0">
+                    MV
+                  </div>
+<div class="min-w-0">
+<div class="font-body-semibold text-text-primary truncate">Marcus Vance</div>
+<div class="font-caption-meta text-caption-meta text-text-secondary flex items-center gap-1">
+<span>EMP-1001</span>
+<span>•</span>
+<span class="text-primary font-medium">Lead Admin</span>
+</div>
+</div>
+</div>
+</td>
+<td class="py-3.5 px-4">
+<div class="flex items-center gap-2">
+<span class="px-2 py-0.5 rounded text-[11px] font-caption-meta font-semibold bg-surface-container text-text-primary">
+                    INVENTORY_ADJUST
+                  </span>
+</div>
+<div class="font-caption-meta text-caption-meta text-text-secondary mt-0.5">Inventory Module</div>
+</td>
+<td class="py-3.5 px-4">
+<div class="font-body-semibold text-primary hover:underline cursor-pointer flex items-center gap-1">
+<span>#SKU-4402</span>
+<span class="material-symbols-outlined text-[14px]">north_east</span>
+</div>
+<div class="font-caption-meta text-caption-meta text-text-secondary">Bay 15-A-01 (Bin C)</div>
+</td>
+<td class="py-3.5 px-4 tabular-nums">
+<div class="font-body-semibold text-text-primary">192.168.4.12</div>
+<div class="font-caption-meta text-caption-meta text-text-secondary">Dock Terminal A4</div>
+</td>
+<td class="py-3.5 px-4 text-center">
+<span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-caption-meta font-bold bg-status-warning-bg text-status-warning-text">
+                  Override
+                </span>
+</td>
+<td class="py-3.5 px-4 text-right">
+<button class="w-7 h-7 rounded bg-surface hover:bg-primary-container hover:text-on-primary-container text-text-secondary inline-flex items-center justify-center transition-colors">
+<span class="material-symbols-outlined text-[16px]">visibility</span>
+</button>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-app-bg transition-colors cursor-pointer group" onclick="selectAuditRecord('EVT-99200-A')">
+<td class="py-3.5 px-4 tabular-nums">
+<div class="font-body-semibold text-text-primary">Oct 24, 2024</div>
+<div class="font-caption-meta text-caption-meta text-text-secondary tabular-nums">16:39:02.882 CST</div>
+</td>
+<td class="py-3.5 px-4">
+<div class="flex items-center gap-2.5">
+<div class="w-7 h-7 rounded-full bg-secondary-container text-text-primary flex items-center justify-center font-bold text-[11px] shrink-0">
+                    SL
+                  </div>
+<div class="min-w-0">
+<div class="font-body-semibold text-text-primary truncate">Sarah Lin</div>
+<div class="font-caption-meta text-caption-meta text-text-secondary flex items-center gap-1">
+<span>EMP-2044</span>
+<span>•</span>
+<span>Floor Supervisor</span>
+</div>
+</div>
+</div>
+</td>
+<td class="py-3.5 px-4">
+<div class="flex items-center gap-2">
+<span class="px-2 py-0.5 rounded text-[11px] font-caption-meta font-semibold bg-surface-container text-text-primary">
+                    DISPATCH_CONFIRM
+                  </span>
+</div>
+<div class="font-caption-meta text-caption-meta text-text-secondary mt-0.5">Outbound Ops</div>
+</td>
+<td class="py-3.5 px-4">
+<div class="font-body-semibold text-text-primary hover:text-primary cursor-pointer flex items-center gap-1">
+<span>#OUT-2024-9410</span>
+<span class="material-symbols-outlined text-[14px]">north_east</span>
+</div>
+<div class="font-caption-meta text-caption-meta text-text-secondary">Pallet Waybill #4992</div>
+</td>
+<td class="py-3.5 px-4 tabular-nums">
+<div class="font-body-semibold text-text-primary">10.0.12.84</div>
+<div class="font-caption-meta text-caption-meta text-text-secondary">Handheld Zebra #04</div>
+</td>
+<td class="py-3.5 px-4 text-center">
+<span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-caption-meta font-bold bg-status-success-bg text-status-success-text">
+                  Success
+                </span>
+</td>
+<td class="py-3.5 px-4 text-right">
+<button class="w-7 h-7 rounded bg-surface group-hover:bg-app-bg text-text-secondary inline-flex items-center justify-center transition-colors">
+<span class="material-symbols-outlined text-[16px]">visibility</span>
+</button>
+</td>
+</tr>
+<!-- Row 3: Automated AGV -->
+<tr class="hover:bg-app-bg transition-colors cursor-pointer group" onclick="selectAuditRecord('EVT-99198-S')">
+<td class="py-3.5 px-4 tabular-nums">
+<div class="font-body-semibold text-text-primary">Oct 24, 2024</div>
+<div class="font-caption-meta text-caption-meta text-text-secondary tabular-nums">16:31:40.119 CST</div>
+</td>
+<td class="py-3.5 px-4">
+<div class="flex items-center gap-2.5">
+<div class="w-7 h-7 rounded-full bg-status-info-bg text-status-info-text flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[16px]">precision_manufacturing</span>
+</div>
+<div class="min-w-0">
+<div class="font-body-semibold text-text-primary truncate">Automated AGV-Daemon</div>
+<div class="font-caption-meta text-caption-meta text-text-secondary flex items-center gap-1">
+<span>SYS-NODE-03</span>
+<span>•</span>
+<span>Fleet Mesh API</span>
+</div>
+</div>
+</div>
+</td>
+<td class="py-3.5 px-4">
+<div class="flex items-center gap-2">
+<span class="px-2 py-0.5 rounded text-[11px] font-caption-meta font-semibold bg-surface-container text-text-primary">
+                    PALLET_TRANSFER
+                  </span>
+</div>
+<div class="font-caption-meta text-caption-meta text-text-secondary mt-0.5">Automated Staging</div>
+</td>
+<td class="py-3.5 px-4">
+<div class="font-body-semibold text-text-primary hover:text-primary cursor-pointer flex items-center gap-1">
+<span>#PLT-9811</span>
+<span class="material-symbols-outlined text-[14px]">north_east</span>
+</div>
+<div class="font-caption-meta text-caption-meta text-text-secondary">Stage-Dock-02 → Zone-D</div>
+</td>
+<td class="py-3.5 px-4 tabular-nums">
+<div class="font-body-semibold text-text-primary">10.0.100.15</div>
+<div class="font-caption-meta text-caption-meta text-text-secondary">Internal Mesh VPC</div>
+</td>
+<td class="py-3.5 px-4 text-center">
+<span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-caption-meta font-bold bg-status-success-bg text-status-success-text">
+                  Success
+                </span>
+</td>
+<td class="py-3.5 px-4 text-right">
+<button class="w-7 h-7 rounded bg-surface group-hover:bg-app-bg text-text-secondary inline-flex items-center justify-center transition-colors">
+<span class="material-symbols-outlined text-[16px]">visibility</span>
+</button>
+</td>
+</tr>
+<!-- Row 4: Security RBAC Modification -->
+<tr class="hover:bg-app-bg transition-colors cursor-pointer group" onclick="selectAuditRecord('EVT-99195-C')">
+<td class="py-3.5 px-4 tabular-nums">
+<div class="font-body-semibold text-text-primary">Oct 24, 2024</div>
+<div class="font-caption-meta text-caption-meta text-text-secondary tabular-nums">16:15:11.002 CST</div>
+</td>
+<td class="py-3.5 px-4">
+<div class="flex items-center gap-2.5">
+<div class="w-7 h-7 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-bold text-[11px] shrink-0">
+                    MV
+                  </div>
+<div class="min-w-0">
+<div class="font-body-semibold text-text-primary truncate">Marcus Vance</div>
+<div class="font-caption-meta text-caption-meta text-text-secondary flex items-center gap-1">
+<span>EMP-1001</span>
+<span>•</span>
+<span>Lead Admin</span>
+</div>
+</div>
+</div>
+</td>
+<td class="py-3.5 px-4">
+<div class="flex items-center gap-2">
+<span class="px-2 py-0.5 rounded text-[11px] font-caption-meta font-semibold bg-status-danger-bg text-status-danger-text">
+                    USER_SUSPEND
+                  </span>
+</div>
+<div class="font-caption-meta text-caption-meta text-text-secondary mt-0.5">RBAC &amp; Identity</div>
+</td>
+<td class="py-3.5 px-4">
+<div class="font-body-semibold text-text-primary hover:text-primary cursor-pointer flex items-center gap-1">
+<span>#EMP-1099</span>
+<span class="material-symbols-outlined text-[14px]">north_east</span>
+</div>
+<div class="font-caption-meta text-caption-meta text-text-secondary">Badge Revoked (J. Miller)</div>
+</td>
+<td class="py-3.5 px-4 tabular-nums">
+<div class="font-body-semibold text-text-primary">192.168.1.100</div>
+<div class="font-caption-meta text-caption-meta text-text-secondary">Admin Console Main</div>
+</td>
+<td class="py-3.5 px-4 text-center">
+<span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-caption-meta font-bold bg-status-neutral-bg text-status-neutral-text">
+                  Enforced
+                </span>
+</td>
+<td class="py-3.5 px-4 text-right">
+<button class="w-7 h-7 rounded bg-surface group-hover:bg-app-bg text-text-secondary inline-flex items-center justify-center transition-colors">
+<span class="material-symbols-outlined text-[16px]">visibility</span>
+</button>
+</td>
+</tr>
+<!-- Row 5: Goods Receipt -->
+<tr class="hover:bg-app-bg transition-colors cursor-pointer group" onclick="selectAuditRecord('EVT-99192-K')">
+<td class="py-3.5 px-4 tabular-nums">
+<div class="font-body-semibold text-text-primary">Oct 24, 2024</div>
+<div class="font-caption-meta text-caption-meta text-text-secondary tabular-nums">15:58:20.550 CST</div>
+</td>
+<td class="py-3.5 px-4">
+<div class="flex items-center gap-2.5">
+<div class="w-7 h-7 rounded-full bg-secondary-fixed text-text-primary flex items-center justify-center font-bold text-[11px] shrink-0">
+                    DK
+                  </div>
+<div class="min-w-0">
+<div class="font-body-semibold text-text-primary truncate">David Kim</div>
+<div class="font-caption-meta text-caption-meta text-text-secondary flex items-center gap-1">
+<span>EMP-3310</span>
+<span>•</span>
+<span>Inbound Clerk</span>
+</div>
+</div>
+</div>
+</td>
+<td class="py-3.5 px-4">
+<div class="flex items-center gap-2">
+<span class="px-2 py-0.5 rounded text-[11px] font-caption-meta font-semibold bg-surface-container text-text-primary">
+                    RECEIVE_GOODS
+                  </span>
+</div>
+<div class="font-caption-meta text-caption-meta text-text-secondary mt-0.5">Inbound Logistics</div>
+</td>
+<td class="py-3.5 px-4">
+<div class="font-body-semibold text-text-primary hover:text-primary cursor-pointer flex items-center gap-1">
+<span>#INB-2024-0982</span>
+<span class="material-symbols-outlined text-[14px]">north_east</span>
+</div>
+<div class="font-caption-meta text-caption-meta text-text-secondary">Carrier: Apex Freight Lines</div>
+</td>
+<td class="py-3.5 px-4 tabular-nums">
+<div class="font-body-semibold text-text-primary">192.168.4.19</div>
+<div class="font-caption-meta text-caption-meta text-text-secondary">Inbound Gate Terminal 2</div>
+</td>
+<td class="py-3.5 px-4 text-center">
+<span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-caption-meta font-bold bg-status-success-bg text-status-success-text">
+                  Success
+                </span>
+</td>
+<td class="py-3.5 px-4 text-right">
+<button class="w-7 h-7 rounded bg-surface group-hover:bg-app-bg text-text-secondary inline-flex items-center justify-center transition-colors">
+<span class="material-symbols-outlined text-[16px]">visibility</span>
+</button>
+</td>
+</tr>
+<!-- Row 6: Failed SSO Login Authentication -->
+<tr class="hover:bg-app-bg transition-colors cursor-pointer group" onclick="selectAuditRecord('EVT-99189-F')">
+<td class="py-3.5 px-4 tabular-nums">
+<div class="font-body-semibold text-text-primary">Oct 24, 2024</div>
+<div class="font-caption-meta text-caption-meta text-text-secondary tabular-nums">15:42:01.009 CST</div>
+</td>
+<td class="py-3.5 px-4">
+<div class="flex items-center gap-2.5">
+<div class="w-7 h-7 rounded-full bg-status-danger-bg text-status-danger-text flex items-center justify-center font-bold text-[11px] shrink-0">
+<span class="material-symbols-outlined text-[16px]">warning</span>
+</div>
+<div class="min-w-0">
+<div class="font-body-semibold text-text-primary truncate">j.doe@logistics-wh.io</div>
+<div class="font-caption-meta text-caption-meta text-text-secondary flex items-center gap-1">
+<span>UNVERIFIED</span>
+<span>•</span>
+<span>External VPN IP</span>
+</div>
+</div>
+</div>
+</td>
+<td class="py-3.5 px-4">
+<div class="flex items-center gap-2">
+<span class="px-2 py-0.5 rounded text-[11px] font-caption-meta font-semibold bg-status-danger-bg text-status-danger-text">
+                    AUTH_CHALLENGE_FAIL
+                  </span>
+</div>
+<div class="font-caption-meta text-caption-meta text-text-secondary mt-0.5">Okta SSO Saml-V2</div>
+</td>
+<td class="py-3.5 px-4">
+<div class="font-body-semibold text-status-danger-text flex items-center gap-1">
+<span>#SESS-REVOKED</span>
+</div>
+<div class="font-caption-meta text-caption-meta text-text-secondary">Token Signature Invalid</div>
+</td>
+<td class="py-3.5 px-4 tabular-nums">
+<div class="font-body-semibold text-status-danger-text">198.51.100.44</div>
+<div class="font-caption-meta text-caption-meta text-text-secondary">Untrusted CIDR Gateway</div>
+</td>
+<td class="py-3.5 px-4 text-center">
+<span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-caption-meta font-bold bg-status-danger-bg text-status-danger-text">
+                  Failed
+                </span>
+</td>
+<td class="py-3.5 px-4 text-right">
+<button class="w-7 h-7 rounded bg-surface group-hover:bg-app-bg text-text-secondary inline-flex items-center justify-center transition-colors">
+<span class="material-symbols-outlined text-[16px]">visibility</span>
+</button>
+</td>
+</tr>
+<!-- Row 7: Configuration Modification -->
+<tr class="hover:bg-app-bg transition-colors cursor-pointer group" onclick="selectAuditRecord('EVT-99185-M')">
+<td class="py-3.5 px-4 tabular-nums">
+<div class="font-body-semibold text-text-primary">Oct 24, 2024</div>
+<div class="font-caption-meta text-caption-meta text-text-secondary tabular-nums">14:22:18.910 CST</div>
+</td>
+<td class="py-3.5 px-4">
+<div class="flex items-center gap-2.5">
+<div class="w-7 h-7 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-bold text-[11px] shrink-0">
+                    MV
+                  </div>
+<div class="min-w-0">
+<div class="font-body-semibold text-text-primary truncate">Marcus Vance</div>
+<div class="font-caption-meta text-caption-meta text-text-secondary flex items-center gap-1">
+<span>EMP-1001</span>
+<span>•</span>
+<span>Lead Admin</span>
+</div>
+</div>
+</div>
+</td>
+<td class="py-3.5 px-4">
+<div class="flex items-center gap-2">
+<span class="px-2 py-0.5 rounded text-[11px] font-caption-meta font-semibold bg-surface-container text-text-primary">
+                    CONFIG_SETTING_SET
+                  </span>
+</div>
+<div class="font-caption-meta text-caption-meta text-text-secondary mt-0.5">Fleet Telemetry Config</div>
+</td>
+<td class="py-3.5 px-4">
+<div class="font-body-semibold text-text-primary hover:text-primary cursor-pointer flex items-center gap-1">
+<span>#CONF-AGV-POLL</span>
+<span class="material-symbols-outlined text-[14px]">north_east</span>
+</div>
+<div class="font-caption-meta text-caption-meta text-text-secondary">Poll Interval: 500ms → 250ms</div>
+</td>
+<td class="py-3.5 px-4 tabular-nums">
+<div class="font-body-semibold text-text-primary">192.168.1.100</div>
+<div class="font-caption-meta text-caption-meta text-text-secondary">Admin Console Main</div>
+</td>
+<td class="py-3.5 px-4 text-center">
+<span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-caption-meta font-bold bg-status-success-bg text-status-success-text">
+                  Success
+                </span>
+</td>
+<td class="py-3.5 px-4 text-right">
+<button class="w-7 h-7 rounded bg-surface group-hover:bg-app-bg text-text-secondary inline-flex items-center justify-center transition-colors">
+<span class="material-symbols-outlined text-[16px]">visibility</span>
+</button>
+</td>
+</tr>
+<!-- Row 8: Normal Inbound Scan -->
+<tr class="hover:bg-app-bg transition-colors cursor-pointer group" onclick="selectAuditRecord('EVT-99180-P')">
+<td class="py-3.5 px-4 tabular-nums">
+<div class="font-body-semibold text-text-primary">Oct 24, 2024</div>
+<div class="font-caption-meta text-caption-meta text-text-secondary tabular-nums">13:10:04.148 CST</div>
+</td>
+<td class="py-3.5 px-4">
+<div class="flex items-center gap-2.5">
+<div class="w-7 h-7 rounded-full bg-secondary-fixed text-text-primary flex items-center justify-center font-bold text-[11px] shrink-0">
+                    DK
+                  </div>
+<div class="min-w-0">
+<div class="font-body-semibold text-text-primary truncate">David Kim</div>
+<div class="font-caption-meta text-caption-meta text-text-secondary flex items-center gap-1">
+<span>EMP-3310</span>
+<span>•</span>
+<span>Inbound Clerk</span>
+</div>
+</div>
+</div>
+</td>
+<td class="py-3.5 px-4">
+<div class="flex items-center gap-2">
+<span class="px-2 py-0.5 rounded text-[11px] font-caption-meta font-semibold bg-surface-container text-text-primary">
+                    BARCODE_VERIFY
+                  </span>
+</div>
+<div class="font-caption-meta text-caption-meta text-text-secondary mt-0.5">Quality Assurance</div>
+</td>
+<td class="py-3.5 px-4">
+<div class="font-body-semibold text-text-primary hover:text-primary cursor-pointer flex items-center gap-1">
+<span>#SKU-1088-XL</span>
+<span class="material-symbols-outlined text-[14px]">north_east</span>
+</div>
+<div class="font-caption-meta text-caption-meta text-text-secondary">Lot #2024-LOT-44B</div>
+</td>
+<td class="py-3.5 px-4 tabular-nums">
+<div class="font-body-semibold text-text-primary">192.168.4.19</div>
+<div class="font-caption-meta text-caption-meta text-text-secondary">Inbound Gate Terminal 2</div>
+</td>
+<td class="py-3.5 px-4 text-center">
+<span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-caption-meta font-bold bg-status-success-bg text-status-success-text">
+                  Success
+                </span>
+</td>
+<td class="py-3.5 px-4 text-right">
+<button class="w-7 h-7 rounded bg-surface group-hover:bg-app-bg text-text-secondary inline-flex items-center justify-center transition-colors">
+<span class="material-symbols-outlined text-[16px]">visibility</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination Toolbar -->
+<div class="p-space-md bg-surface flex flex-col sm:flex-row items-center justify-between gap-space-sm border-t-0">
+<div class="text-caption-meta font-caption-meta text-text-secondary">
+          Showing <span class="font-body-semibold text-text-primary tabular-nums">1</span> to <span class="font-body-semibold text-text-primary tabular-nums">8</span> of <span class="font-body-semibold text-text-primary tabular-nums">1,420</span> audited ledger entries
+        </div>
+<div class="flex items-center gap-1">
+<button class="w-8 h-8 rounded bg-app-bg text-text-secondary hover:text-text-primary flex items-center justify-center transition-colors disabled:opacity-40" disabled="">
+<span class="material-symbols-outlined text-[16px]">chevron_left</span>
+</button>
+<button class="w-8 h-8 rounded bg-primary-container text-on-primary-container font-body-semibold text-[13px] flex items-center justify-center shadow-xs">
+            1
+          </button>
+<button class="w-8 h-8 rounded bg-surface hover:bg-app-bg text-text-primary font-body-semibold text-[13px] flex items-center justify-center transition-colors">
+            2
+          </button>
+<button class="w-8 h-8 rounded bg-surface hover:bg-app-bg text-text-primary font-body-semibold text-[13px] flex items-center justify-center transition-colors">
+            3
+          </button>
+<span class="px-1 text-text-secondary font-body-semibold text-[13px]">...</span>
+<button class="w-8 h-8 rounded bg-surface hover:bg-app-bg text-text-primary font-body-semibold text-[13px] flex items-center justify-center transition-colors">
+            178
+          </button>
+<button class="w-8 h-8 rounded bg-app-bg text-text-secondary hover:text-text-primary flex items-center justify-center transition-colors">
+<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Right Column: Audit Record Inspector Drawer Panel -->
+<div class="w-full xl:w-[420px] shrink-0 bg-surface rounded-xl shadow-sm overflow-hidden flex flex-col sticky top-20">
+<!-- Drawer Header with Cryptographic Badge -->
+<div class="p-space-lg bg-inverse-surface text-on-primary flex flex-col gap-2">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary-fixed text-[20px]">fingerprint</span>
+<span class="font-headline-h3 text-headline-h3 text-sidebar-text">Record Inspector</span>
+</div>
+<span class="px-2 py-0.5 rounded text-[11px] font-caption-meta font-bold bg-primary-container text-on-primary-container">
+            #EVT-99201-B
+          </span>
+</div>
+<p class="font-caption-meta text-caption-meta text-sidebar-muted">
+          Physical inventory balance discrepancy override with electronic supervisory attestation.
+        </p>
+</div>
+<!-- Cryptographic Hash Verification Box -->
+<div class="p-space-md bg-surface-container/60 flex flex-col gap-1.5">
+<div class="flex items-center justify-between">
+<span class="font-caption-meta text-caption-meta uppercase tracking-wider text-text-secondary font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px] text-status-success-text">verified</span>
+            Cryptographic SHA-256 Seal
+          </span>
+<button class="text-primary hover:text-primary-hover flex items-center gap-1 font-caption-meta text-caption-meta font-semibold" title="Copy Hash">
+<span class="material-symbols-outlined text-[14px]">content_copy</span>
+<span>Copy</span>
+</button>
+</div>
+<div class="p-2 rounded bg-surface font-caption-meta text-caption-meta text-text-primary font-mono text-[11px] break-all border-0 shadow-xs tabular-nums">
+          8f4ad21e64908bb9472dc012a9bc4128f73190e290f84812a0f88194ad91c0e3
+        </div>
+<div class="flex items-center justify-between text-[11px] font-caption-meta text-text-secondary">
+<span>Ledger Block: #BLK-489,102</span>
+<span class="text-status-success-text font-medium">Valid Merkle Root</span>
+</div>
+</div>
+<!-- Drawer Content Body -->
+<div class="p-space-lg flex flex-col gap-space-md">
+<!-- Event Meta Grid -->
+<div class="grid grid-cols-2 gap-3 pb-3">
+<div class="flex flex-col">
+<span class="font-caption-meta text-caption-meta text-text-secondary">Executing Actor</span>
+<span class="font-body-semibold text-text-primary text-[13px]">Marcus Vance (Lead Admin)</span>
+<span class="font-caption-meta text-caption-meta text-text-secondary text-[11px]">Badge: EMP-1001</span>
+</div>
+<div class="flex flex-col">
+<span class="font-caption-meta text-caption-meta text-text-secondary">Device &amp; Client</span>
+<span class="font-body-semibold text-text-primary text-[13px]">Dock Terminal A4</span>
+<span class="font-caption-meta text-caption-meta text-text-secondary text-[11px] tabular-nums">192.168.4.12 • ChromeOS 128</span>
+</div>
+<div class="flex flex-col">
+<span class="font-caption-meta text-caption-meta text-text-secondary">Timestamp Exact</span>
+<span class="font-body-semibold text-text-primary text-[13px] tabular-nums">2024-10-24 16:42:15.104</span>
+<span class="font-caption-meta text-caption-meta text-text-secondary text-[11px]">UTC-06:00 CST</span>
+</div>
+<div class="flex flex-col">
+<span class="font-caption-meta text-caption-meta text-text-secondary">Session UUID</span>
+<span class="font-body-semibold text-text-primary text-[13px] font-mono truncate" title="a7f08e42-70b1-4043-982d-bfbb32c02119">
+              a7f08e42-70b1...
+            </span>
+<span class="font-caption-meta text-caption-meta text-status-success-text text-[11px]">MFA Verified (FIDO2)</span>
+</div>
+</div>
+<!-- Delta / Diff Comparison Block -->
+<div class="flex flex-col gap-2">
+<div class="flex items-center justify-between">
+<span class="font-caption-meta text-caption-meta uppercase tracking-wider text-text-secondary font-semibold">
+              Delta State (Before vs. After)
+            </span>
+<span class="text-[11px] font-caption-meta text-status-warning-text bg-status-warning-bg px-2 py-0.5 rounded font-semibold">
+              Qty Discrepancy +60
+            </span>
+</div>
+<div class="rounded-lg bg-app-bg p-3 flex flex-col gap-2.5">
+<div class="flex items-center justify-between text-[12px] font-body-semibold">
+<span class="text-text-secondary">Target Entity:</span>
+<span class="text-text-primary font-mono">SKU-4402 (Standard Grade Polyfilm)</span>
+</div>
+<div class="grid grid-cols-2 gap-2 text-[12px]">
+<!-- Before state -->
+<div class="p-2 rounded bg-surface flex flex-col">
+<span class="font-caption-meta text-caption-meta text-text-secondary uppercase">Prior Balance</span>
+<span class="text-status-danger-text font-body-semibold text-[14px] line-through tabular-nums">120 Bundles</span>
+<span class="font-caption-meta text-caption-meta text-text-secondary text-[10px]">ERP System Sync</span>
+</div>
+<!-- After state -->
+<div class="p-2 rounded bg-status-success-bg/40 flex flex-col">
+<span class="font-caption-meta text-caption-meta text-status-success-text uppercase font-semibold">New Reconciled</span>
+<span class="text-status-success-text font-body-semibold text-[14px] tabular-nums">180 Bundles</span>
+<span class="font-caption-meta text-caption-meta text-status-success-text text-[10px]">Physical Recount Verified</span>
+</div>
+</div>
+<div class="flex flex-col gap-1 pt-1">
+<span class="font-caption-meta text-caption-meta text-text-secondary font-semibold">Reason Code &amp; Justification Note:</span>
+<p class="font-caption-meta text-caption-meta text-text-primary bg-surface p-2 rounded leading-relaxed">
+                "Cycle count reconciliation in Bay 15-A-01. Physical recount uncovered un-racked pallet mislabeled under staging Zone 2. Signed off by Lead Admin Marcus Vance."
+              </p>
+</div>
+</div>
+</div>
+<!-- Raw JSON Payload Toggle & Inspector Box -->
+<div class="flex flex-col gap-2">
+<div class="flex items-center justify-between">
+<span class="font-caption-meta text-caption-meta uppercase tracking-wider text-text-secondary font-semibold">
+              Immutable Signed Payload
+            </span>
+<button class="text-primary hover:text-primary-hover font-caption-meta text-caption-meta font-semibold" id="toggle-json-btn" onclick="toggleJsonView()">
+              Toggle JSON
+            </button>
+</div>
+<div class="p-3 rounded-lg bg-sidebar-bg text-sidebar-text font-mono text-[11px] overflow-x-auto max-h-40 leading-tight" id="json-preview-container">
+<pre class="whitespace-pre">{
+  "event_id": "EVT-99201-B",
+  "block_height": 489102,
+  "action": "INVENTORY_ADJUST",
+  "actor": {
+    "user_id": "EMP-1001",
+    "name": "Marcus Vance",
+    "role": "Lead Administrator",
+    "mfa_method": "fido2_webauthn"
+  },
+  "entity": {
+    "sku": "SKU-4402",
+    "bay": "15-A-01",
+    "prev_qty": 120,
+    "new_qty": 180,
+    "unit": "bundles"
+  },
+  "provenance": {
+    "ip": "192.168.4.12",
+    "client": "Dock Terminal A4",
+    "prev_hash": "2f40b8a...9c1"
+  }
+}</pre>
+</div>
+</div>
+<!-- Drawer Inspector Actions -->
+<div class="flex items-center gap-2 pt-2">
+<button class="flex-1 h-9 px-3 rounded-lg bg-app-bg hover:bg-surface-container text-text-primary font-button-text text-button-text text-[13px] flex items-center justify-center gap-1.5 transition-colors">
+<span class="material-symbols-outlined text-[16px] text-text-secondary">download</span>
+<span>Proof Token (JSON)</span>
+</button>
+<button class="h-9 px-3 rounded-lg bg-surface hover:bg-status-danger-bg hover:text-status-danger-text text-text-secondary font-button-text text-button-text text-[13px] flex items-center justify-center gap-1.5 transition-colors">
+<span class="material-symbols-outlined text-[16px]">flag</span>
+<span>Flag for Audit</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Bottom Global Compliance Retention Banner -->
+<div class="px-space-xl pb-space-xl">
+<div class="p-space-md rounded-xl bg-surface shadow-sm flex flex-col md:flex-row items-center justify-between gap-space-md">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-status-success-bg text-status-success-text flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[22px]">cloud_done</span>
+</div>
+<div class="flex flex-col">
+<span class="font-body-semibold text-text-primary text-[14px]">WMS Immutable Ledger Sync Status: Distributed &amp; Quorum Verified</span>
+<span class="font-caption-meta text-caption-meta text-text-secondary">
+            Synchronized with AWS CloudWatch Logs &amp; CloudTrail (SOC 2 Type II, ISO/IEC 27001). Storage retention tier: <strong class="text-text-primary font-semibold">7 Years Immutable WORM Storage</strong>.
+          </span>
+</div>
+</div>
+<div class="flex items-center gap-space-sm shrink-0">
+<span class="font-caption-meta text-caption-meta text-text-secondary">Next automated hash digest sealing in: <span class="font-mono text-text-primary font-semibold tabular-nums">04m:22s</span></span>
+<button class="h-8 px-3 rounded bg-app-bg hover:bg-surface-container text-text-primary font-caption-meta text-caption-meta font-semibold transition-colors flex items-center gap-1">
+<span>Ledger Settings</span>
+<span class="material-symbols-outlined text-[14px]">settings</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<script>
+  function toggleJsonView() {
+    const jsonBlock = document.getElementById('json-preview-container');
+    const toggleBtn = document.getElementById('toggle-json-btn');
+    if (jsonBlock.style.display === 'none') {
+      jsonBlock.style.display = 'block';
+      toggleBtn.innerText = 'Hide JSON';
+    } else {
+      jsonBlock.style.display = 'none';
+      toggleBtn.innerText = 'Show JSON';
+    }
+  }
+
+  function selectAuditRecord(recordId) {
+    const tableRows = document.querySelectorAll('#audit-logs-table tbody tr');
+    tableRows.forEach(row => {
+      row.classList.remove('bg-primary/5', 'bg-primary/10');
+    });
+
+    const targetRow = window.event ? window.event.currentTarget : null;
+    if (targetRow) {
+      targetRow.classList.add('bg-primary/5');
+    }
+  }
+</script></main></div></body></html>

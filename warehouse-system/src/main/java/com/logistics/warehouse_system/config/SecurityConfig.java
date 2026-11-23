@@ -1,10 +1,12 @@
 package com.logistics.warehouse_system.config;
 
 import com.logistics.warehouse_system.security.JwtAuthenticationFilter;
+import com.logistics.warehouse_system.security.RateLimitFilter;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -27,9 +29,11 @@ import java.util.List;
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
+@EnableScheduling
 public class SecurityConfig {
 
     private static final String[] PUBLIC_ENDPOINTS = {
+            "/api/v1/auth/register",
             "/api/v1/auth/login",
             "/swagger-ui/**",
             "/swagger-ui.html",
@@ -50,6 +54,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http,
                                                    JwtAuthenticationFilter jwtFilter,
+                                                   RateLimitFilter rateLimitFilter,
                                                    @Value("${app.cors.allowed-origins}") String allowedOrigins)
             throws Exception {
         http
@@ -64,6 +69,7 @@ public class SecurityConfig {
                                 writeError(response, 401, "UNAUTHORIZED", "Authentication required"))
                         .accessDeniedHandler((request, response, ex) ->
                                 writeError(response, 403, "FORBIDDEN", "Access denied")))
+                .addFilterBefore(rateLimitFilter, UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();

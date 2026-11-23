@@ -28,7 +28,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest
+@SpringBootTest(properties = {"app.seed.enabled=true", "app.rate-limit.enabled=false"})
 @AutoConfigureMockMvc
 @Testcontainers
 class WarehouseIntegrationTest {

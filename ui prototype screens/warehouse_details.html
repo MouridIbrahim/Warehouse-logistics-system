@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_dashboard" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base { html, body { margin: 0; padding: 0; } body { overscroll-behavior: none; } main > :first-child { margin-top: 0 !important; } main > :last-child { margin-bottom: 0 !important; } } ::-webkit-scrollbar { display: none; }</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { colors: { "status-info-text": "#1D4ED8", "on-tertiary-container": "#fffbff", "sidebar-text": "#E2E8F0", "text-secondary": "#64748B", "status-info-bg": "#DBEAFE", "on-secondary-fixed-variant": "#404752", "on-background": "#0b1c30", "tertiary-fixed": "#ffdcc3", "surface-container-highest": "#d3e4fe", "status-danger-text": "#991B1B", "inverse-surface": "#213145", "status-warning-text": "#92400E", "on-tertiary-fixed-variant": "#6e3900", "status-neutral-bg": "#F1F5F9", "on-secondary-fixed": "#151c26", "primary-fixed-dim": "#ffb68f", "inverse-primary": "#ffb68f", "app-bg": "#F6F7F9", "surface-container-lowest": "#ffffff", "primary-hover": "#A94B0D", "status-success-bg": "#DCFCE7", "on-surface": "#0b1c30", "surface-tint": "#9c4400", "on-surface-variant": "#564238", "on-secondary-container": "#5c636e", "status-danger-bg": "#FEE2E2", "on-error": "#ffffff", "secondary": "#585f6a", "on-primary": "#ffffff", "secondary-container": "#d9e0ed", "surface-bright": "#f8f9ff", "status-neutral-text": "#475569", "tertiary": "#8d4b00", "secondary-fixed": "#dce3f0", "outline": "#8a7266", "primary-fixed": "#ffdbca", "surface-container-low": "#eff4ff", "background": "#f8f9ff", "tertiary-fixed-dim": "#ffb77d", "sidebar-muted": "#94A3B8", "surface-container-high": "#dce9ff", "surface": "#FFFFFF", "status-warning-bg": "#FEF3C7", "on-tertiary-fixed": "#2f1500", "text-primary": "#18212F", "inverse-on-surface": "#eaf1ff", "secondary-fixed-dim": "#c0c7d4", "outline-variant": "#ddc1b3", "on-primary-fixed-variant": "#773200", "tertiary-container": "#b15f00", "error-container": "#ffdad6", "primary-container": "#bc570f", "primary": "#984200", "on-secondary": "#ffffff", "on-primary-fixed": "#331200", "border-default": "#E2E8F0", "error": "#ba1a1a", "surface-dim": "#cbdbf5", "on-error-container": "#93000a", "status-success-text": "#166534", "on-primary-container": "#fffbff", "sidebar-bg": "#242B35", "on-tertiary": "#ffffff", "surface-variant": "#d3e4fe", "surface-container": "#e5eeff" }, borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, spacing: { "margin": "2rem", "margin-mobile": "1rem", "space-lg": "1.5rem", "space-xs": "0.25rem", "space-xl": "2rem", "gutter": "1.5rem", "space-sm": "0.5rem", "space-md": "1rem", "gutter-mobile": "1rem" }, fontFamily: { "table-header": ["Inter"], "headline-h1": ["Inter"], "display-kpi-mobile": ["Inter"], "headline-h1-mobile": ["Inter"], "headline-h3": ["Inter"], "body-semibold": ["Inter"], "caption-meta": ["Inter"], "headline-h2": ["Inter"], "button-text": ["Inter"], "form-label": ["Inter"], "display-kpi": ["Inter"], "body-default": ["Inter"], "table-data": ["Inter"] }, fontSize: { "table-header": ["12px", { "lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "600" }], "headline-h1": ["28px", { "lineHeight": "36px", "letterSpacing": "-0.02em", "fontWeight": "700" }], "display-kpi-mobile": ["26px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700" }], "headline-h1-mobile": ["22px", { "lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "700" }], "headline-h3": ["16px", { "lineHeight": "24px", "letterSpacing": "-0.005em", "fontWeight": "600" }], "body-semibold": ["14px", { "lineHeight": "20px", "fontWeight": "600" }], "caption-meta": ["12px", { "lineHeight": "16px", "fontWeight": "400" }], "headline-h2": ["20px", { "lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600" }], "button-text": ["14px", { "lineHeight": "20px", "fontWeight": "600" }], "form-label": ["13px", { "lineHeight": "18px", "fontWeight": "500" }], "display-kpi": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }], "body-default": ["14px", { "lineHeight": "20px", "fontWeight": "400" }], "table-data": ["13px", { "lineHeight": "18px", "fontWeight": "400" }] } } } };</script></head><body class="bg-app-bg text-text-primary antialiased"><aside class="fixed left-0 top-0 h-screen w-[250px] bg-sidebar-bg text-sidebar-text z-50 flex flex-col justify-between border-r border-border-default/20"><div class="flex flex-col flex-1 min-h-0"><div class="h-16 px-space-md flex items-center gap-space-sm border-b border-border-default/20 shrink-0"><img alt="Logistics Brand Mark" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/ALJJyrBIIjTx9TJyaLvDoO3WBkgxTJtN5pX7Jsi9HcxR_YMth4Fw5SB1h6d45hF55umb91ZHS_7iiuxcK3gsTD4jsBWsUR3S5StgJwEFYSfFOUCbpXbnseB2H1exYiZ95-BcxwF9xKKVX0ckAfZcbij8HvqSpCzHsRTXO-yXJrOZ-t3FlfcNNNmDBSMN0GZpSxhf3Qs87Aoe4k7dR8QIQzEmWycADB2a5sF2w5gTKdctH3gP"/><div class="flex flex-col"><span class="text-xs font-bold tracking-wider text-sidebar-text leading-none uppercase">LOGISTICS</span><span class="text-[10px] font-semibold text-sidebar-muted tracking-widest mt-0.5">WAREHOUSE SYSTEM</span></div></div><div class="flex-1 overflow-y-auto px-space-sm py-space-md space-y-space-md"><div class="space-y-1"><div class="px-space-sm text-[11px] font-bold text-sidebar-muted tracking-wider uppercase font-caption-meta">OVERVIEW</div><nav class="space-y-0.5" data-active-classes="bg-primary text-on-primary font-semibold rounded-lg shadow-sm"><a class="flex items-center px-space-sm py-2 rounded-lg text-sidebar-text text-sm hover:bg-primary-hover hover:text-on-primary transition-colors" data-path="dashboard" href="#">Dashboard</a></nav></div><div class="space-y-1"><div class="px-space-sm text-[11px] font-bold text-sidebar-muted tracking-wider uppercase font-caption-meta">CATALOG &amp; STORAGE</div><nav class="space-y-0.5" data-active-classes="bg-primary text-on-primary font-semibold rounded-lg shadow-sm"><a class="flex items-center px-space-sm py-2 rounded-lg text-sidebar-text text-sm hover:bg-primary-hover hover:text-on-primary transition-colors" data-path="products" href="#">Products</a><a class="flex items-center px-space-sm py-2 rounded-lg text-sidebar-text text-sm hover:bg-primary-hover hover:text-on-primary transition-colors" data-path="warehouses" href="#">Warehouses</a><a class="flex items-center px-space-sm py-2 rounded-lg text-sidebar-text text-sm hover:bg-primary-hover hover:text-on-primary transition-colors" data-path="inventory" href="#">Inventory</a></nav></div><div class="space-y-1"><div class="px-space-sm text-[11px] font-bold text-sidebar-muted tracking-wider uppercase font-caption-meta">OPERATIONS</div><nav class="space-y-0.5" data-active-classes="bg-primary text-on-primary font-semibold rounded-lg shadow-sm"><a class="flex items-center px-space-sm py-2 rounded-lg text-sidebar-text text-sm hover:bg-primary-hover hover:text-on-primary transition-colors" data-path="inbound-operations" href="#">Inbound Operations</a><a class="flex items-center px-space-sm py-2 rounded-lg text-sidebar-text text-sm hover:bg-primary-hover hover:text-on-primary transition-colors" data-path="outbound-operations" href="#">Outbound Operations</a><a class="flex items-center px-space-sm py-2 rounded-lg text-sidebar-text text-sm hover:bg-primary-hover hover:text-on-primary transition-colors" data-path="shipments" href="#">Shipments</a></nav></div><div class="space-y-1"><div class="px-space-sm text-[11px] font-bold text-sidebar-muted tracking-wider uppercase font-caption-meta">INSIGHTS</div><nav class="space-y-0.5" data-active-classes="bg-primary text-on-primary font-semibold rounded-lg shadow-sm"><a class="flex items-center px-space-sm py-2 rounded-lg text-sidebar-text text-sm hover:bg-primary-hover hover:text-on-primary transition-colors" data-path="reports-and-analytics" href="#">Reports &amp; Analytics</a><a class="flex items-center px-space-sm py-2 rounded-lg text-sidebar-text text-sm hover:bg-primary-hover hover:text-on-primary transition-colors" data-path="audit-logs" href="#">Audit Logs</a></nav></div><div class="space-y-1"><div class="px-space-sm text-[11px] font-bold text-sidebar-muted tracking-wider uppercase font-caption-meta">ADMINISTRATION</div><nav class="space-y-0.5" data-active-classes="bg-primary text-on-primary font-semibold rounded-lg shadow-sm"><a class="flex items-center px-space-sm py-2 rounded-lg text-sidebar-text text-sm hover:bg-primary-hover hover:text-on-primary transition-colors" data-path="user-management" href="#">User Management</a><a class="flex items-center px-space-sm py-2 rounded-lg text-sidebar-text text-sm hover:bg-primary-hover hover:text-on-primary transition-colors" data-path="roles-and-permissions" href="#">Roles &amp; Permissions</a><a class="flex items-center px-space-sm py-2 rounded-lg text-sidebar-text text-sm hover:bg-primary-hover hover:text-on-primary transition-colors" data-path="system-settings" href="#">System Settings</a></nav></div></div></div><div class="p-space-sm border-t border-border-default/20 bg-sidebar-bg shrink-0"><div class="mb-2"><nav data-active-classes="bg-primary text-on-primary font-semibold rounded-lg shadow-sm"><a class="flex items-center px-space-sm py-2 rounded-lg text-sidebar-text text-sm hover:bg-primary-hover hover:text-on-primary transition-colors" data-path="my-profile" href="#">My Profile</a></nav></div><div class="flex items-center justify-between p-space-sm rounded-lg bg-inverse-surface/40"><div class="flex items-center gap-space-sm"><img alt="Profile" class="w-8 h-8 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDpJz5Ls2ywARcAECd_jYcyZHGBDfEL_b4f4aVJ4mEEd3MQJnxtzu-2lOE3PbHZphx3RQF8w1yhT-huSPglZYuxsgyhlzhQdkz8ahqCxjyLBF0O7A-pcOY3ZttTTrbeAcDDWHCZpXK8-OsbjLVs9ZolkuocYtJfSxcuc2-S6tq6rh3Uj091DeFL_nfGOzTbGfMgtGS6OpTQ30y4vXstBnvRqIUiCw9NQWfGM1_Z9WrJ"/><div class="flex flex-col min-w-0"><span class="text-xs font-semibold text-sidebar-text truncate leading-tight">Marcus Vance</span><span class="text-[11px] text-sidebar-muted truncate leading-tight">Warehouse Manager</span></div></div><button class="text-sidebar-muted hover:text-on-primary p-1 rounded-md transition-colors" type="button"><span class="material-symbols-outlined text-[18px]">logout</span></button></div></div></aside><div class="pl-[250px]"><header class="fixed top-0 left-[250px] right-0 h-16 bg-surface z-40 border-b border-border-default flex items-center justify-between px-space-xl"><div class="flex items-center text-xs font-semibold text-text-secondary gap-1.5"><span class="hover:text-text-primary transition-colors cursor-pointer">Warehouse Core</span><span class="text-border-default">/</span><span class="text-text-primary font-bold">Catalog &amp; Storage</span></div><div class="flex items-center gap-space-md"><div class="relative w-80"><span class="material-symbols-outlined absolute left-3 top-2.5 text-text-secondary text-[18px]">search</span><input class="w-full pl-9 pr-3 py-1.5 text-xs bg-app-bg border border-border-default rounded-lg focus:outline-none focus:border-primary text-text-primary placeholder:text-text-secondary transition-all" placeholder="Search products, orders, SKU..." type="text"/></div><div class="flex items-center gap-1"><button class="relative p-2 text-text-secondary hover:text-text-primary rounded-lg transition-colors" type="button"><span class="material-symbols-outlined text-[20px]">notifications</span><span class="absolute top-1.5 right-1.5 w-2 h-2 bg-primary rounded-full ring-2 ring-surface"></span></button><button class="p-2 text-text-secondary hover:text-text-primary rounded-lg transition-colors" type="button"><span class="material-symbols-outlined text-[20px]">help</span></button></div><div class="h-5 w-px bg-border-default mx-1"></div><div class="flex items-center gap-space-sm pl-1 cursor-pointer"><img alt="Profile" class="w-8 h-8 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDpJz5Ls2ywARcAECd_jYcyZHGBDfEL_b4f4aVJ4mEEd3MQJnxtzu-2lOE3PbHZphx3RQF8w1yhT-huSPglZYuxsgyhlzhQdkz8ahqCxjyLBF0O7A-pcOY3ZttTTrbeAcDDWHCZpXK8-OsbjLVs9ZolkuocYtJfSxcuc2-S6tq6rh3Uj091DeFL_nfGOzTbGfMgtGS6OpTQ30y4vXstBnvRqIUiCw9NQWfGM1_Z9WrJ"/><div class="hidden sm:flex flex-col text-left"><span class="text-xs font-bold text-text-primary leading-tight">Marcus Vance</span><span class="text-[10px] text-text-secondary leading-tight">Warehouse Manager</span></div><span class="material-symbols-outlined text-text-secondary text-[16px]">expand_more</span></div></div></header><main class="relative pt-16 min-h-screen bg-app-bg px-space-xl py-space-lg"><div class="flex flex-col w-full space-y-space-lg pb-space-xl">
+<!-- JavaScript to activate Warehouses in App Shell Sidebar -->
+<script>
+    (function activateSidebarItem() {
+      const activePath = 'warehouses';
+      const navLinks = document.querySelectorAll('aside nav a[data-path]');
+      navLinks.forEach(link => {
+        if (link.getAttribute('data-path') === activePath) {
+          link.className = 'flex items-center px-space-sm py-2 rounded-lg bg-primary text-on-primary font-semibold shadow-sm transition-colors';
+        }
+      });
+    })();
+  </script>
+<!-- Page Breadcrumb & Header Action Surface -->
+<div class="flex flex-col gap-space-md">
+<!-- Breadcrumb Context -->
+<nav aria-label="Breadcrumb" class="flex items-center text-caption-meta font-caption-meta text-text-secondary gap-1.5">
+<span class="hover:text-text-primary transition-colors cursor-pointer">Catalog &amp; Storage</span>
+<span class="text-text-secondary/50 font-mono">/</span>
+<a class="hover:text-text-primary transition-colors" href="#">Warehouses</a>
+<span class="text-text-secondary/50 font-mono">/</span>
+<span class="text-text-primary font-body-semibold text-caption-meta">Central Logistics Hub (WH-KM-001)</span>
+</nav>
+<!-- Title Bar & Primary Actions -->
+<div class="flex flex-col xl:flex-row xl:items-center justify-between gap-space-md">
+<div class="flex flex-col gap-1.5">
+<div class="flex flex-wrap items-center gap-space-sm">
+<h1 class="font-headline-h1 text-headline-h1 text-text-primary tracking-tight">Central Logistics Hub</h1>
+<div class="flex items-center gap-1.5">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-caption-meta font-body-semibold bg-surface-container-high text-on-secondary-fixed">
+              WH-KM-001
+            </span>
+<span class="inline-flex items-center px-2 py-0.5 rounded text-caption-meta font-caption-meta bg-status-neutral-bg text-status-neutral-text font-medium">
+              Primary Distribution Hub
+            </span>
+<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-caption-meta font-body-semibold bg-status-success-bg text-status-success-text">
+<span class="w-1.5 h-1.5 rounded-full bg-status-success-text animate-pulse"></span>
+              Operational — Active
+            </span>
+</div>
+</div>
+<p class="font-caption-meta text-caption-meta text-text-secondary flex items-center gap-2">
+<span class="material-symbols-outlined text-[15px] text-text-secondary">location_on</span>
+          Kansas City Terminal Node • Automated Transit Sorting Hub • 420,000 Total Sq Ft
+        </p>
+</div>
+<!-- Action Strip -->
+<div class="flex flex-wrap items-center gap-space-sm">
+<button class="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg bg-surface text-text-primary font-button-text text-button-text shadow-sm hover:bg-app-bg transition-colors" type="button">
+<span class="material-symbols-outlined text-[18px]">edit_note</span>
+          Edit Facility
+        </button>
+<button class="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg bg-surface text-text-primary font-button-text text-button-text shadow-sm hover:bg-app-bg transition-colors" type="button">
+<span class="material-symbols-outlined text-[18px]">grid_view</span>
+          Manage Storage Locations
+        </button>
+<button class="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-primary hover:bg-primary-hover text-on-primary font-button-text text-button-text shadow-sm transition-all transform active:scale-95" type="button">
+<span class="material-symbols-outlined text-[18px]">add_circle</span>
+          + Inbound Dispatch
+        </button>
+<div class="relative">
+<button class="p-2 rounded-lg bg-surface text-text-secondary hover:text-text-primary shadow-sm hover:bg-app-bg transition-colors" title="Facility Actions" type="button">
+<span class="material-symbols-outlined text-[18px]">more_vert</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Segmented Tab Navigation -->
+<div class="bg-surface rounded-xl p-1 shadow-sm flex items-center gap-1 overflow-x-auto">
+<button class="px-4 py-2 rounded-lg bg-primary text-on-primary font-button-text text-button-text shadow-sm shrink-0 flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">dashboard</span>
+        Overview
+      </button>
+<button class="px-4 py-2 rounded-lg text-text-secondary hover:text-text-primary hover:bg-status-neutral-bg font-button-text text-button-text shrink-0 flex items-center gap-2 transition-colors">
+<span class="material-symbols-outlined text-[18px]">warehouse</span>
+        Storage Locations
+        <span class="px-1.5 py-0.5 rounded-full text-caption-meta font-caption-meta bg-surface-container-high text-on-secondary-fixed">1,240</span>
+</button>
+<button class="px-4 py-2 rounded-lg text-text-secondary hover:text-text-primary hover:bg-status-neutral-bg font-button-text text-button-text shrink-0 flex items-center gap-2 transition-colors">
+<span class="material-symbols-outlined text-[18px]">inventory_2</span>
+        Inventory by Facility
+        <span class="px-1.5 py-0.5 rounded-full text-caption-meta font-caption-meta bg-surface-container-high text-on-secondary-fixed">428k units</span>
+</button>
+<button class="px-4 py-2 rounded-lg text-text-secondary hover:text-text-primary hover:bg-status-neutral-bg font-button-text text-button-text shrink-0 flex items-center gap-2 transition-colors">
+<span class="material-symbols-outlined text-[18px]">local_shipping</span>
+        Dock &amp; Gate Operations
+      </button>
+<button class="px-4 py-2 rounded-lg text-text-secondary hover:text-text-primary hover:bg-status-neutral-bg font-button-text text-button-text shrink-0 flex items-center gap-2 transition-colors">
+<span class="material-symbols-outlined text-[18px]">history</span>
+        Activity Log
+      </button>
+</div>
+</div>
+<!-- Main Content Asymmetric 2-Column Grid (65% / 35%) -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-lg items-start">
+<!-- LEFT COLUMN: Main Telemetry, Facility Profiles & Tables (65%) -->
+<div class="lg:col-span-8 flex flex-col space-y-space-lg">
+<!-- Facility Profile & Architectural Specs Bento Box -->
+<div class="bg-surface rounded-xl p-space-lg shadow-sm flex flex-col gap-space-md">
+<div class="flex items-center justify-between pb-space-sm bg-surface-container-low/40 -mx-space-lg -mt-space-lg px-space-lg pt-space-md rounded-t-xl">
+<div class="flex items-center gap-2">
+<span class="p-1.5 rounded-lg bg-primary/10 text-primary">
+<span class="material-symbols-outlined text-[20px]">apartment</span>
+</span>
+<div>
+<h2 class="font-headline-h3 text-headline-h3 text-text-primary">Facility Profile &amp; Specifications</h2>
+<p class="font-caption-meta text-caption-meta text-text-secondary">Official zoning, management roster, and high-hazard industrial parameters</p>
+</div>
+</div>
+<span class="inline-flex items-center gap-1 text-caption-meta font-body-semibold text-status-success-text bg-status-success-bg px-2.5 py-1 rounded-full">
+<span class="w-1.5 h-1.5 rounded-full bg-status-success-text"></span>
+            Telemetry Synced: Just now
+          </span>
+</div>
+<!-- 3-Way Detail Grid -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-space-md pt-2">
+<!-- Geographical & Address Block -->
+<div class="bg-surface-container-low/50 rounded-xl p-4 flex flex-col justify-between space-y-3">
+<div class="space-y-1">
+<span class="font-caption-meta text-caption-meta uppercase tracking-wider text-text-secondary font-semibold">Postal Location</span>
+<p class="font-body-semibold text-body-semibold text-text-primary">4800 Deramus Ave</p>
+<p class="font-body-default text-table-data text-text-secondary">Kansas City, MO 64120</p>
+<p class="font-caption-meta text-caption-meta text-primary font-medium">BNSF Rail Spur Connected</p>
+</div>
+<div class="pt-2 border-t border-border-default/20 flex items-center justify-between">
+<span class="font-caption-meta text-caption-meta text-text-secondary">Latitude / Longitude</span>
+<span class="font-caption-meta text-caption-meta font-mono font-medium text-text-primary">39.1362° N, 94.5029° W</span>
+</div>
+</div>
+<!-- Schedule & Operations Block -->
+<div class="bg-surface-container-low/50 rounded-xl p-4 flex flex-col justify-between space-y-3">
+<div class="space-y-1">
+<span class="font-caption-meta text-caption-meta uppercase tracking-wider text-text-secondary font-semibold">Operating Regimen</span>
+<p class="font-body-semibold text-body-semibold text-text-primary">24/7 Transit Sorting</p>
+<p class="font-body-default text-table-data text-text-secondary">Continuous Three-Shift Rotation</p>
+<div class="flex items-center gap-1.5 text-caption-meta text-text-secondary pt-0.5">
+<span class="w-2 h-2 rounded-full bg-status-success-text"></span>
+<span>Shift C Currently Operating (Dock lead: J. Hayes)</span>
+</div>
+</div>
+<div class="pt-2 border-t border-border-default/20 flex items-center justify-between">
+<span class="font-caption-meta text-caption-meta text-text-secondary">Next Shift Change</span>
+<span class="font-caption-meta text-caption-meta font-mono font-semibold text-text-primary">23:00 CST</span>
+</div>
+</div>
+<!-- Contact & Leadership Block -->
+<div class="bg-surface-container-low/50 rounded-xl p-4 flex flex-col justify-between space-y-3">
+<div class="space-y-1">
+<span class="font-caption-meta text-caption-meta uppercase tracking-wider text-text-secondary font-semibold">Site Manager</span>
+<div class="flex items-center gap-2 pt-0.5">
+<img class="w-8 h-8 rounded-full object-cover shadow-sm" data-alt="Corporate headshot portrait of site manager Marcus Vance wearing a reflective warehouse safety vest and dark hard hat inside a contemporary clean distribution hub with bright daylight lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBk8FDoM5YeQXMyZZg6GEfy0RpFweFG4oNiWDoyWXkwxVxa-eNJQ67VeW6VmIhgaS0wAANpPmAEx5EhpVhhEicT3p8eFBdDfEHJbc_euty-bg1FsD3SeU50Sz6jnSXtXIqXqaQaDU5jK6xyxgNGSp2_DYivT0s0PDnboN1gvHl1dY1pXvSMaoQ80_1fH8n3ZIWb5td5-GFNQPfk-hNVB5yfV7xQLwhi71YTrag3jlUd"/>
+<div>
+<p class="font-body-semibold text-body-semibold text-text-primary leading-tight">Marcus Vance</p>
+<p class="font-caption-meta text-[11px] text-text-secondary">Operations Lead • Staff #4402</p>
+</div>
+</div>
+<div class="space-y-0.5 pt-1">
+<p class="font-caption-meta text-caption-meta text-text-secondary flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[14px]">phone</span>
+                  +1 (816) 555-0192
+                </p>
+<p class="font-caption-meta text-caption-meta text-primary flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[14px]">mail</span>
+                  m.vance@logistics.internal
+                </p>
+</div>
+</div>
+<div class="pt-2 border-t border-border-default/20 flex items-center justify-between">
+<span class="font-caption-meta text-caption-meta text-text-secondary">Security Desk</span>
+<span class="font-caption-meta text-caption-meta font-mono text-text-primary">Ext. 104</span>
+</div>
+</div>
+</div>
+<!-- Compliance & Certification Chips -->
+<div class="flex flex-wrap items-center gap-2 pt-2">
+<span class="font-caption-meta text-caption-meta uppercase tracking-wider text-text-secondary font-semibold mr-1">Audited Standards:</span>
+<span class="px-2.5 py-1 rounded bg-surface-container text-on-surface text-caption-meta font-body-semibold flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[15px] text-status-success-text">verified</span>
+            ISO 9001:2015 Quality Mgmt
+          </span>
+<span class="px-2.5 py-1 rounded bg-surface-container text-on-surface text-caption-meta font-body-semibold flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[15px] text-status-warning-text">warning</span>
+            OSHA High-Hazard Handling Certified
+          </span>
+<span class="px-2.5 py-1 rounded bg-surface-container text-on-surface text-caption-meta font-body-semibold flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[15px] text-status-info-text">ac_unit</span>
+            Ambient Warehousing Category 4
+          </span>
+<span class="px-2.5 py-1 rounded bg-surface-container text-on-surface text-caption-meta font-body-semibold flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[15px] text-primary">local_fire_department</span>
+            NFPA 13 In-Rack Sprinkler Class IV
+          </span>
+</div>
+</div>
+<!-- Storage Zones & Real-Time Capacity Breakdown Table -->
+<div class="bg-surface rounded-xl p-space-lg shadow-sm flex flex-col gap-space-md">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm">
+<div>
+<h2 class="font-headline-h3 text-headline-h3 text-text-primary">Storage Zones &amp; Capacity Allocation</h2>
+<p class="font-caption-meta text-caption-meta text-text-secondary">Telemetry across high-density storage divisions, specialized chilling bays, and cross-dock marshalling</p>
+</div>
+<div class="flex items-center gap-2">
+<button class="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-caption-meta font-button-text bg-status-neutral-bg text-text-secondary hover:text-text-primary transition-colors">
+<span class="material-symbols-outlined text-[16px]">filter_list</span>
+              Filter Zones
+            </button>
+<button class="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-caption-meta font-button-text bg-status-neutral-bg text-text-secondary hover:text-text-primary transition-colors">
+<span class="material-symbols-outlined text-[16px]">download</span>
+              Export Manifest
+            </button>
+</div>
+</div>
+<!-- Zone Data Matrix -->
+<div class="overflow-x-auto rounded-lg bg-surface-container-low/30">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-status-neutral-bg text-table-header font-table-header text-text-secondary">
+<th class="py-3 px-4 uppercase tracking-wider">Zone Identifier</th>
+<th class="py-3 px-4 uppercase tracking-wider">Storage Category</th>
+<th class="py-3 px-4 uppercase tracking-wider text-right">Total Bays</th>
+<th class="py-3 px-4 uppercase tracking-wider">Capacity Fill Gauge</th>
+<th class="py-3 px-4 uppercase tracking-wider text-right">Occupied Units</th>
+<th class="py-3 px-4 uppercase tracking-wider text-center">Status</th>
+<th class="py-3 px-4 uppercase tracking-wider text-right">Action</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-border-default/30 font-table-data text-table-data">
+<!-- Zone A -->
+<tr class="hover:bg-surface-container-high/30 transition-colors group">
+<td class="py-3.5 px-4 font-body-semibold text-text-primary flex items-center gap-2">
+<span class="w-2.5 h-2.5 rounded-full bg-primary"></span>
+                  Zone A
+                  <span class="text-caption-meta font-caption-meta text-text-secondary">(Aisle 01-18)</span>
+</td>
+<td class="py-3.5 px-4 text-text-secondary font-medium">
+                  High-Rack Pallet Staging (Heavy)
+                </td>
+<td class="py-3.5 px-4 text-right font-mono font-medium text-text-primary">
+                  450 bays
+                </td>
+<td class="py-3.5 px-4 w-44">
+<div class="flex items-center gap-2">
+<div class="w-full bg-status-neutral-bg h-2 rounded-full overflow-hidden">
+<div class="bg-status-danger-text h-full rounded-full" style="width: 91%"></div>
+</div>
+<span class="font-mono text-caption-meta font-body-semibold text-status-danger-text">91%</span>
+</div>
+</td>
+<td class="py-3.5 px-4 text-right font-mono text-text-primary">
+                  184,200 <span class="text-text-secondary text-caption-meta font-caption-meta">pkgs</span>
+</td>
+<td class="py-3.5 px-4 text-center">
+<span class="inline-flex items-center px-2 py-0.5 rounded-full text-caption-meta font-body-semibold bg-status-success-bg text-status-success-text">
+                    Active
+                  </span>
+</td>
+<td class="py-3.5 px-4 text-right">
+<button class="p-1 rounded text-text-secondary hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+</td>
+</tr>
+<!-- Zone B -->
+<tr class="hover:bg-surface-container-high/30 transition-colors group">
+<td class="py-3.5 px-4 font-body-semibold text-text-primary flex items-center gap-2">
+<span class="w-2.5 h-2.5 rounded-full bg-secondary"></span>
+                  Zone B
+                  <span class="text-caption-meta font-caption-meta text-text-secondary">(Aisle 19-32)</span>
+</td>
+<td class="py-3.5 px-4 text-text-secondary font-medium">
+                  Bulk Fast-Moving Consumer Goods (FMCG)
+                </td>
+<td class="py-3.5 px-4 text-right font-mono font-medium text-text-primary">
+                  380 bays
+                </td>
+<td class="py-3.5 px-4 w-44">
+<div class="flex items-center gap-2">
+<div class="w-full bg-status-neutral-bg h-2 rounded-full overflow-hidden">
+<div class="bg-primary h-full rounded-full" style="width: 84%"></div>
+</div>
+<span class="font-mono text-caption-meta font-body-semibold text-primary">84%</span>
+</div>
+</td>
+<td class="py-3.5 px-4 text-right font-mono text-text-primary">
+                  142,500 <span class="text-text-secondary text-caption-meta font-caption-meta">pkgs</span>
+</td>
+<td class="py-3.5 px-4 text-center">
+<span class="inline-flex items-center px-2 py-0.5 rounded-full text-caption-meta font-body-semibold bg-status-success-bg text-status-success-text">
+                    Active
+                  </span>
+</td>
+<td class="py-3.5 px-4 text-right">
+<button class="p-1 rounded text-text-secondary hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+</td>
+</tr>
+<!-- Zone C -->
+<tr class="hover:bg-surface-container-high/30 transition-colors group">
+<td class="py-3.5 px-4 font-body-semibold text-text-primary flex items-center gap-2">
+<span class="w-2.5 h-2.5 rounded-full bg-status-info-text"></span>
+                  Zone C
+                  <span class="text-caption-meta font-caption-meta text-text-secondary">(Vault C1-C6)</span>
+</td>
+<td class="py-3.5 px-4 text-text-secondary font-medium flex items-center gap-1.5">
+<span>Cold-Storage / Temperature Controlled (-4°C)</span>
+<span class="material-symbols-outlined text-[14px] text-status-info-text">thermostat</span>
+</td>
+<td class="py-3.5 px-4 text-right font-mono font-medium text-text-primary">
+                  150 bays
+                </td>
+<td class="py-3.5 px-4 w-44">
+<div class="flex items-center gap-2">
+<div class="w-full bg-status-neutral-bg h-2 rounded-full overflow-hidden">
+<div class="bg-status-info-text h-full rounded-full" style="width: 68%"></div>
+</div>
+<span class="font-mono text-caption-meta font-body-semibold text-status-info-text">68%</span>
+</div>
+</td>
+<td class="py-3.5 px-4 text-right font-mono text-text-primary">
+                  39,800 <span class="text-text-secondary text-caption-meta font-caption-meta">pkgs</span>
+</td>
+<td class="py-3.5 px-4 text-center">
+<span class="inline-flex items-center px-2 py-0.5 rounded-full text-caption-meta font-body-semibold bg-status-success-bg text-status-success-text">
+                    Active
+                  </span>
+</td>
+<td class="py-3.5 px-4 text-right">
+<button class="p-1 rounded text-text-secondary hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+</td>
+</tr>
+<!-- Zone D -->
+<tr class="hover:bg-surface-container-high/30 transition-colors group">
+<td class="py-3.5 px-4 font-body-semibold text-text-primary flex items-center gap-2">
+<span class="w-2.5 h-2.5 rounded-full bg-outline"></span>
+                  Zone D
+                  <span class="text-caption-meta font-caption-meta text-text-secondary">(Docks 01-12)</span>
+</td>
+<td class="py-3.5 px-4 text-text-secondary font-medium">
+                  Dock Staging &amp; Outbound Marshalling
+                </td>
+<td class="py-3.5 px-4 text-right font-mono font-medium text-text-primary">
+                  260 bays
+                </td>
+<td class="py-3.5 px-4 w-44">
+<div class="flex items-center gap-2">
+<div class="w-full bg-status-neutral-bg h-2 rounded-full overflow-hidden">
+<div class="bg-status-warning-text h-full rounded-full" style="width: 79%"></div>
+</div>
+<span class="font-mono text-caption-meta font-body-semibold text-status-warning-text">79%</span>
+</div>
+</td>
+<td class="py-3.5 px-4 text-right font-mono text-text-primary">
+                  61,500 <span class="text-text-secondary text-caption-meta font-caption-meta">pkgs</span>
+</td>
+<td class="py-3.5 px-4 text-center">
+<span class="inline-flex items-center px-2 py-0.5 rounded-full text-caption-meta font-body-semibold bg-status-success-bg text-status-success-text">
+                    Active
+                  </span>
+</td>
+<td class="py-3.5 px-4 text-right">
+<button class="p-1 rounded text-text-secondary hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Zone Visual Layout Map Placeholder Card -->
+<div class="relative bg-surface-container-low rounded-xl p-4 overflow-hidden">
+<div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-3">
+<div>
+<span class="font-caption-meta text-caption-meta uppercase tracking-wider text-text-secondary font-semibold">Hub Floorplan Blueprint</span>
+<p class="font-body-semibold text-body-semibold text-text-primary">Zone Topology &amp; Forklift Corridors</p>
+</div>
+<span class="px-2 py-0.5 rounded text-caption-meta font-caption-meta bg-surface text-text-secondary">Interactive CAD Overlay</span>
+</div>
+<div class="relative h-44 w-full rounded-lg overflow-hidden group">
+<img class="w-full h-full object-cover" data-alt="High angle architectural overhead 3D view of a massive modern distribution warehouse with clearly delineated industrial orange and blue floor lines, heavy-duty racking towers, automated guided vehicles, and loading dock bays with daylight filtering through skylights" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA_KLCm9B9UuUK4SSDI-oKw03m6I-JtQghlTD1YENr5SFZ8V_qqfQwgd1OCv8uHZTC494zIjz1YPNBm1SgCQ1wwea_qRo25qPsmJemJXKSeY04Z47PP7uCn_AvHOlfLDoGJ9Xbum-0xb5fiT489xcDKEvTOvYHVWs1vY4TzfuGn0yRl8dEdiKixUd3ZXmE6YQI5vYr182hkxgwqR2D7bvKszDs36UDk5-vgZ4-vORse"/>
+<div class="absolute inset-0 bg-gradient-to-t from-sidebar-bg/85 via-sidebar-bg/30 to-transparent flex flex-col justify-end p-4 text-sidebar-text">
+<div class="flex items-center justify-between">
+<div>
+<span class="text-xs font-mono text-primary-fixed-dim uppercase tracking-widest font-semibold">Active Bay Map</span>
+<p class="text-sm font-semibold text-white">WH-KM-001 Terminal Grid Active • 93.4% Sensor Link Up</p>
+</div>
+<button class="px-3 py-1.5 rounded-lg bg-primary hover:bg-primary-hover text-on-primary text-xs font-button-text shadow transition-colors" type="button">
+                  Open CAD Viewer
+                </button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Section 3: Recent Operational Activity at Facility -->
+<div class="bg-surface rounded-xl p-space-lg shadow-sm flex flex-col gap-space-md">
+<div class="flex items-center justify-between">
+<div>
+<h2 class="font-headline-h3 text-headline-h3 text-text-primary">Real-Time Facility Activity Stream</h2>
+<p class="font-caption-meta text-caption-meta text-text-secondary">Live gate crossings, RF scanner picking waves, and cycle audits at WH-KM-001</p>
+</div>
+<div class="flex items-center gap-2">
+<span class="relative flex h-2 w-2">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+</span>
+<span class="font-caption-meta text-caption-meta text-text-secondary font-medium">Listening to RF Events</span>
+</div>
+</div>
+<!-- Activity Timeline -->
+<div class="space-y-3">
+<!-- Event 1: Inbound Docking -->
+<div class="p-3.5 rounded-xl bg-surface-container-low/40 hover:bg-surface-container-low transition-colors flex items-start gap-3">
+<div class="p-2 rounded-lg bg-status-info-bg text-status-info-text shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-[18px]">rv_hookup</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex items-center justify-between gap-2">
+<p class="font-body-semibold text-body-semibold text-text-primary truncate">
+                  Trailer Inbound Docked — Gate #03
+                </p>
+<span class="font-caption-meta text-caption-meta text-text-secondary font-mono shrink-0">14:22:08 CST</span>
+</div>
+<p class="font-body-default text-table-data text-text-secondary mt-0.5">
+                Freightliner Cascadia (Carrier: Knight-Swift • BOL-88492). 24 pallets of Industrial Fasteners transferred to Inbound Staging Aisle 04.
+              </p>
+<div class="flex items-center gap-3 mt-2 text-caption-meta font-caption-meta">
+<span class="text-text-primary font-medium">Inspector: Tyler Reed</span>
+<span class="text-text-secondary">•</span>
+<span class="text-status-success-text font-medium">Seal #4419 Verified</span>
+<span class="text-text-secondary">•</span>
+<span class="text-text-secondary font-mono">PO-77821-KM</span>
+</div>
+</div>
+</div>
+<!-- Event 2: Pick Wave -->
+<div class="p-3.5 rounded-xl bg-surface-container-low/40 hover:bg-surface-container-low transition-colors flex items-start gap-3">
+<div class="p-2 rounded-lg bg-status-warning-bg text-status-warning-text shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-[18px]">shopping_cart_checkout</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex items-center justify-between gap-2">
+<p class="font-body-semibold text-body-semibold text-text-primary truncate">
+                  Wave Batch Pick #084-W Completed (Outbound Express)
+                </p>
+<span class="font-caption-meta text-caption-meta text-text-secondary font-mono shrink-0">14:05:41 CST</span>
+</div>
+<p class="font-body-default text-table-data text-text-secondary mt-0.5">
+                182 items picked across Zone B FMCG. Marshalling consolidated at Bay D-11 for pallet wrapping and strap inspection.
+              </p>
+<div class="flex items-center gap-3 mt-2 text-caption-meta font-caption-meta">
+<span class="text-text-primary font-medium">Order Pool: Midwest Retailers</span>
+<span class="text-text-secondary">•</span>
+<span class="text-status-info-text font-medium">Palletizer: Robot Cell #02</span>
+</div>
+</div>
+</div>
+<!-- Event 3: Cycle Count -->
+<div class="p-3.5 rounded-xl bg-surface-container-low/40 hover:bg-surface-container-low transition-colors flex items-start gap-3">
+<div class="p-2 rounded-lg bg-status-success-bg text-status-success-text shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-[18px]">inventory</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex items-center justify-between gap-2">
+<p class="font-body-semibold text-body-semibold text-text-primary truncate">
+                  Cycle Count Audit Verified: Cold Storage Zone C
+                </p>
+<span class="font-caption-meta text-caption-meta text-text-secondary font-mono shrink-0">13:48:19 CST</span>
+</div>
+<p class="font-body-default text-table-data text-text-secondary mt-0.5">
+                Random audit of 40 lot bins in sub-zero freezer vault completed with 100% SKU quantity reconciliation. Zero variance logged.
+              </p>
+<div class="flex items-center gap-3 mt-2 text-caption-meta font-caption-meta">
+<span class="text-text-primary font-medium">Auditor: Elena Rostova</span>
+<span class="text-text-secondary">•</span>
+<span class="text-status-success-text font-medium">Audit ID: CC-2024-0981</span>
+</div>
+</div>
+</div>
+<!-- Event 4: Dispatched Departure -->
+<div class="p-3.5 rounded-xl bg-surface-container-low/40 hover:bg-surface-container-low transition-colors flex items-start gap-3">
+<div class="p-2 rounded-lg bg-status-neutral-bg text-status-neutral-text shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-[18px]">departure_board</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex items-center justify-between gap-2">
+<p class="font-body-semibold text-body-semibold text-text-primary truncate">
+                  Outbound Gate Departure — Gate #06
+                </p>
+<span class="font-caption-meta text-caption-meta text-text-secondary font-mono shrink-0">13:12:00 CST</span>
+</div>
+<p class="font-body-default text-table-data text-text-secondary mt-0.5">
+                Tractor 502-B cleared facility gate. Destination: Regional Sort Center Omaha, NE (Transit Route US-29 North).
+              </p>
+<div class="flex items-center gap-3 mt-2 text-caption-meta font-caption-meta">
+<span class="text-text-primary font-medium">Dispatcher: S. Gallagher</span>
+<span class="text-text-secondary">•</span>
+<span class="text-status-neutral-text font-medium">Seal Checked OK</span>
+</div>
+</div>
+</div>
+</div>
+<button class="w-full py-2.5 rounded-lg bg-surface-container-low hover:bg-surface-container-high/60 text-text-primary font-button-text text-button-text flex items-center justify-center gap-2 transition-colors" type="button">
+          View Complete Facility Audit Trail (984 events today)
+          <span class="material-symbols-outlined text-[16px]">chevron_right</span>
+</button>
+</div>
+</div>
+<!-- RIGHT COLUMN: Sidebar Telemetry, Gauges & Dock Gate Status (35%) -->
+<div class="lg:col-span-4 flex flex-col space-y-space-lg">
+<!-- Card 1: Facility Capacity & Utilization Gauge -->
+<div class="bg-surface rounded-xl p-space-lg shadow-sm flex flex-col gap-space-md">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="p-1.5 rounded-lg bg-primary/10 text-primary">
+<span class="material-symbols-outlined text-[20px]">pie_chart</span>
+</span>
+<h3 class="font-headline-h3 text-headline-h3 text-text-primary">Facility Utilization</h3>
+</div>
+<span class="px-2 py-0.5 rounded text-caption-meta font-mono font-bold bg-primary-fixed text-on-primary-fixed">
+            88.4%
+          </span>
+</div>
+<!-- Metric Display KPI -->
+<div class="flex flex-col">
+<div class="flex items-baseline justify-between">
+<span class="font-display-kpi text-display-kpi text-text-primary tracking-tight font-mono">371,280</span>
+<span class="font-body-default text-body-default text-text-secondary font-medium">/ 420,000 sq ft</span>
+</div>
+<p class="font-caption-meta text-caption-meta text-text-secondary mt-1">
+            Current Floor Surface Utilization across 4 Functional Zones
+          </p>
+</div>
+<!-- Progress Gauge Bar (Stacked Segments) -->
+<div class="space-y-1.5 pt-1">
+<div class="w-full h-3 rounded-full bg-status-neutral-bg flex overflow-hidden">
+<!-- Pallet Racks (55%) -->
+<div class="bg-primary h-full" style="width: 55%" title="Pallet Racking: 55%"></div>
+<!-- Bulk FMCG (22%) -->
+<div class="bg-secondary h-full" style="width: 22%" title="Bulk FMCG: 22%"></div>
+<!-- Cold & Dock Staging (11.4%) -->
+<div class="bg-status-info-text h-full" style="width: 11.4%" title="Dock &amp; Cold Staging: 11.4%"></div>
+<!-- Remaining Available (11.6%) is background -->
+</div>
+<!-- Color Key Legend -->
+<div class="grid grid-cols-2 gap-2 pt-2 text-caption-meta font-caption-meta text-text-secondary">
+<div class="flex items-center gap-1.5">
+<span class="w-2.5 h-2.5 rounded-sm bg-primary shrink-0"></span>
+<span class="truncate">Pallet Racks (231k sq ft)</span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="w-2.5 h-2.5 rounded-sm bg-secondary shrink-0"></span>
+<span class="truncate">Bulk FMCG (92.4k sq ft)</span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="w-2.5 h-2.5 rounded-sm bg-status-info-text shrink-0"></span>
+<span class="truncate">Docks &amp; Vaults (47.8k)</span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="w-2.5 h-2.5 rounded-sm bg-status-neutral-bg shrink-0"></span>
+<span class="truncate font-semibold text-text-primary">Available (48.7k sq ft)</span>
+</div>
+</div>
+</div>
+<!-- Mini Stats Subgrid -->
+<div class="grid grid-cols-2 gap-3 pt-3 border-t border-border-default/20">
+<div class="bg-surface-container-low/50 p-2.5 rounded-lg">
+<span class="font-caption-meta text-caption-meta text-text-secondary block">Available Staging</span>
+<span class="font-headline-h3 text-headline-h3 text-text-primary font-mono font-bold">48,720</span>
+<span class="font-caption-meta text-[11px] text-status-success-text block font-medium">Bays Ready</span>
+</div>
+<div class="bg-surface-container-low/50 p-2.5 rounded-lg">
+<span class="font-caption-meta text-caption-meta text-text-secondary block">Turnover Cycle</span>
+<span class="font-headline-h3 text-headline-h3 text-text-primary font-mono font-bold">4.2 <span class="text-caption-meta font-caption-meta text-text-secondary">Days</span></span>
+<span class="font-caption-meta text-[11px] text-primary block font-medium">+8% vs Prev Wk</span>
+</div>
+</div>
+</div>
+<!-- Card 2: Active Floor Metrics -->
+<div class="bg-surface rounded-xl p-space-lg shadow-sm flex flex-col gap-space-md">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="p-1.5 rounded-lg bg-primary/10 text-primary">
+<span class="material-symbols-outlined text-[20px]">insights</span>
+</span>
+<h3 class="font-headline-h3 text-headline-h3 text-text-primary">Floor Live Telemetry</h3>
+</div>
+<span class="font-caption-meta text-caption-meta font-mono text-text-secondary">Today, Shift C</span>
+</div>
+<div class="space-y-3">
+<!-- Metric 1 -->
+<div class="flex items-center justify-between p-3 rounded-lg bg-surface-container-low/40">
+<div class="flex items-center gap-2.5">
+<div class="p-2 rounded bg-surface text-primary shadow-sm">
+<span class="material-symbols-outlined text-[18px]">inventory</span>
+</div>
+<div>
+<p class="font-caption-meta text-caption-meta text-text-secondary font-medium">Active SKUs Present</p>
+<p class="font-headline-h3 text-headline-h3 text-text-primary font-mono">1,120 <span class="text-caption-meta font-caption-meta text-text-secondary font-normal">lines</span></p>
+</div>
+</div>
+<span class="px-2 py-0.5 rounded text-caption-meta font-body-semibold bg-status-success-bg text-status-success-text">
+              99.8% in-spec
+            </span>
+</div>
+<!-- Metric 2 -->
+<div class="flex items-center justify-between p-3 rounded-lg bg-surface-container-low/40">
+<div class="flex items-center gap-2.5">
+<div class="p-2 rounded bg-surface text-primary shadow-sm">
+<span class="material-symbols-outlined text-[18px]">local_shipping</span>
+</div>
+<div>
+<p class="font-caption-meta text-caption-meta text-text-secondary font-medium">Inbound Trucks Today</p>
+<p class="font-headline-h3 text-headline-h3 text-text-primary font-mono">14 Completed</p>
+</div>
+</div>
+<span class="px-2 py-0.5 rounded text-caption-meta font-body-semibold bg-status-warning-bg text-status-warning-text">
+              3 at Dock Gates
+            </span>
+</div>
+<!-- Metric 3 -->
+<div class="flex items-center justify-between p-3 rounded-lg bg-surface-container-low/40">
+<div class="flex items-center gap-2.5">
+<div class="p-2 rounded bg-surface text-primary shadow-sm">
+<span class="material-symbols-outlined text-[18px]">send</span>
+</div>
+<div>
+<p class="font-caption-meta text-caption-meta text-text-secondary font-medium">Outbound Waves</p>
+<p class="font-headline-h3 text-headline-h3 text-text-primary font-mono">8 Scheduled</p>
+</div>
+</div>
+<span class="px-2 py-0.5 rounded text-caption-meta font-body-semibold bg-status-info-bg text-status-info-text">
+              Pending Pick
+            </span>
+</div>
+</div>
+</div>
+<!-- Card 3: Facility Dock & Gate Operational Status -->
+<div class="bg-surface rounded-xl p-space-lg shadow-sm flex flex-col gap-space-md">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="p-1.5 rounded-lg bg-primary/10 text-primary">
+<span class="material-symbols-outlined text-[20px]">sensor_door</span>
+</span>
+<h3 class="font-headline-h3 text-headline-h3 text-text-primary">Dock &amp; Gate Telemetry</h3>
+</div>
+<span class="font-caption-meta text-caption-meta text-text-secondary font-mono">9 Bays Active</span>
+</div>
+<p class="font-caption-meta text-caption-meta text-text-secondary -mt-1">
+          Automated leveller locks, optical trailer position sensors, and seal scanning status
+        </p>
+<!-- Dock Gates Matrix -->
+<div class="grid grid-cols-3 gap-2.5 pt-1">
+<!-- Gates 1-4: Inbound -->
+<div class="p-2.5 rounded-lg bg-status-success-bg/40 flex flex-col justify-between">
+<div class="flex items-center justify-between">
+<span class="font-body-semibold text-caption-meta font-mono text-status-success-text">GATE 01</span>
+<span class="w-2 h-2 rounded-full bg-status-success-text"></span>
+</div>
+<span class="font-caption-meta text-[11px] text-text-secondary mt-1">Inbound Unload</span>
+<span class="font-body-semibold text-caption-meta text-text-primary truncate">Carrier Swift</span>
+</div>
+<div class="p-2.5 rounded-lg bg-status-success-bg/40 flex flex-col justify-between">
+<div class="flex items-center justify-between">
+<span class="font-body-semibold text-caption-meta font-mono text-status-success-text">GATE 02</span>
+<span class="w-2 h-2 rounded-full bg-status-success-text"></span>
+</div>
+<span class="font-caption-meta text-[11px] text-text-secondary mt-1">Inbound Unload</span>
+<span class="font-body-semibold text-caption-meta text-text-primary truncate">J.B. Hunt</span>
+</div>
+<div class="p-2.5 rounded-lg bg-status-success-bg/40 flex flex-col justify-between">
+<div class="flex items-center justify-between">
+<span class="font-body-semibold text-caption-meta font-mono text-status-success-text">GATE 03</span>
+<span class="w-2 h-2 rounded-full bg-status-success-text"></span>
+</div>
+<span class="font-caption-meta text-[11px] text-text-secondary mt-1">Inbound Docked</span>
+<span class="font-body-semibold text-caption-meta text-text-primary truncate">BOL-88492</span>
+</div>
+<div class="p-2.5 rounded-lg bg-status-neutral-bg flex flex-col justify-between">
+<div class="flex items-center justify-between">
+<span class="font-body-semibold text-caption-meta font-mono text-text-secondary">GATE 04</span>
+<span class="w-2 h-2 rounded-full bg-text-secondary/50"></span>
+</div>
+<span class="font-caption-meta text-[11px] text-text-secondary mt-1">Inbound Staged</span>
+<span class="font-body-semibold text-caption-meta text-text-secondary truncate">Available</span>
+</div>
+<!-- Gates 5-8: Outbound -->
+<div class="p-2.5 rounded-lg bg-status-info-bg/40 flex flex-col justify-between">
+<div class="flex items-center justify-between">
+<span class="font-body-semibold text-caption-meta font-mono text-status-info-text">GATE 05</span>
+<span class="w-2 h-2 rounded-full bg-status-info-text"></span>
+</div>
+<span class="font-caption-meta text-[11px] text-text-secondary mt-1">Outbound Pick</span>
+<span class="font-body-semibold text-caption-meta text-text-primary truncate">FedEx Frgt</span>
+</div>
+<div class="p-2.5 rounded-lg bg-status-info-bg/40 flex flex-col justify-between">
+<div class="flex items-center justify-between">
+<span class="font-body-semibold text-caption-meta font-mono text-status-info-text">GATE 06</span>
+<span class="w-2 h-2 rounded-full bg-status-info-text"></span>
+</div>
+<span class="font-caption-meta text-[11px] text-text-secondary mt-1">Outbound Active</span>
+<span class="font-body-semibold text-caption-meta text-text-primary truncate">Schneider</span>
+</div>
+<div class="p-2.5 rounded-lg bg-status-info-bg/40 flex flex-col justify-between">
+<div class="flex items-center justify-between">
+<span class="font-body-semibold text-caption-meta font-mono text-status-info-text">GATE 07</span>
+<span class="w-2 h-2 rounded-full bg-status-info-text"></span>
+</div>
+<span class="font-caption-meta text-[11px] text-text-secondary mt-1">Outbound Wave</span>
+<span class="font-body-semibold text-caption-meta text-text-primary truncate">XPO Line</span>
+</div>
+<div class="p-2.5 rounded-lg bg-status-neutral-bg flex flex-col justify-between">
+<div class="flex items-center justify-between">
+<span class="font-body-semibold text-caption-meta font-mono text-text-secondary">GATE 08</span>
+<span class="w-2 h-2 rounded-full bg-text-secondary/50"></span>
+</div>
+<span class="font-caption-meta text-[11px] text-text-secondary mt-1">Outbound Staged</span>
+<span class="font-body-semibold text-caption-meta text-text-secondary truncate">Available</span>
+</div>
+<!-- Gate 9: Maintenance -->
+<div class="p-2.5 rounded-lg bg-status-warning-bg/50 flex flex-col justify-between">
+<div class="flex items-center justify-between">
+<span class="font-body-semibold text-caption-meta font-mono text-status-warning-text">GATE 09</span>
+<span class="material-symbols-outlined text-[14px] text-status-warning-text">build</span>
+</div>
+<span class="font-caption-meta text-[11px] text-status-warning-text font-medium mt-1">Maintenance</span>
+<span class="font-body-semibold text-caption-meta text-status-warning-text truncate">Hydraulics</span>
+</div>
+</div>
+<div class="pt-2 border-t border-border-default/20 flex items-center justify-between text-caption-meta font-caption-meta">
+<span class="text-text-secondary">Average Turnaround:</span>
+<span class="font-mono font-semibold text-text-primary">38.4 mins / trailer</span>
+</div>
+</div>
+</div>
+</div>
+</div></main></div></body></html>

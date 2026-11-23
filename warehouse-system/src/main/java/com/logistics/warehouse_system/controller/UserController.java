@@ -2,6 +2,7 @@ package com.logistics.warehouse_system.controller;
 
 import com.logistics.warehouse_system.dto.CreateUserRequest;
 import com.logistics.warehouse_system.dto.PageResponse;
+import com.logistics.warehouse_system.dto.ResetPasswordRequest;
 import com.logistics.warehouse_system.dto.UpdateUserRequest;
 import com.logistics.warehouse_system.dto.UserDto;
 import com.logistics.warehouse_system.service.UserService;
@@ -55,5 +56,13 @@ public class UserController {
     @PreAuthorize("hasRole('ADMINISTRATOR')")
     public UserDto update(@PathVariable Long id, @Valid @RequestBody UpdateUserRequest request) {
         return userService.update(id, request);
+    }
+
+    @PatchMapping("/{id}/password")
+    @PreAuthorize("hasRole('ADMINISTRATOR')")
+    public ResponseEntity<Void> resetPassword(@PathVariable Long id,
+                                              @Valid @RequestBody ResetPasswordRequest request) {
+        userService.resetPassword(id, request);
+        return ResponseEntity.noContent().build();
     }
 }

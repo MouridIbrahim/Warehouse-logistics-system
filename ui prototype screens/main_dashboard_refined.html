@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_dashboard" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base { html, body { margin: 0; padding: 0; } body { overscroll-behavior: none; } main > :first-child { margin-top: 0 !important; } main > :last-child { margin-bottom: 0 !important; } } ::-webkit-scrollbar { display: none; }</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { colors: { "status-info-text": "#1D4ED8", "on-tertiary-container": "#fffbff", "sidebar-text": "#E2E8F0", "text-secondary": "#64748B", "status-info-bg": "#DBEAFE", "on-secondary-fixed-variant": "#404752", "on-background": "#0b1c30", "tertiary-fixed": "#ffdcc3", "surface-container-highest": "#d3e4fe", "status-danger-text": "#991B1B", "inverse-surface": "#213145", "status-warning-text": "#92400E", "on-tertiary-fixed-variant": "#6e3900", "status-neutral-bg": "#F1F5F9", "on-secondary-fixed": "#151c26", "primary-fixed-dim": "#ffb68f", "inverse-primary": "#ffb68f", "app-bg": "#F6F7F9", "surface-container-lowest": "#ffffff", "primary-hover": "#A94B0D", "status-success-bg": "#DCFCE7", "on-surface": "#0b1c30", "surface-tint": "#9c4400", "on-surface-variant": "#564238", "on-secondary-container": "#5c636e", "status-danger-bg": "#FEE2E2", "on-error": "#ffffff", "secondary": "#585f6a", "on-primary": "#ffffff", "secondary-container": "#d9e0ed", "surface-bright": "#f8f9ff", "status-neutral-text": "#475569", "tertiary": "#8d4b00", "secondary-fixed": "#dce3f0", "outline": "#8a7266", "primary-fixed": "#ffdbca", "surface-container-low": "#eff4ff", "background": "#f8f9ff", "tertiary-fixed-dim": "#ffb77d", "sidebar-muted": "#94A3B8", "surface-container-high": "#dce9ff", "surface": "#FFFFFF", "status-warning-bg": "#FEF3C7", "on-tertiary-fixed": "#2f1500", "text-primary": "#18212F", "inverse-on-surface": "#eaf1ff", "secondary-fixed-dim": "#c0c7d4", "outline-variant": "#ddc1b3", "on-primary-fixed-variant": "#773200", "tertiary-container": "#b15f00", "error-container": "#ffdad6", "primary-container": "#bc570f", "primary": "#984200", "on-secondary": "#ffffff", "on-primary-fixed": "#331200", "border-default": "#E2E8F0", "error": "#ba1a1a", "surface-dim": "#cbdbf5", "on-error-container": "#93000a", "status-success-text": "#166534", "on-primary-container": "#fffbff", "sidebar-bg": "#242B35", "on-tertiary": "#ffffff", "surface-variant": "#d3e4fe", "surface-container": "#e5eeff" }, borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, spacing: { "margin": "2rem", "margin-mobile": "1rem", "space-lg": "1.5rem", "space-xs": "0.25rem", "space-xl": "2rem", "gutter": "1.5rem", "space-sm": "0.5rem", "space-md": "1rem", "gutter-mobile": "1rem" }, fontFamily: { "table-header": ["Inter"], "headline-h1": ["Inter"], "display-kpi-mobile": ["Inter"], "headline-h1-mobile": ["Inter"], "headline-h3": ["Inter"], "body-semibold": ["Inter"], "caption-meta": ["Inter"], "headline-h2": ["Inter"], "button-text": ["Inter"], "form-label": ["Inter"], "display-kpi": ["Inter"], "body-default": ["Inter"], "table-data": ["Inter"] }, fontSize: { "table-header": ["12px", { "lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "600" }], "headline-h1": ["28px", { "lineHeight": "36px", "letterSpacing": "-0.02em", "fontWeight": "700" }], "display-kpi-mobile": ["26px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700" }], "headline-h1-mobile": ["22px", { "lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "700" }], "headline-h3": ["16px", { "lineHeight": "24px", "letterSpacing": "-0.005em", "fontWeight": "600" }], "body-semibold": ["14px", { "lineHeight": "20px", "fontWeight": "600" }], "caption-meta": ["12px", { "lineHeight": "16px", "fontWeight": "400" }], "headline-h2": ["20px", { "lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600" }], "button-text": ["14px", { "lineHeight": "20px", "fontWeight": "600" }], "form-label": ["13px", { "lineHeight": "18px", "fontWeight": "500" }], "display-kpi": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }], "body-default": ["14px", { "lineHeight": "20px", "fontWeight": "400" }], "table-data": ["13px", { "lineHeight": "18px", "fontWeight": "400" }] } } } };</script></head><body class="bg-app-bg text-text-primary antialiased"><aside class="fixed left-0 top-0 h-screen w-[250px] bg-sidebar-bg text-sidebar-text z-50 flex flex-col justify-between border-r border-border-default/20"><div class="flex flex-col flex-1 min-h-0"><div class="h-16 px-space-md flex items-center gap-space-sm border-b border-border-default/20 shrink-0"><img alt="Logistics Brand Mark" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/ALJJyrBIIjTx9TJyaLvDoO3WBkgxTJtN5pX7Jsi9HcxR_YMth4Fw5SB1h6d45hF55umb91ZHS_7iiuxcK3gsTD4jsBWsUR3S5StgJwEFYSfFOUCbpXbnseB2H1exYiZ95-BcxwF9xKKVX0ckAfZcbij8HvqSpCzHsRTXO-yXJrOZ-t3FlfcNNNmDBSMN0GZpSxhf3Qs87Aoe4k7dR8QIQzEmWycADB2a5sF2w5gTKdctH3gP"/><div class="flex flex-col"><span class="text-xs font-bold tracking-wider text-sidebar-text leading-none uppercase">LOGISTICS</span><span class="text-[10px] font-semibold text-sidebar-muted tracking-widest mt-0.5">WAREHOUSE SYSTEM</span></div></div><div class="flex-1 overflow-y-auto px-space-sm py-space-md space-y-space-md"><div class="space-y-1"><div class="px-space-sm text-[11px] font-bold text-sidebar-muted tracking-wider uppercase font-caption-meta">OVERVIEW</div><nav class="space-y-0.5" data-active-classes="bg-primary text-on-primary font-semibold rounded-lg shadow-sm"><a aria-current="page" class="flex items-center gap-space-sm px-space-sm py-2 transition-colors bg-primary text-on-primary font-semibold rounded-lg shadow-sm" data-path="dashboard" href="#"><span class="material-symbols-outlined text-[18px]">dashboard</span><span>Dashboard</span></a></nav></div><div class="space-y-1"><div class="px-space-sm text-[11px] font-bold text-sidebar-muted tracking-wider uppercase font-caption-meta">CATALOG &amp; STORAGE</div><nav class="space-y-0.5" data-active-classes="bg-primary text-on-primary font-semibold rounded-lg shadow-sm"><a class="flex items-center gap-space-sm px-space-sm py-2 rounded-lg text-sidebar-text text-sm hover:bg-primary-hover hover:text-on-primary transition-colors" data-path="products" href="#"><span class="material-symbols-outlined text-[18px]">inventory_2</span><span>Products</span></a><a class="flex items-center gap-space-sm px-space-sm py-2 rounded-lg text-sidebar-text text-sm hover:bg-primary-hover hover:text-on-primary transition-colors" data-path="warehouses" href="#"><span class="material-symbols-outlined text-[18px]">warehouse</span><span>Warehouses</span></a><a class="flex items-center gap-space-sm px-space-sm py-2 rounded-lg text-sidebar-text text-sm hover:bg-primary-hover hover:text-on-primary transition-colors" data-path="inventory" href="#"><span class="material-symbols-outlined text-[18px]">package</span><span>Inventory</span></a></nav></div><div class="space-y-1"><div class="px-space-sm text-[11px] font-bold text-sidebar-muted tracking-wider uppercase font-caption-meta">OPERATIONS</div><nav class="space-y-0.5" data-active-classes="bg-primary text-on-primary font-semibold rounded-lg shadow-sm"><a class="flex items-center gap-space-sm px-space-sm py-2 rounded-lg text-sidebar-text text-sm hover:bg-primary-hover hover:text-on-primary transition-colors" data-path="inbound-operations" href="#"><span class="material-symbols-outlined text-[18px]">south_west</span><span>Inbound Operations</span></a><a class="flex items-center gap-space-sm px-space-sm py-2 rounded-lg text-sidebar-text text-sm hover:bg-primary-hover hover:text-on-primary transition-colors" data-path="outbound-operations" href="#"><span class="material-symbols-outlined text-[18px]">north_east</span><span>Outbound Operations</span></a><a class="flex items-center gap-space-sm px-space-sm py-2 rounded-lg text-sidebar-text text-sm hover:bg-primary-hover hover:text-on-primary transition-colors" data-path="shipments" href="#"><span class="material-symbols-outlined text-[18px]">local_shipping</span><span>Shipments</span></a></nav></div><div class="space-y-1"><div class="px-space-sm text-[11px] font-bold text-sidebar-muted tracking-wider uppercase font-caption-meta">INSIGHTS</div><nav class="space-y-0.5" data-active-classes="bg-primary text-on-primary font-semibold rounded-lg shadow-sm"><a class="flex items-center gap-space-sm px-space-sm py-2 rounded-lg text-sidebar-text text-sm hover:bg-primary-hover hover:text-on-primary transition-colors" data-path="reports-and-analytics" href="#"><span class="material-symbols-outlined text-[18px]">query_stats</span><span>Reports &amp; Analytics</span></a><a class="flex items-center gap-space-sm px-space-sm py-2 rounded-lg text-sidebar-text text-sm hover:bg-primary-hover hover:text-on-primary transition-colors" data-path="audit-logs" href="#"><span class="material-symbols-outlined text-[18px]">history_edu</span><span>Audit Logs</span></a></nav></div><div class="space-y-1"><div class="px-space-sm text-[11px] font-bold text-sidebar-muted tracking-wider uppercase font-caption-meta">ADMINISTRATION</div><nav class="space-y-0.5" data-active-classes="bg-primary text-on-primary font-semibold rounded-lg shadow-sm"><a class="flex items-center gap-space-sm px-space-sm py-2 rounded-lg text-sidebar-text text-sm hover:bg-primary-hover hover:text-on-primary transition-colors" data-path="user-management" href="#"><span class="material-symbols-outlined text-[18px]">group</span><span>User Management</span></a><a class="flex items-center gap-space-sm px-space-sm py-2 rounded-lg text-sidebar-text text-sm hover:bg-primary-hover hover:text-on-primary transition-colors" data-path="roles-and-permissions" href="#"><span class="material-symbols-outlined text-[18px]">verified_user</span><span>Roles &amp; Permissions</span></a><a class="flex items-center gap-space-sm px-space-sm py-2 rounded-lg text-sidebar-text text-sm hover:bg-primary-hover hover:text-on-primary transition-colors" data-path="system-settings" href="#"><span class="material-symbols-outlined text-[18px]">settings</span><span>System Settings</span></a></nav></div></div></div><div class="p-space-sm border-t border-border-default/20 bg-sidebar-bg shrink-0"><div class="mb-2"><nav data-active-classes="bg-primary text-on-primary font-semibold rounded-lg shadow-sm"><a class="flex items-center gap-space-sm px-space-sm py-2 rounded-lg text-sidebar-text text-sm hover:bg-primary-hover hover:text-on-primary transition-colors" data-path="my-profile" href="#"><span class="material-symbols-outlined text-[18px]">person</span><span>My Profile</span></a></nav></div><div class="flex items-center justify-between p-space-sm rounded-lg bg-inverse-surface/40"><div class="flex items-center gap-space-sm"><img alt="Profile" class="w-8 h-8 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDpJz5Ls2ywARcAECd_jYcyZHGBDfEL_b4f4aVJ4mEEd3MQJnxtzu-2lOE3PbHZphx3RQF8w1yhT-huSPglZYuxsgyhlzhQdkz8ahqCxjyLBF0O7A-pcOY3ZttTTrbeAcDDWHCZpXK8-OsbjLVs9ZolkuocYtJfSxcuc2-S6tq6rh3Uj091DeFL_nfGOzTbGfMgtGS6OpTQ30y4vXstBnvRqIUiCw9NQWfGM1_Z9WrJ"/><div class="flex flex-col min-w-0"><span class="text-xs font-semibold text-sidebar-text truncate leading-tight">Marcus Vance</span><span class="text-[11px] text-sidebar-muted truncate leading-tight">Warehouse Manager</span></div></div><button class="text-sidebar-muted hover:text-on-primary p-1 rounded-md transition-colors" type="button"><span class="material-symbols-outlined text-[18px]">logout</span></button></div></div></aside><div class="pl-[250px]"><header class="fixed top-0 left-[250px] right-0 h-16 bg-surface z-40 border-b border-border-default flex items-center justify-between px-space-xl"><div class="flex items-center text-xs font-semibold text-text-secondary gap-1.5"><span class="hover:text-text-primary transition-colors cursor-pointer">Warehouse Core</span><span class="text-border-default">/</span><span class="text-text-primary font-bold">Live Operations</span></div><div class="flex items-center gap-space-md"><div class="relative w-80"><span class="material-symbols-outlined absolute left-3 top-2.5 text-text-secondary text-[18px]">search</span><input class="w-full pl-9 pr-3 py-1.5 text-xs bg-app-bg border border-border-default rounded-lg focus:outline-none focus:border-primary text-text-primary placeholder:text-text-secondary transition-all" placeholder="Search products, orders, SKU..." type="text"/></div><div class="flex items-center gap-1"><button class="relative p-2 text-text-secondary hover:text-text-primary rounded-lg transition-colors" type="button"><span class="material-symbols-outlined text-[20px]">notifications</span><span class="absolute top-1.5 right-1.5 w-2 h-2 bg-primary rounded-full ring-2 ring-surface"></span></button><button class="p-2 text-text-secondary hover:text-text-primary rounded-lg transition-colors" type="button"><span class="material-symbols-outlined text-[20px]">help</span></button></div><div class="h-5 w-px bg-border-default mx-1"></div><div class="flex items-center gap-space-sm pl-1"><img alt="Profile" class="w-8 h-8 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDpJz5Ls2ywARcAECd_jYcyZHGBDfEL_b4f4aVJ4mEEd3MQJnxtzu-2lOE3PbHZphx3RQF8w1yhT-huSPglZYuxsgyhlzhQdkz8ahqCxjyLBF0O7A-pcOY3ZttTTrbeAcDDWHCZpXK8-OsbjLVs9ZolkuocYtJfSxcuc2-S6tq6rh3Uj091DeFL_nfGOzTbGfMgtGS6OpTQ30y4vXstBnvRqIUiCw9NQWfGM1_Z9WrJ"/><div class="hidden sm:flex flex-col text-left"><span class="text-xs font-bold text-text-primary leading-tight">Marcus Vance</span><span class="text-[10px] text-text-secondary leading-tight">Operations Lead</span></div><span class="material-symbols-outlined text-text-secondary text-[16px]">expand_more</span></div></div></header><main class="relative pt-16 min-h-screen bg-app-bg px-space-xl py-space-lg"><div class="flex flex-col w-full space-y-space-lg">
+<!-- Top Operational Context / Header -->
+<div class="flex flex-col lg:flex-row lg:items-center justify-between gap-space-md">
+<div class="space-y-1">
+<div class="flex items-center gap-space-sm flex-wrap">
+<h1 class="font-headline-h1 text-headline-h1 text-text-primary">Dashboard</h1>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-status-neutral-bg text-status-neutral-text font-caption-meta text-caption-meta">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+          Sample Data Simulation Mode
+        </span>
+</div>
+<p class="font-body-default text-body-default text-text-secondary">
+        Real-time overview of warehouse transit operations, stock velocity, and fulfillment.
+      </p>
+</div>
+<!-- Action Toolbar -->
+<div class="flex items-center gap-space-sm flex-wrap shrink-0">
+<button class="h-10 px-space-md bg-surface text-text-primary rounded-lg font-button-text text-button-text hover:bg-app-bg transition-colors flex items-center gap-space-xs shadow-sm" type="button">
+<span class="material-symbols-outlined text-[18px] text-text-secondary">calendar_today</span>
+<span>Today: Oct 24, 2024</span>
+<span class="material-symbols-outlined text-[16px] text-text-secondary">arrow_drop_down</span>
+</button>
+<button class="h-10 px-space-md bg-surface text-text-primary rounded-lg font-button-text text-button-text hover:bg-app-bg transition-colors flex items-center gap-space-xs shadow-sm" type="button">
+<span class="material-symbols-outlined text-[18px] text-text-secondary">download</span>
+<span>Export Summary</span>
+</button>
+<button class="h-10 px-space-md bg-primary hover:bg-primary-hover text-on-primary rounded-lg font-button-text text-button-text transition-colors flex items-center gap-space-xs shadow-sm" type="button">
+<span class="material-symbols-outlined text-[18px]">add</span>
+<span>New Inbound Order</span>
+</button>
+</div>
+</div>
+<!-- KPI 6-Grid Strip -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-space-md">
+<!-- Card 1 -->
+<div class="bg-surface rounded-xl p-space-md shadow-sm flex flex-col justify-between space-y-space-sm">
+<div class="flex items-center justify-between">
+<span class="font-caption-meta text-caption-meta uppercase text-text-secondary tracking-wider">Total Products</span>
+<span class="material-symbols-outlined text-[18px] text-text-secondary">inventory_2</span>
+</div>
+<div>
+<div class="font-display-kpi text-display-kpi text-text-primary tracking-tight">1,428</div>
+<div class="font-caption-meta text-caption-meta text-text-secondary">Catalog SKUs</div>
+</div>
+<div class="pt-2 flex items-center gap-1.5">
+<span class="inline-flex items-center px-1.5 py-0.5 rounded text-[11px] font-semibold bg-status-success-bg text-status-success-text">
+          +12
+        </span>
+<span class="font-caption-meta text-caption-meta text-text-secondary">this week</span>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="bg-surface rounded-xl p-space-md shadow-sm flex flex-col justify-between space-y-space-sm">
+<div class="flex items-center justify-between">
+<span class="font-caption-meta text-caption-meta uppercase text-text-secondary tracking-wider">Warehouses</span>
+<span class="material-symbols-outlined text-[18px] text-text-secondary">warehouse</span>
+</div>
+<div>
+<div class="font-display-kpi text-display-kpi text-text-primary tracking-tight">4</div>
+<div class="font-caption-meta text-caption-meta text-text-secondary">Active Facilities</div>
+</div>
+<div class="pt-2">
+<span class="font-caption-meta text-caption-meta text-text-secondary truncate block" title="Central WH, East Transit, South Depot, North Cargo">
+          Central, East, South, North
+        </span>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="bg-surface rounded-xl p-space-md shadow-sm flex flex-col justify-between space-y-space-sm">
+<div class="flex items-center justify-between">
+<span class="font-caption-meta text-caption-meta uppercase text-text-secondary tracking-wider">Inventory</span>
+<span class="material-symbols-outlined text-[18px] text-text-secondary">package_2</span>
+</div>
+<div>
+<div class="font-display-kpi text-display-kpi text-text-primary tracking-tight">842,500</div>
+<div class="font-caption-meta text-caption-meta text-text-secondary">Physical Units</div>
+</div>
+<div class="pt-2 flex items-center gap-1.5">
+<div class="w-full bg-status-neutral-bg h-1.5 rounded-full overflow-hidden">
+<div class="bg-primary h-full rounded-full" style="width: 91.4%"></div>
+</div>
+<span class="font-caption-meta text-caption-meta text-text-secondary whitespace-nowrap">91.4%</span>
+</div>
+</div>
+<!-- Card 4 -->
+<div class="bg-surface rounded-xl p-space-md shadow-sm flex flex-col justify-between space-y-space-sm">
+<div class="flex items-center justify-between">
+<span class="font-caption-meta text-caption-meta uppercase text-text-secondary tracking-wider">Pending Inbound</span>
+<span class="material-symbols-outlined text-[18px] text-status-warning-text">south_west</span>
+</div>
+<div>
+<div class="font-display-kpi text-display-kpi text-text-primary tracking-tight">14</div>
+<div class="font-caption-meta text-caption-meta text-text-secondary">Dock Orders</div>
+</div>
+<div class="pt-2 flex items-center gap-1">
+<span class="inline-flex items-center px-1.5 py-0.5 rounded text-[11px] font-semibold bg-status-warning-bg text-status-warning-text">
+          4 pending inspection
+        </span>
+</div>
+</div>
+<!-- Card 5 -->
+<div class="bg-surface rounded-xl p-space-md shadow-sm flex flex-col justify-between space-y-space-sm">
+<div class="flex items-center justify-between">
+<span class="font-caption-meta text-caption-meta uppercase text-text-secondary tracking-wider">Pending Outbound</span>
+<span class="material-symbols-outlined text-[18px] text-status-info-text">north_east</span>
+</div>
+<div>
+<div class="font-display-kpi text-display-kpi text-text-primary tracking-tight">28</div>
+<div class="font-caption-meta text-caption-meta text-text-secondary">Dispatches</div>
+</div>
+<div class="pt-2 flex items-center gap-1">
+<span class="inline-flex items-center px-1.5 py-0.5 rounded text-[11px] font-semibold bg-status-info-bg text-status-info-text">
+          9 picking active
+        </span>
+</div>
+</div>
+<!-- Card 6 -->
+<div class="bg-surface rounded-xl p-space-md shadow-sm flex flex-col justify-between space-y-space-sm">
+<div class="flex items-center justify-between">
+<span class="font-caption-meta text-caption-meta uppercase text-text-secondary tracking-wider">Active Shipments</span>
+<span class="material-symbols-outlined text-[18px] text-status-success-text">local_shipping</span>
+</div>
+<div>
+<div class="font-display-kpi text-display-kpi text-text-primary tracking-tight">19</div>
+<div class="font-caption-meta text-caption-meta text-text-secondary">In Transit</div>
+</div>
+<div class="pt-2 flex items-center gap-1">
+<span class="inline-flex items-center px-1.5 py-0.5 rounded text-[11px] font-semibold bg-status-success-bg text-status-success-text">
+          3 delivering today
+        </span>
+</div>
+</div>
+</div>
+<!-- Operational Two-Column Body -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-lg">
+<!-- Left Column (Throughput & Operational Velocity) - 65% (8 cols) -->
+<div class="lg:col-span-8 space-y-space-lg flex flex-col">
+<!-- Velocity Chart Card -->
+<div class="bg-surface rounded-xl p-space-lg shadow-sm">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm pb-space-md">
+<div>
+<h2 class="font-headline-h2 text-headline-h2 text-text-primary">Weekly Inbound vs Outbound Velocity</h2>
+<p class="font-caption-meta text-caption-meta text-text-secondary mt-0.5">Pallet and unit flow recorded across Central, East, South, and North terminals</p>
+</div>
+<div class="flex items-center gap-space-md">
+<!-- Legend -->
+<div class="flex items-center gap-space-sm text-caption-meta font-caption-meta">
+<span class="flex items-center gap-1.5">
+<span class="w-3 h-3 rounded-sm bg-[#2563EB]"></span>
+<span class="text-text-secondary">Inbound</span>
+</span>
+<span class="flex items-center gap-1.5">
+<span class="w-3 h-3 rounded-sm bg-sidebar-bg"></span>
+<span class="text-text-secondary">Outbound</span>
+</span>
+</div>
+<!-- Range Filter Pill -->
+<div class="bg-status-neutral-bg p-0.5 rounded-lg flex text-xs">
+<button class="px-2.5 py-1 rounded-md bg-surface font-semibold text-text-primary shadow-sm">7D</button>
+<button class="px-2.5 py-1 text-text-secondary hover:text-text-primary transition-colors">30D</button>
+<button class="px-2.5 py-1 text-text-secondary hover:text-text-primary transition-colors">90D</button>
+</div>
+</div>
+</div>
+<!-- High Precision Operational Bar Chart (SVG) -->
+<div class="pt-4 pb-2">
+<div class="relative w-full h-64 flex flex-col justify-between">
+<!-- Grid Lines & Values -->
+<div class="absolute inset-0 flex flex-col justify-between pointer-events-none pb-6 text-text-secondary text-[10px] font-mono">
+<div class="flex justify-between items-center w-full"><span class="w-8">16k</span><div class="flex-1 ml-2 h-px bg-status-neutral-bg"></div></div>
+<div class="flex justify-between items-center w-full"><span class="w-8">12k</span><div class="flex-1 ml-2 h-px bg-status-neutral-bg"></div></div>
+<div class="flex justify-between items-center w-full"><span class="w-8">8k</span><div class="flex-1 ml-2 h-px bg-status-neutral-bg"></div></div>
+<div class="flex justify-between items-center w-full"><span class="w-8">4k</span><div class="flex-1 ml-2 h-px bg-status-neutral-bg"></div></div>
+<div class="flex justify-between items-center w-full"><span class="w-8">0k</span><div class="flex-1 ml-2 h-px bg-status-neutral-bg"></div></div>
+</div>
+<!-- Operational Bar Stacks -->
+<div class="relative h-full flex items-end justify-between pl-10 pr-2 pb-6 pt-2 z-10">
+<!-- Monday -->
+<div class="flex flex-col items-center gap-1.5 flex-1 group">
+<div class="flex items-end gap-1.5 h-44">
+<div class="w-4 bg-[#2563EB] hover:brightness-110 rounded-t-sm transition-all" style="height: 65%;" title="Mon Inbound: 10,400"></div>
+<div class="w-4 bg-sidebar-bg hover:brightness-125 rounded-t-sm transition-all" style="height: 80%;" title="Mon Outbound: 12,800"></div>
+</div>
+<span class="font-caption-meta text-caption-meta text-text-secondary group-hover:text-text-primary">Mon</span>
+</div>
+<!-- Tuesday -->
+<div class="flex flex-col items-center gap-1.5 flex-1 group">
+<div class="flex items-end gap-1.5 h-44">
+<div class="w-4 bg-[#2563EB] hover:brightness-110 rounded-t-sm transition-all" style="height: 78%;" title="Tue Inbound: 12,480"></div>
+<div class="w-4 bg-sidebar-bg hover:brightness-125 rounded-t-sm transition-all" style="height: 70%;" title="Tue Outbound: 11,200"></div>
+</div>
+<span class="font-caption-meta text-caption-meta text-text-secondary group-hover:text-text-primary">Tue</span>
+</div>
+<!-- Wednesday -->
+<div class="flex flex-col items-center gap-1.5 flex-1 group">
+<div class="flex items-end gap-1.5 h-44">
+<div class="w-4 bg-[#2563EB] hover:brightness-110 rounded-t-sm transition-all" style="height: 92%;" title="Wed Inbound: 14,720"></div>
+<div class="w-4 bg-sidebar-bg hover:brightness-125 rounded-t-sm transition-all" style="height: 85%;" title="Wed Outbound: 13,600"></div>
+</div>
+<span class="font-caption-meta text-caption-meta text-text-secondary group-hover:text-text-primary">Wed</span>
+</div>
+<!-- Thursday -->
+<div class="flex flex-col items-center gap-1.5 flex-1 group">
+<div class="flex items-end gap-1.5 h-44">
+<div class="w-4 bg-[#2563EB] hover:brightness-110 rounded-t-sm transition-all" style="height: 84%;" title="Thu Inbound: 13,440"></div>
+<div class="w-4 bg-sidebar-bg hover:brightness-125 rounded-t-sm transition-all" style="height: 90%;" title="Thu Outbound: 14,400"></div>
+</div>
+<span class="font-caption-meta text-caption-meta text-text-secondary group-hover:text-text-primary">Thu</span>
+</div>
+<!-- Friday -->
+<div class="flex flex-col items-center gap-1.5 flex-1 group">
+<div class="flex items-end gap-1.5 h-44">
+<div class="w-4 bg-[#2563EB] hover:brightness-110 rounded-t-sm transition-all" style="height: 60%;" title="Fri Inbound: 9,600"></div>
+<div class="w-4 bg-sidebar-bg hover:brightness-125 rounded-t-sm transition-all" style="height: 94%;" title="Fri Outbound: 15,040"></div>
+</div>
+<span class="font-caption-meta text-caption-meta text-text-secondary group-hover:text-text-primary">Fri</span>
+</div>
+<!-- Saturday -->
+<div class="flex flex-col items-center gap-1.5 flex-1 group">
+<div class="flex items-end gap-1.5 h-44">
+<div class="w-4 bg-[#2563EB] hover:brightness-110 rounded-t-sm transition-all" style="height: 35%;" title="Sat Inbound: 5,600"></div>
+<div class="w-4 bg-sidebar-bg hover:brightness-125 rounded-t-sm transition-all" style="height: 48%;" title="Sat Outbound: 7,680"></div>
+</div>
+<span class="font-caption-meta text-caption-meta text-text-secondary group-hover:text-text-primary">Sat</span>
+</div>
+<!-- Sunday (Today) -->
+<div class="flex flex-col items-center gap-1.5 flex-1 group">
+<div class="flex items-end gap-1.5 h-44">
+<div class="w-4 bg-[#2563EB] hover:brightness-110 rounded-t-sm transition-all" style="height: 25%;" title="Sun Inbound: 4,000"></div>
+<div class="w-4 bg-sidebar-bg hover:brightness-125 rounded-t-sm transition-all" style="height: 30%;" title="Sun Outbound: 4,800"></div>
+</div>
+<span class="font-caption-meta text-caption-meta font-bold text-text-primary">Sun (Live)</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Telemetry Summary Line -->
+<div class="mt-4 pt-3 flex flex-wrap items-center justify-between text-xs text-text-secondary bg-app-bg px-space-md py-2.5 rounded-lg gap-2">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px] text-primary">speed</span>
+<span>Current Floor Efficiency: <strong class="text-text-primary font-mono">98.2% on-schedule</strong></span>
+</div>
+<div class="flex items-center gap-4 tabular-nums">
+<span>Inbound: <strong class="text-text-primary">70,240 units</strong></span>
+<span>Outbound: <strong class="text-text-primary">79,520 units</strong></span>
+<span class="text-status-success-text font-semibold flex items-center gap-0.5">
+<span class="material-symbols-outlined text-[14px]">trending_up</span>+6.4% WoW
+            </span>
+</div>
+</div>
+</div>
+<!-- Quick Operational Actions Card -->
+<div class="bg-surface rounded-xl p-space-lg shadow-sm space-y-space-md">
+<div class="flex items-center justify-between">
+<h2 class="font-headline-h3 text-headline-h3 text-text-primary">Quick Operational Actions</h2>
+<span class="font-caption-meta text-caption-meta text-text-secondary">Standard Operating Routines</span>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-space-md">
+<!-- Action 1 -->
+<button class="p-4 rounded-xl bg-app-bg hover:bg-surface-container-high transition-all text-left group flex flex-col justify-between h-32" type="button">
+<div class="flex items-center justify-between w-full">
+<div class="w-10 h-10 rounded-lg bg-surface flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-on-primary transition-colors">
+<span class="material-symbols-outlined text-[20px]">assignment_add</span>
+</div>
+<span class="material-symbols-outlined text-text-secondary group-hover:text-primary transition-colors text-[18px]">chevron_right</span>
+</div>
+<div>
+<div class="font-body-semibold text-body-semibold text-text-primary">Receive Shipment</div>
+<div class="font-caption-meta text-caption-meta text-text-secondary">Log dock manifest</div>
+</div>
+</button>
+<!-- Action 2 -->
+<button class="p-4 rounded-xl bg-app-bg hover:bg-surface-container-high transition-all text-left group flex flex-col justify-between h-32" type="button">
+<div class="flex items-center justify-between w-full">
+<div class="w-10 h-10 rounded-lg bg-surface flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-on-primary transition-colors">
+<span class="material-symbols-outlined text-[20px]">checklist_rtl</span>
+</div>
+<span class="material-symbols-outlined text-text-secondary group-hover:text-primary transition-colors text-[18px]">chevron_right</span>
+</div>
+<div>
+<div class="font-body-semibold text-body-semibold text-text-primary">Initiate Picking</div>
+<div class="font-caption-meta text-caption-meta text-text-secondary">Generate wave batch</div>
+</div>
+</button>
+<!-- Action 3 -->
+<button class="p-4 rounded-xl bg-app-bg hover:bg-surface-container-high transition-all text-left group flex flex-col justify-between h-32" type="button">
+<div class="flex items-center justify-between w-full">
+<div class="w-10 h-10 rounded-lg bg-surface flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-on-primary transition-colors">
+<span class="material-symbols-outlined text-[20px]">sync_alt</span>
+</div>
+<span class="material-symbols-outlined text-text-secondary group-hover:text-primary transition-colors text-[18px]">chevron_right</span>
+</div>
+<div>
+<div class="font-body-semibold text-body-semibold text-text-primary">Stock Transfer</div>
+<div class="font-caption-meta text-caption-meta text-text-secondary">Inter-facility routing</div>
+</div>
+</button>
+<!-- Action 4 -->
+<button class="p-4 rounded-xl bg-app-bg hover:bg-surface-container-high transition-all text-left group flex flex-col justify-between h-32" type="button">
+<div class="flex items-center justify-between w-full">
+<div class="w-10 h-10 rounded-lg bg-surface flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-on-primary transition-colors">
+<span class="material-symbols-outlined text-[20px]">fact_check</span>
+</div>
+<span class="material-symbols-outlined text-text-secondary group-hover:text-primary transition-colors text-[18px]">chevron_right</span>
+</div>
+<div>
+<div class="font-body-semibold text-body-semibold text-text-primary">Cycle Count</div>
+<div class="font-caption-meta text-caption-meta text-text-secondary">Floor audit verification</div>
+</div>
+</button>
+</div>
+</div>
+</div>
+<!-- Right Column (Alerts & Activity Stream) - 35% (4 cols) -->
+<div class="lg:col-span-4 space-y-space-lg flex flex-col">
+<!-- Critical Attention & Low Stock Alerts Card -->
+<div class="bg-surface rounded-xl p-space-lg shadow-sm space-y-space-md">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-status-warning-text text-[20px]">warning</span>
+<h2 class="font-headline-h3 text-headline-h3 text-text-primary">Critical Attention</h2>
+</div>
+<span class="px-2 py-0.5 rounded text-[11px] font-semibold bg-status-danger-bg text-status-danger-text">
+            3 Urgent
+          </span>
+</div>
+<div class="space-y-space-sm">
+<!-- Alert Item 1 -->
+<div class="p-3 bg-app-bg rounded-lg space-y-2">
+<div class="flex items-start justify-between gap-2">
+<div class="flex flex-col">
+<span class="font-mono text-xs font-bold text-text-primary">SKU-8842</span>
+<span class="text-xs text-text-secondary">Heavy Duty Pallet Straps</span>
+</div>
+<span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-semibold bg-status-warning-bg text-status-warning-text">
+                Low Stock
+              </span>
+</div>
+<div class="flex items-center justify-between text-xs text-text-secondary">
+<span><strong>18</strong> remaining (Min: 50)</span>
+<button class="inline-flex items-center justify-center px-3 py-1 h-[28px] rounded-lg border border-border-default bg-surface hover:bg-app-bg text-text-primary font-semibold text-xs shadow-sm transition-all" type="button">
+                Reorder
+              </button>
+</div>
+</div>
+<!-- Alert Item 2 -->
+<div class="p-3 bg-app-bg rounded-lg space-y-2">
+<div class="flex items-start justify-between gap-2">
+<div class="flex flex-col">
+<span class="font-mono text-xs font-bold text-text-primary">SKU-3109</span>
+<span class="text-xs text-text-secondary">Industrial Shrink Film 450mm</span>
+</div>
+<span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-semibold bg-status-danger-bg text-status-danger-text">
+                Depleted
+              </span>
+</div>
+<div class="flex items-center justify-between text-xs text-text-secondary">
+<span>Stockout at <strong>East Transit</strong></span>
+<button class="inline-flex items-center justify-center px-3 py-1 h-[28px] rounded-lg border border-border-default bg-surface hover:bg-app-bg text-text-primary font-semibold text-xs shadow-sm transition-all" type="button">
+                Transfer
+              </button>
+</div>
+</div>
+<!-- Alert Item 3 -->
+<div class="p-3 bg-app-bg rounded-lg space-y-2">
+<div class="flex items-start justify-between gap-2">
+<div class="flex flex-col">
+<span class="font-mono text-xs font-bold text-text-primary">#INB-2024-0982</span>
+<span class="text-xs text-text-secondary">Supplier: Titan Packaging</span>
+</div>
+<span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-semibold bg-status-info-bg text-status-info-text">
+                Variance
+              </span>
+</div>
+<div class="flex items-center justify-between text-xs text-text-secondary">
+<span>Dock 3 intake count discrepancy</span>
+<button class="inline-flex items-center justify-center px-3 py-1 h-[28px] rounded-lg border border-border-default bg-surface hover:bg-app-bg text-text-primary font-semibold text-xs shadow-sm transition-all" type="button">
+                Review
+              </button>
+</div>
+</div>
+</div>
+</div>
+<!-- Recent Operational Activity Timeline Card -->
+<div class="bg-surface rounded-xl p-space-lg shadow-sm space-y-space-md flex-1">
+<div class="flex items-center justify-between">
+<h2 class="font-headline-h3 text-headline-h3 text-text-primary">Live Activity Stream</h2>
+<span class="font-caption-meta text-caption-meta text-text-secondary">Dock &amp; Floor</span>
+</div>
+<div class="relative pl-4 space-y-space-md">
+<!-- Timeline Track Line -->
+<div class="absolute top-2 bottom-2 left-1.5 w-0.5 bg-status-neutral-bg"></div>
+<!-- Event 1 -->
+<div class="relative flex items-start gap-space-sm">
+<span class="absolute -left-4 top-1 w-2.5 h-2.5 rounded-full bg-primary ring-4 ring-surface"></span>
+<div class="flex flex-col text-xs leading-relaxed">
+<div class="text-text-primary">
+<strong class="font-semibold">Marcus Vance</strong> approved outbound dispatch <span class="font-mono text-primary font-semibold">#OUT-9410</span> to Dallas Logistics Hub.
+              </div>
+<span class="font-caption-meta text-caption-meta text-text-secondary mt-0.5">10m ago · Gate 2B</span>
+</div>
+</div>
+<!-- Event 2 -->
+<div class="relative flex items-start gap-space-sm">
+<span class="absolute -left-4 top-1 w-2.5 h-2.5 rounded-full bg-status-success-text ring-4 ring-surface"></span>
+<div class="flex flex-col text-xs leading-relaxed">
+<div class="text-text-primary">
+                Inbound consignment <span class="font-mono text-primary font-semibold">#INB-9321</span> verified and marked <strong class="text-status-success-text">Completed</strong> at Central Warehouse dock 4.
+              </div>
+<span class="font-caption-meta text-caption-meta text-text-secondary mt-0.5">42m ago · Dock Inspector team</span>
+</div>
+</div>
+<!-- Event 3 -->
+<div class="relative flex items-start gap-space-sm">
+<span class="absolute -left-4 top-1 w-2.5 h-2.5 rounded-full bg-status-info-text ring-4 ring-surface"></span>
+<div class="flex flex-col text-xs leading-relaxed">
+<div class="text-text-primary">
+<strong class="font-semibold">Elena Rostova</strong> executed stock adjustment on <span class="font-mono">SKU-2201</span> (+150 units, cycle recount confirmation).
+              </div>
+<span class="font-caption-meta text-caption-meta text-text-secondary mt-0.5">2h ago · Bay 14-C</span>
+</div>
+</div>
+<!-- Event 4 -->
+<div class="relative flex items-start gap-space-sm">
+<span class="absolute -left-4 top-1 w-2.5 h-2.5 rounded-full bg-secondary ring-4 ring-surface"></span>
+<div class="flex flex-col text-xs leading-relaxed">
+<div class="text-text-primary">
+                Shipment <span class="font-mono text-primary font-semibold">#SHP-8821</span> cleared manifest and departed North Cargo facility via <strong class="text-text-primary">Swift Freight</strong>.
+              </div>
+<span class="font-caption-meta text-caption-meta text-text-secondary mt-0.5">3h ago · Outbound Bay 1</span>
+</div>
+</div>
+</div>
+<div class="pt-2">
+<a class="inline-flex items-center gap-1 text-xs font-semibold text-primary hover:text-primary-hover transition-colors" href="#">
+<span>View all audit logs</span>
+<span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div></main></div></body></html>

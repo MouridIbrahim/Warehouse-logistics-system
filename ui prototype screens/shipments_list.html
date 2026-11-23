@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_dashboard" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base { html, body { margin: 0; padding: 0; } body { overscroll-behavior: none; } main > :first-child { margin-top: 0 !important; } main > :last-child { margin-bottom: 0 !important; } } ::-webkit-scrollbar { display: none; }</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { colors: { "status-info-text": "#1D4ED8", "on-tertiary-container": "#fffbff", "sidebar-text": "#E2E8F0", "text-secondary": "#64748B", "status-info-bg": "#DBEAFE", "on-secondary-fixed-variant": "#404752", "on-background": "#0b1c30", "tertiary-fixed": "#ffdcc3", "surface-container-highest": "#d3e4fe", "status-danger-text": "#991B1B", "inverse-surface": "#213145", "status-warning-text": "#92400E", "on-tertiary-fixed-variant": "#6e3900", "status-neutral-bg": "#F1F5F9", "on-secondary-fixed": "#151c26", "primary-fixed-dim": "#ffb68f", "inverse-primary": "#ffb68f", "app-bg": "#F6F7F9", "surface-container-lowest": "#ffffff", "primary-hover": "#A94B0D", "status-success-bg": "#DCFCE7", "on-surface": "#0b1c30", "surface-tint": "#9c4400", "on-surface-variant": "#564238", "on-secondary-container": "#5c636e", "status-danger-bg": "#FEE2E2", "on-error": "#ffffff", "secondary": "#585f6a", "on-primary": "#ffffff", "secondary-container": "#d9e0ed", "surface-bright": "#f8f9ff", "status-neutral-text": "#475569", "tertiary": "#8d4b00", "secondary-fixed": "#dce3f0", "outline": "#8a7266", "primary-fixed": "#ffdbca", "surface-container-low": "#eff4ff", "background": "#f8f9ff", "tertiary-fixed-dim": "#ffb77d", "sidebar-muted": "#94A3B8", "surface-container-high": "#dce9ff", "surface": "#FFFFFF", "status-warning-bg": "#FEF3C7", "on-tertiary-fixed": "#2f1500", "text-primary": "#18212F", "inverse-on-surface": "#eaf1ff", "secondary-fixed-dim": "#c0c7d4", "outline-variant": "#ddc1b3", "on-primary-fixed-variant": "#773200", "tertiary-container": "#b15f00", "error-container": "#ffdad6", "primary-container": "#bc570f", "primary": "#984200", "on-secondary": "#ffffff", "on-primary-fixed": "#331200", "border-default": "#E2E8F0", "error": "#ba1a1a", "surface-dim": "#cbdbf5", "on-error-container": "#93000a", "status-success-text": "#166534", "on-primary-container": "#fffbff", "sidebar-bg": "#242B35", "on-tertiary": "#ffffff", "surface-variant": "#d3e4fe", "surface-container": "#e5eeff" }, borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, spacing: { "margin": "2rem", "margin-mobile": "1rem", "space-lg": "1.5rem", "space-xs": "0.25rem", "space-xl": "2rem", "gutter": "1.5rem", "space-sm": "0.5rem", "space-md": "1rem", "gutter-mobile": "1rem" }, fontFamily: { "table-header": ["Inter"], "headline-h1": ["Inter"], "display-kpi-mobile": ["Inter"], "headline-h1-mobile": ["Inter"], "headline-h3": ["Inter"], "body-semibold": ["Inter"], "caption-meta": ["Inter"], "headline-h2": ["Inter"], "button-text": ["Inter"], "form-label": ["Inter"], "display-kpi": ["Inter"], "body-default": ["Inter"], "table-data": ["Inter"] }, fontSize: { "table-header": ["12px", { "lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "600" }], "headline-h1": ["28px", { "lineHeight": "36px", "letterSpacing": "-0.02em", "fontWeight": "700" }], "display-kpi-mobile": ["26px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700" }], "headline-h1-mobile": ["22px", { "lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "700" }], "headline-h3": ["16px", { "lineHeight": "24px", "letterSpacing": "-0.005em", "fontWeight": "600" }], "body-semibold": ["14px", { "lineHeight": "20px", "fontWeight": "600" }], "caption-meta": ["12px", { "lineHeight": "16px", "fontWeight": "400" }], "headline-h2": ["20px", { "lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600" }], "button-text": ["14px", { "lineHeight": "20px", "fontWeight": "600" }], "form-label": ["13px", { "lineHeight": "18px", "fontWeight": "500" }], "display-kpi": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }], "body-default": ["14px", { "lineHeight": "20px", "fontWeight": "400" }], "table-data": ["13px", { "lineHeight": "18px", "fontWeight": "400" }] } } } };</script></head><body class="bg-app-bg text-text-primary antialiased"><aside class="fixed left-0 top-0 h-screen w-[250px] bg-sidebar-bg text-sidebar-text z-50 flex flex-col justify-between border-r border-border-default/20"><div class="flex flex-col flex-1 min-h-0"><div class="h-16 px-space-md flex items-center gap-space-sm border-b border-border-default/20 shrink-0"><img alt="Logistics Brand Mark" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/ALJJyrBIIjTx9TJyaLvDoO3WBkgxTJtN5pX7Jsi9HcxR_YMth4Fw5SB1h6d45hF55umb91ZHS_7iiuxcK3gsTD4jsBWsUR3S5StgJwEFYSfFOUCbpXbnseB2H1exYiZ95-BcxwF9xKKVX0ckAfZcbij8HvqSpCzHsRTXO-yXJrOZ-t3FlfcNNNmDBSMN0GZpSxhf3Qs87Aoe4k7dR8QIQzEmWycADB2a5sF2w5gTKdctH3gP"/><div class="flex flex-col"><span class="text-xs font-bold tracking-wider text-sidebar-text leading-none uppercase">LOGISTICS</span><span class="text-[10px] font-semibold text-sidebar-muted tracking-widest mt-0.5">WAREHOUSE SYSTEM</span></div></div><div class="flex-1 overflow-y-auto px-space-sm py-space-md space-y-space-md"><div class="space-y-1"><div class="px-space-sm text-[11px] font-bold text-sidebar-muted tracking-wider uppercase font-caption-meta">OVERVIEW</div><nav class="space-y-0.5" data-active-classes="bg-[#C45D16] text-white font-semibold rounded-lg shadow-sm"><a class="flex items-center px-space-sm py-2 rounded-lg text-sidebar-text text-sm hover:bg-primary-hover hover:text-on-primary transition-colors" data-path="dashboard" href="#"><span>Dashboard</span></a></nav></div><div class="space-y-1"><div class="px-space-sm text-[11px] font-bold text-sidebar-muted tracking-wider uppercase font-caption-meta">CATALOG &amp; STORAGE</div><nav class="space-y-0.5" data-active-classes="bg-[#C45D16] text-white font-semibold rounded-lg shadow-sm"><a class="flex items-center px-space-sm py-2 rounded-lg text-sidebar-text text-sm hover:bg-primary-hover hover:text-on-primary transition-colors" data-path="products" href="#"><span>Products</span></a><a class="flex items-center px-space-sm py-2 rounded-lg text-sidebar-text text-sm hover:bg-primary-hover hover:text-on-primary transition-colors" data-path="warehouses" href="#"><span>Warehouses</span></a><a class="flex items-center px-space-sm py-2 rounded-lg text-sidebar-text text-sm hover:bg-primary-hover hover:text-on-primary transition-colors" data-path="inventory" href="#"><span>Inventory</span></a></nav></div><div class="space-y-1"><div class="px-space-sm text-[11px] font-bold text-sidebar-muted tracking-wider uppercase font-caption-meta">OPERATIONS</div><nav class="space-y-0.5" data-active-classes="bg-[#C45D16] text-white font-semibold rounded-lg shadow-sm"><a class="flex items-center px-space-sm py-2 rounded-lg text-sidebar-text text-sm hover:bg-primary-hover hover:text-on-primary transition-colors" data-path="inbound-operations" href="#"><span>Inbound Operations</span></a><a class="flex items-center px-space-sm py-2 rounded-lg text-sidebar-text text-sm hover:bg-primary-hover hover:text-on-primary transition-colors" data-path="outbound-operations" href="#"><span>Outbound Operations</span></a><a class="flex items-center px-space-sm py-2 rounded-lg text-sidebar-text text-sm hover:bg-primary-hover hover:text-on-primary transition-colors" data-path="shipments" href="#"><span>Shipments</span></a></nav></div><div class="space-y-1"><div class="px-space-sm text-[11px] font-bold text-sidebar-muted tracking-wider uppercase font-caption-meta">INSIGHTS</div><nav class="space-y-0.5" data-active-classes="bg-[#C45D16] text-white font-semibold rounded-lg shadow-sm"><a class="flex items-center px-space-sm py-2 rounded-lg text-sidebar-text text-sm hover:bg-primary-hover hover:text-on-primary transition-colors" data-path="reports-and-analytics" href="#"><span>Reports &amp; Analytics</span></a><a class="flex items-center px-space-sm py-2 rounded-lg text-sidebar-text text-sm hover:bg-primary-hover hover:text-on-primary transition-colors" data-path="audit-logs" href="#"><span>Audit Logs</span></a></nav></div><div class="space-y-1"><div class="px-space-sm text-[11px] font-bold text-sidebar-muted tracking-wider uppercase font-caption-meta">ADMINISTRATION</div><nav class="space-y-0.5" data-active-classes="bg-[#C45D16] text-white font-semibold rounded-lg shadow-sm"><a class="flex items-center px-space-sm py-2 rounded-lg text-sidebar-text text-sm hover:bg-primary-hover hover:text-on-primary transition-colors" data-path="user-management" href="#"><span>User Management</span></a><a class="flex items-center px-space-sm py-2 rounded-lg text-sidebar-text text-sm hover:bg-primary-hover hover:text-on-primary transition-colors" data-path="roles-and-permissions" href="#"><span>Roles &amp; Permissions</span></a><a class="flex items-center px-space-sm py-2 rounded-lg text-sidebar-text text-sm hover:bg-primary-hover hover:text-on-primary transition-colors" data-path="system-settings" href="#"><span>System Settings</span></a></nav></div></div></div><div class="p-space-sm border-t border-border-default/20 bg-sidebar-bg shrink-0"><div class="space-y-1 mb-2"><div class="px-space-sm text-[11px] font-bold text-sidebar-muted tracking-wider uppercase font-caption-meta">ACCOUNT</div><nav class="space-y-0.5" data-active-classes="bg-[#C45D16] text-white font-semibold rounded-lg shadow-sm"><a class="flex items-center px-space-sm py-2 rounded-lg text-sidebar-text text-sm hover:bg-primary-hover hover:text-on-primary transition-colors" data-path="my-profile" href="#"><span>My Profile</span></a></nav></div><div class="flex items-center justify-between p-space-sm rounded-lg bg-inverse-surface/40"><div class="flex items-center gap-space-sm"><img alt="Marcus Vance" class="w-8 h-8 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDpJz5Ls2ywARcAECd_jYcyZHGBDfEL_b4f4aVJ4mEEd3MQJnxtzu-2lOE3PbHZphx3RQF8w1yhT-huSPglZYuxsgyhlzhQdkz8ahqCxjyLBF0O7A-pcOY3ZttTTrbeAcDDWHCZpXK8-OsbjLVs9ZolkuocYtJfSxcuc2-S6tq6rh3Uj091DeFL_nfGOzTbGfMgtGS6OpTQ30y4vXstBnvRqIUiCw9NQWfGM1_Z9WrJ"/><div class="flex flex-col min-w-0"><span class="text-xs font-semibold text-sidebar-text truncate leading-tight">Marcus Vance</span><span class="text-[11px] text-sidebar-muted truncate leading-tight">Shipment Manager</span></div></div><button class="text-sidebar-muted hover:text-on-primary p-1 rounded-md transition-colors" type="button"><span class="material-symbols-outlined text-[18px]">logout</span></button></div></div></aside><div class="pl-[250px]"><header class="fixed top-0 left-[250px] right-0 h-16 bg-surface z-40 border-b border-border-default flex items-center justify-between px-space-xl"><div class="flex items-center text-xs font-semibold text-text-secondary gap-2"><span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-status-success-bg text-status-success-text text-[11px] font-semibold"><span class="w-1.5 h-1.5 rounded-full bg-status-success-text"></span>Warehouse Status: Operational</span><span class="text-border-default">/</span><span class="text-text-primary font-bold">Shipment Management</span></div><div class="flex items-center gap-space-md"><div class="relative w-80"><span class="material-symbols-outlined absolute left-3 top-2.5 text-text-secondary text-[18px]">search</span><input class="w-full pl-9 pr-3 py-1.5 text-xs bg-app-bg border border-border-default rounded-lg focus:outline-none focus:border-primary text-text-primary placeholder:text-text-secondary transition-all" placeholder="Search shipments, tracking #, carrier..." type="text"/></div><div class="flex items-center gap-1"><button class="relative p-2 text-text-secondary hover:text-text-primary rounded-lg transition-colors" type="button"><span class="material-symbols-outlined text-[20px]">notifications</span><span class="absolute top-1.5 right-1.5 w-2 h-2 bg-primary rounded-full ring-2 ring-surface"></span></button><button class="p-2 text-text-secondary hover:text-text-primary rounded-lg transition-colors" type="button"><span class="material-symbols-outlined text-[20px]">help</span></button></div><div class="h-5 w-px bg-border-default mx-1"></div><div class="flex items-center gap-space-sm pl-1"><img alt="Marcus Vance" class="w-8 h-8 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDpJz5Ls2ywARcAECd_jYcyZHGBDfEL_b4f4aVJ4mEEd3MQJnxtzu-2lOE3PbHZphx3RQF8w1yhT-huSPglZYuxsgyhlzhQdkz8ahqCxjyLBF0O7A-pcOY3ZttTTrbeAcDDWHCZpXK8-OsbjLVs9ZolkuocYtJfSxcuc2-S6tq6rh3Uj091DeFL_nfGOzTbGfMgtGS6OpTQ30y4vXstBnvRqIUiCw9NQWfGM1_Z9WrJ"/><div class="hidden sm:flex flex-col text-left"><span class="text-xs font-bold text-text-primary leading-tight">Marcus Vance</span><span class="text-[10px] text-text-secondary leading-tight">Shipment Manager / Warehouse Operations Lead</span></div><span class="material-symbols-outlined text-text-secondary text-[16px]">expand_more</span></div></div></header><main class="relative pt-16 min-h-screen bg-app-bg px-space-xl py-space-lg"><div class="flex flex-col w-full space-y-space-lg">
+<!-- Header Section with Breadcrumbs & Action Controls -->
+<div class="flex flex-col md:flex-row md:items-center md:justify-between gap-space-md">
+<div class="space-y-1">
+<div class="flex items-center gap-1.5 text-text-secondary font-caption-meta text-caption-meta">
+<span>Operations</span>
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+<span class="text-text-primary font-body-semibold">Shipments</span>
+</div>
+<h1 class="text-headline-h1 font-headline-h1 text-text-primary tracking-tight">Shipments</h1>
+<p class="text-text-secondary font-body-default text-body-default max-w-2xl">
+        Track outbound freight consignments, carrier handoffs, in-transit telemetry, and proof of delivery.
+      </p>
+</div>
+<!-- Header Operations CTA Cluster -->
+<div class="flex flex-wrap items-center gap-space-sm shrink-0">
+<button class="inline-flex items-center gap-2 h-10 px-space-md rounded-lg bg-surface text-text-primary font-button-text text-button-text hover:bg-app-bg shadow-sm transition-colors cursor-pointer" type="button">
+<span class="material-symbols-outlined text-[18px] text-text-secondary">download</span>
+<span>Export Manifests (CSV)</span>
+</button>
+<button class="inline-flex items-center gap-2 h-10 px-space-md rounded-lg bg-surface text-text-primary font-button-text text-button-text hover:bg-app-bg shadow-sm transition-colors cursor-pointer" type="button">
+<span class="material-symbols-outlined text-[18px] text-text-secondary">local_shipping</span>
+<span>Carrier Fleet Status</span>
+</button>
+<button class="inline-flex items-center gap-2 h-10 px-space-md rounded-lg bg-primary-container text-on-primary font-button-text text-button-text hover:bg-primary-hover shadow-sm transition-all cursor-pointer" type="button">
+<span class="material-symbols-outlined text-[20px]">add_circle</span>
+<span>+ Book Freight Carrier</span>
+</button>
+</div>
+</div>
+<!-- Executive Operational KPI Tiles (4 Cards) -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-space-md">
+<!-- KPI 1: Active Consignments -->
+<div class="bg-surface rounded-xl p-space-lg shadow-sm flex flex-col justify-between">
+<div class="flex items-center justify-between">
+<span class="text-[11px] font-table-header uppercase tracking-wider text-text-secondary">Active Consignments</span>
+<div class="w-8 h-8 rounded-lg bg-status-info-bg flex items-center justify-center text-status-info-text">
+<span class="material-symbols-outlined text-[18px]">route</span>
+</div>
+</div>
+<div class="mt-space-md">
+<div class="flex items-baseline gap-2">
+<span class="text-display-kpi font-display-kpi text-text-primary tabular-nums">28</span>
+<span class="text-body-semibold font-body-semibold text-text-secondary">Shipments</span>
+</div>
+<div class="mt-2 flex items-center gap-2">
+<span class="inline-flex items-center px-2 py-0.5 rounded-full text-caption-meta font-body-semibold bg-status-info-bg text-status-info-text">
+            8 In Transit
+          </span>
+<span class="text-caption-meta font-caption-meta text-text-secondary truncate">Freight linehaul on route</span>
+</div>
+</div>
+</div>
+<!-- KPI 2: Dispatched Today -->
+<div class="bg-surface rounded-xl p-space-lg shadow-sm flex flex-col justify-between">
+<div class="flex items-center justify-between">
+<span class="text-[11px] font-table-header uppercase tracking-wider text-text-secondary">Dispatched Today</span>
+<div class="w-8 h-8 rounded-lg bg-status-success-bg flex items-center justify-center text-status-success-text">
+<span class="material-symbols-outlined text-[18px]">departure_board</span>
+</div>
+</div>
+<div class="mt-space-md">
+<div class="flex items-baseline gap-2">
+<span class="text-display-kpi font-display-kpi text-text-primary tabular-nums">14</span>
+<span class="text-body-semibold font-body-semibold text-text-secondary">Dispatched</span>
+</div>
+<div class="mt-2 flex items-center gap-2">
+<span class="inline-flex items-center px-2 py-0.5 rounded-full text-caption-meta font-body-semibold bg-status-success-bg text-status-success-text">
+            100% On-Time
+          </span>
+<span class="text-caption-meta font-caption-meta text-text-secondary truncate">9,420 kg freight cleared docks</span>
+</div>
+</div>
+</div>
+<!-- KPI 3: Awaiting Carrier Pickup -->
+<div class="bg-surface rounded-xl p-space-lg shadow-sm flex flex-col justify-between">
+<div class="flex items-center justify-between">
+<span class="text-[11px] font-table-header uppercase tracking-wider text-text-secondary">Awaiting Carrier Pickup</span>
+<div class="w-8 h-8 rounded-lg bg-status-warning-bg flex items-center justify-center text-status-warning-text">
+<span class="material-symbols-outlined text-[18px]">warehouse</span>
+</div>
+</div>
+<div class="mt-space-md">
+<div class="flex items-baseline gap-2">
+<span class="text-display-kpi font-display-kpi text-text-primary tabular-nums">6</span>
+<span class="text-body-semibold font-body-semibold text-text-secondary">Shipments</span>
+</div>
+<div class="mt-2 flex items-center gap-2">
+<span class="inline-flex items-center px-2 py-0.5 rounded-full text-caption-meta font-body-semibold bg-status-warning-bg text-status-warning-text">
+            2 Docked Trailers
+          </span>
+<span class="text-caption-meta font-caption-meta text-text-secondary truncate">Staging bays 04 &amp; 05 locked</span>
+</div>
+</div>
+</div>
+<!-- KPI 4: Delivery Exceptions -->
+<div class="bg-surface rounded-xl p-space-lg shadow-sm flex flex-col justify-between">
+<div class="flex items-center justify-between">
+<span class="text-[11px] font-table-header uppercase tracking-wider text-text-secondary">Delivery Exceptions</span>
+<div class="w-8 h-8 rounded-lg bg-status-danger-bg flex items-center justify-center text-status-danger-text">
+<span class="material-symbols-outlined text-[18px]">report_problem</span>
+</div>
+</div>
+<div class="mt-space-md">
+<div class="flex items-baseline gap-2">
+<span class="text-display-kpi font-display-kpi text-status-danger-text tabular-nums">1</span>
+<span class="text-body-semibold font-body-semibold text-text-secondary">Exception</span>
+</div>
+<div class="mt-2 flex items-center gap-2">
+<span class="inline-flex items-center px-2 py-0.5 rounded-full text-caption-meta font-body-semibold bg-status-warning-bg text-status-warning-text">
+            Weather Hold - I-35 N
+          </span>
+<span class="text-caption-meta font-caption-meta text-text-secondary truncate">Carrier revised +3h</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Carrier Fleet & Dock Telemetry Banner -->
+<div class="bg-surface rounded-xl p-space-md shadow-sm flex flex-col lg:flex-row lg:items-center justify-between gap-space-md">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-primary-container/10 flex items-center justify-center text-primary-container shrink-0">
+<span class="material-symbols-outlined text-[22px]">swap_horizontal_circle</span>
+</div>
+<div>
+<div class="flex items-center gap-2">
+<span class="font-headline-3 text-headline-3 text-text-primary">Contracted Carrier Telemetry</span>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-status-success-bg text-status-success-text text-caption-meta font-body-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-status-success-text animate-pulse"></span>
+            EDI 214 Link: Operational
+          </span>
+</div>
+<span class="text-caption-meta font-caption-meta text-text-secondary">Continuous freight broker API feed &amp; GPS linehaul ping stream</span>
+</div>
+</div>
+<!-- Carrier Grid Micro-Tiles -->
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-space-sm">
+<div class="p-2.5 rounded-lg bg-app-bg flex flex-col">
+<span class="text-caption-meta font-body-semibold text-text-primary">Knight-Swift</span>
+<div class="flex items-center justify-between text-caption-meta text-text-secondary mt-1">
+<span class="text-status-success-text font-body-semibold">98.6% OT</span>
+<span class="tabular-nums">12 trailers</span>
+</div>
+</div>
+<div class="p-2.5 rounded-lg bg-app-bg flex flex-col">
+<span class="text-caption-meta font-body-semibold text-text-primary">FedEx Freight</span>
+<div class="flex items-center justify-between text-caption-meta text-text-secondary mt-1">
+<span class="text-status-success-text font-body-semibold">99.1% OT</span>
+<span class="tabular-nums">8 trailers</span>
+</div>
+</div>
+<div class="p-2.5 rounded-lg bg-app-bg flex flex-col">
+<span class="text-caption-meta font-body-semibold text-text-primary">Old Dominion</span>
+<div class="flex items-center justify-between text-caption-meta text-text-secondary mt-1">
+<span class="text-status-success-text font-body-semibold">97.4% OT</span>
+<span class="tabular-nums">5 trailers</span>
+</div>
+</div>
+<div class="p-2.5 rounded-lg bg-app-bg flex flex-col">
+<span class="text-caption-meta font-body-semibold text-text-primary">Estes Express</span>
+<div class="flex items-center justify-between text-caption-meta text-text-secondary mt-1">
+<span class="text-text-primary font-body-semibold">96.0% OT</span>
+<span class="tabular-nums">3 trailers</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Multi-Filter Toolbar & Search Panel -->
+<div class="bg-surface rounded-xl p-space-md shadow-sm space-y-space-sm">
+<div class="flex flex-col lg:flex-row gap-space-sm items-stretch lg:items-center justify-between">
+<!-- Search Input -->
+<div class="relative flex-1 min-w-[280px]">
+<span class="material-symbols-outlined absolute left-3 top-2.5 text-text-secondary text-[18px]">search</span>
+<input class="w-full h-10 pl-9 pr-3 text-body-default font-body-default bg-app-bg rounded-lg placeholder:text-text-secondary focus:outline-none focus:ring-2 focus:ring-primary-container text-text-primary" placeholder="Search by shipment ref, tracking #, BOL, or carrier..." type="text"/>
+</div>
+<!-- Dropdown Selectors Group -->
+<div class="flex flex-wrap items-center gap-space-sm">
+<!-- Carrier Filter -->
+<div class="relative">
+<select class="h-10 pl-3 pr-8 bg-app-bg text-text-primary font-form-label text-form-label rounded-lg appearance-none focus:outline-none cursor-pointer">
+<option>All Carriers</option>
+<option>Knight-Swift Freight</option>
+<option>FedEx Freight</option>
+<option>Old Dominion</option>
+<option>Estes Express</option>
+</select>
+<span class="material-symbols-outlined absolute right-2 top-2.5 text-text-secondary text-[18px] pointer-events-none">expand_more</span>
+</div>
+<!-- Status Filter -->
+<div class="relative">
+<select class="h-10 pl-3 pr-8 bg-app-bg text-text-primary font-form-label text-form-label rounded-lg appearance-none focus:outline-none cursor-pointer">
+<option>All Statuses</option>
+<option>Awaiting Carrier</option>
+<option>In Transit</option>
+<option>Out for Delivery</option>
+<option>Delivered</option>
+<option>Exception</option>
+</select>
+<span class="material-symbols-outlined absolute right-2 top-2.5 text-text-secondary text-[18px] pointer-events-none">expand_more</span>
+</div>
+<!-- Facility Filter -->
+<div class="relative">
+<select class="h-10 pl-3 pr-8 bg-app-bg text-text-primary font-form-label text-form-label rounded-lg appearance-none focus:outline-none cursor-pointer">
+<option>Central Hub (WH-KM-001)</option>
+<option>North Logistics Yard (WH-KM-002)</option>
+<option>East Terminal Hub (WH-KM-003)</option>
+</select>
+<span class="material-symbols-outlined absolute right-2 top-2.5 text-text-secondary text-[18px] pointer-events-none">expand_more</span>
+</div>
+<!-- Date Range Filter -->
+<div class="relative">
+<select class="h-10 pl-3 pr-8 bg-app-bg text-text-primary font-form-label text-form-label rounded-lg appearance-none focus:outline-none cursor-pointer">
+<option>This Month: Oct 2024</option>
+<option>Last 7 Days</option>
+<option>Last 30 Days</option>
+<option>Custom Date Span</option>
+</select>
+<span class="material-symbols-outlined absolute right-2 top-2.5 text-text-secondary text-[18px] pointer-events-none">calendar_today</span>
+</div>
+</div>
+</div>
+<!-- Active Filter Chips & Counter Line -->
+<div class="flex flex-wrap items-center justify-between pt-2">
+<div class="flex flex-wrap items-center gap-2">
+<span class="text-caption-meta font-body-semibold text-text-secondary">Applied Filters:</span>
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-caption-meta font-body-semibold bg-app-bg text-text-primary">
+<span>Status: Active Shipments</span>
+<button class="hover:text-status-danger-text focus:outline-none" type="button"><span class="material-symbols-outlined text-[14px]">close</span></button>
+</span>
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-caption-meta font-body-semibold bg-app-bg text-text-primary">
+<span>Facility: Central Hub</span>
+<button class="hover:text-status-danger-text focus:outline-none" type="button"><span class="material-symbols-outlined text-[14px]">close</span></button>
+</span>
+<button class="text-caption-meta font-body-semibold text-primary hover:text-primary-hover underline underline-offset-2 ml-1" type="button">
+          Clear all filters
+        </button>
+</div>
+<div class="text-caption-meta font-body-semibold text-text-secondary mt-2 sm:mt-0">
+        Displaying <span class="font-display-kpi-mobile text-text-primary tabular-nums">28</span> Shipments
+      </div>
+</div>
+</div>
+<!-- Enterprise Data Table for Shipments -->
+<div class="bg-surface rounded-xl shadow-sm overflow-hidden">
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead>
+<tr class="bg-app-bg h-10 text-table-header font-table-header text-text-secondary uppercase tracking-wider">
+<th class="w-12 px-space-md py-2">
+<input class="w-4 h-4 rounded text-primary-container focus:ring-primary-container cursor-pointer" type="checkbox"/>
+</th>
+<th class="px-space-md py-2">Shipment Ref &amp; BOL</th>
+<th class="px-space-md py-2">Outbound Order</th>
+<th class="px-space-md py-2">Destination / Consignee</th>
+<th class="px-space-md py-2">Carrier &amp; Service</th>
+<th class="px-space-md py-2">Tracking #</th>
+<th class="px-space-md py-2">Dispatch Date &amp; Time</th>
+<th class="px-space-md py-2">Est. Delivery</th>
+<th class="px-space-md py-2">Status</th>
+<th class="px-space-md py-2 text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y-0 text-table-data font-table-data">
+<!-- Row 1: In Transit -->
+<tr class="hover:bg-app-bg/60 transition-colors">
+<td class="px-space-md py-3.5">
+<input class="w-4 h-4 rounded text-primary-container focus:ring-primary-container cursor-pointer" type="checkbox"/>
+</td>
+<td class="px-space-md py-3.5">
+<div class="font-body-semibold text-text-primary tracking-tight">#SHP-2024-8841</div>
+<div class="text-caption-meta font-caption-meta text-text-secondary">BOL-99412-OUT</div>
+</td>
+<td class="px-space-md py-3.5">
+<a class="inline-flex items-center gap-1 font-body-semibold text-primary hover:text-primary-hover" href="#">
+<span>#OUT-2024-9410</span>
+<span class="material-symbols-outlined text-[14px]">open_in_new</span>
+</a>
+</td>
+<td class="px-space-md py-3.5">
+<div class="font-body-semibold text-text-primary">Apex Retail Logistics</div>
+<div class="text-caption-meta font-caption-meta text-text-secondary">Dallas Regional Hub, TX • Zone 4</div>
+</td>
+<td class="px-space-md py-3.5">
+<div class="font-body-semibold text-text-primary">Knight-Swift Logistics</div>
+<div class="text-caption-meta font-caption-meta text-text-secondary">LTL Priority / Dry Van 53'</div>
+</td>
+<td class="px-space-md py-3.5">
+<div class="inline-flex items-center gap-1.5 font-mono text-caption-meta bg-app-bg px-2 py-0.5 rounded text-text-primary">
+<span>1Z-9941-KSL-8841</span>
+<button class="text-text-secondary hover:text-text-primary" title="Copy Tracking #" type="button">
+<span class="material-symbols-outlined text-[14px]">content_copy</span>
+</button>
+</div>
+</td>
+<td class="px-space-md py-3.5 whitespace-nowrap tabular-nums text-text-secondary">
+              Oct 24, 2024 • 16:30 CST
+            </td>
+<td class="px-space-md py-3.5 whitespace-nowrap tabular-nums font-body-semibold text-text-primary">
+              Oct 25, 2024 • 09:30 CST
+            </td>
+<td class="px-space-md py-3.5 whitespace-nowrap">
+<span class="inline-flex items-center px-2.5 py-1 rounded-full text-caption-meta font-body-semibold bg-status-info-bg text-status-info-text">
+                In Transit
+              </span>
+</td>
+<td class="px-space-md py-3.5 text-right whitespace-nowrap">
+<div class="inline-flex items-center gap-1">
+<button class="px-2.5 py-1 text-caption-meta font-body-semibold text-primary hover:text-primary-hover rounded hover:bg-app-bg" type="button">
+                  View Details
+                </button>
+<button class="p-1 text-text-secondary hover:text-text-primary rounded hover:bg-app-bg" type="button">
+<span class="material-symbols-outlined text-[18px]">more_vert</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 2: Awaiting Carrier -->
+<tr class="hover:bg-app-bg/60 transition-colors bg-surface-container-low/20">
+<td class="px-space-md py-3.5">
+<input class="w-4 h-4 rounded text-primary-container focus:ring-primary-container cursor-pointer" type="checkbox"/>
+</td>
+<td class="px-space-md py-3.5">
+<div class="font-body-semibold text-text-primary tracking-tight">#SHP-2024-8840</div>
+<div class="text-caption-meta font-caption-meta text-text-secondary">BOL-99411-OUT</div>
+</td>
+<td class="px-space-md py-3.5">
+<a class="inline-flex items-center gap-1 font-body-semibold text-primary hover:text-primary-hover" href="#">
+<span>#OUT-2024-9408</span>
+<span class="material-symbols-outlined text-[14px]">open_in_new</span>
+</a>
+</td>
+<td class="px-space-md py-3.5">
+<div class="font-body-semibold text-text-primary">Summit Distribution Inc</div>
+<div class="text-caption-meta font-caption-meta text-text-secondary">Austin Crossdock, TX • Zone 2</div>
+</td>
+<td class="px-space-md py-3.5">
+<div class="font-body-semibold text-text-primary">FedEx Freight</div>
+<div class="text-caption-meta font-caption-meta text-text-secondary">FTL Standard / Reefer Bay 04</div>
+</td>
+<td class="px-space-md py-3.5">
+<div class="inline-flex items-center gap-1.5 font-mono text-caption-meta bg-app-bg px-2 py-0.5 rounded text-text-primary">
+<span>1Z-9940-FDX-8840</span>
+<button class="text-text-secondary hover:text-text-primary" title="Copy Tracking #" type="button">
+<span class="material-symbols-outlined text-[14px]">content_copy</span>
+</button>
+</div>
+</td>
+<td class="px-space-md py-3.5 whitespace-nowrap tabular-nums text-text-secondary">
+              Oct 24, 2024 • Staged 18:00
+            </td>
+<td class="px-space-md py-3.5 whitespace-nowrap tabular-nums font-body-semibold text-text-primary">
+              Oct 26, 2024 • 14:00 CST
+            </td>
+<td class="px-space-md py-3.5 whitespace-nowrap">
+<span class="inline-flex items-center px-2.5 py-1 rounded-full text-caption-meta font-body-semibold bg-status-warning-bg text-status-warning-text">
+                Awaiting Carrier
+              </span>
+</td>
+<td class="px-space-md py-3.5 text-right whitespace-nowrap">
+<div class="inline-flex items-center gap-1">
+<button class="px-2.5 py-1 text-caption-meta font-body-semibold text-primary hover:text-primary-hover rounded hover:bg-app-bg" type="button">
+                  View Details
+                </button>
+<button class="p-1 text-text-secondary hover:text-text-primary rounded hover:bg-app-bg" type="button">
+<span class="material-symbols-outlined text-[18px]">more_vert</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 3: Delivered -->
+<tr class="hover:bg-app-bg/60 transition-colors">
+<td class="px-space-md py-3.5">
+<input class="w-4 h-4 rounded text-primary-container focus:ring-primary-container cursor-pointer" type="checkbox"/>
+</td>
+<td class="px-space-md py-3.5">
+<div class="font-body-semibold text-text-primary tracking-tight">#SHP-2024-8839</div>
+<div class="text-caption-meta font-caption-meta text-text-secondary">BOL-99408-OUT</div>
+</td>
+<td class="px-space-md py-3.5">
+<a class="inline-flex items-center gap-1 font-body-semibold text-primary hover:text-primary-hover" href="#">
+<span>#OUT-2024-9405</span>
+<span class="material-symbols-outlined text-[14px]">open_in_new</span>
+</a>
+</td>
+<td class="px-space-md py-3.5">
+<div class="font-body-semibold text-text-primary">Horizon Medical Supplies</div>
+<div class="text-caption-meta font-caption-meta text-text-secondary">Houston Medical Hub, TX • Zone 3</div>
+</td>
+<td class="px-space-md py-3.5">
+<div class="font-body-semibold text-text-primary">Old Dominion Freight</div>
+<div class="text-caption-meta font-caption-meta text-text-secondary">Expedited Temperature-Controlled</div>
+</td>
+<td class="px-space-md py-3.5">
+<div class="inline-flex items-center gap-1.5 font-mono text-caption-meta bg-app-bg px-2 py-0.5 rounded text-text-primary">
+<span>1Z-9939-ODF-8839</span>
+<button class="text-text-secondary hover:text-text-primary" title="Copy Tracking #" type="button">
+<span class="material-symbols-outlined text-[14px]">content_copy</span>
+</button>
+</div>
+</td>
+<td class="px-space-md py-3.5 whitespace-nowrap tabular-nums text-text-secondary">
+              Oct 23, 2024 • 08:15 CST
+            </td>
+<td class="px-space-md py-3.5 whitespace-nowrap tabular-nums font-body-semibold text-text-primary">
+              Oct 24, 2024 • 11:22 CST (Signed)
+            </td>
+<td class="px-space-md py-3.5 whitespace-nowrap">
+<span class="inline-flex items-center px-2.5 py-1 rounded-full text-caption-meta font-body-semibold bg-status-success-bg text-status-success-text">
+                Delivered
+              </span>
+</td>
+<td class="px-space-md py-3.5 text-right whitespace-nowrap">
+<div class="inline-flex items-center gap-1">
+<button class="px-2.5 py-1 text-caption-meta font-body-semibold text-primary hover:text-primary-hover rounded hover:bg-app-bg" type="button">
+                  View Details
+                </button>
+<button class="p-1 text-text-secondary hover:text-text-primary rounded hover:bg-app-bg" type="button">
+<span class="material-symbols-outlined text-[18px]">more_vert</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 4: Out for Delivery -->
+<tr class="hover:bg-app-bg/60 transition-colors">
+<td class="px-space-md py-3.5">
+<input class="w-4 h-4 rounded text-primary-container focus:ring-primary-container cursor-pointer" type="checkbox"/>
+</td>
+<td class="px-space-md py-3.5">
+<div class="font-body-semibold text-text-primary tracking-tight">#SHP-2024-8838</div>
+<div class="text-caption-meta font-caption-meta text-text-secondary">BOL-99407-OUT</div>
+</td>
+<td class="px-space-md py-3.5">
+<a class="inline-flex items-center gap-1 font-body-semibold text-primary hover:text-primary-hover" href="#">
+<span>#OUT-2024-9401</span>
+<span class="material-symbols-outlined text-[14px]">open_in_new</span>
+</a>
+</td>
+<td class="px-space-md py-3.5">
+<div class="font-body-semibold text-text-primary">Bayou Industrial Supply</div>
+<div class="text-caption-meta font-caption-meta text-text-secondary">San Antonio Depot, TX • Zone 2</div>
+</td>
+<td class="px-space-md py-3.5">
+<div class="font-body-semibold text-text-primary">Knight-Swift Logistics</div>
+<div class="text-caption-meta font-caption-meta text-text-secondary">LTL Priority / Drop Trailer</div>
+</td>
+<td class="px-space-md py-3.5">
+<div class="inline-flex items-center gap-1.5 font-mono text-caption-meta bg-app-bg px-2 py-0.5 rounded text-text-primary">
+<span>1Z-9938-KSL-8838</span>
+<button class="text-text-secondary hover:text-text-primary" title="Copy Tracking #" type="button">
+<span class="material-symbols-outlined text-[14px]">content_copy</span>
+</button>
+</div>
+</td>
+<td class="px-space-md py-3.5 whitespace-nowrap tabular-nums text-text-secondary">
+              Oct 23, 2024 • 14:00 CST
+            </td>
+<td class="px-space-md py-3.5 whitespace-nowrap tabular-nums font-body-semibold text-text-primary">
+              Today • ETA 17:30 CST
+            </td>
+<td class="px-space-md py-3.5 whitespace-nowrap">
+<span class="inline-flex items-center px-2.5 py-1 rounded-full text-caption-meta font-body-semibold bg-status-info-bg text-status-info-text">
+                Out for Delivery
+              </span>
+</td>
+<td class="px-space-md py-3.5 text-right whitespace-nowrap">
+<div class="inline-flex items-center gap-1">
+<button class="px-2.5 py-1 text-caption-meta font-body-semibold text-primary hover:text-primary-hover rounded hover:bg-app-bg" type="button">
+                  View Details
+                </button>
+<button class="p-1 text-text-secondary hover:text-text-primary rounded hover:bg-app-bg" type="button">
+<span class="material-symbols-outlined text-[18px]">more_vert</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 5: In Transit -->
+<tr class="hover:bg-app-bg/60 transition-colors">
+<td class="px-space-md py-3.5">
+<input class="w-4 h-4 rounded text-primary-container focus:ring-primary-container cursor-pointer" type="checkbox"/>
+</td>
+<td class="px-space-md py-3.5">
+<div class="font-body-semibold text-text-primary tracking-tight">#SHP-2024-8837</div>
+<div class="text-caption-meta font-caption-meta text-text-secondary">BOL-99406-OUT</div>
+</td>
+<td class="px-space-md py-3.5">
+<a class="inline-flex items-center gap-1 font-body-semibold text-primary hover:text-primary-hover" href="#">
+<span>#OUT-2024-9399</span>
+<span class="material-symbols-outlined text-[14px]">open_in_new</span>
+</a>
+</td>
+<td class="px-space-md py-3.5">
+<div class="font-body-semibold text-text-primary">Tri-State Parts Center</div>
+<div class="text-caption-meta font-caption-meta text-text-secondary">Little Rock Distribution, AR • Zone 6</div>
+</td>
+<td class="px-space-md py-3.5">
+<div class="font-body-semibold text-text-primary">Estes Express Lines</div>
+<div class="text-caption-meta font-caption-meta text-text-secondary">Standard LTL Intermodal</div>
+</td>
+<td class="px-space-md py-3.5">
+<div class="inline-flex items-center gap-1.5 font-mono text-caption-meta bg-app-bg px-2 py-0.5 rounded text-text-primary">
+<span>1Z-9937-EEL-8837</span>
+<button class="text-text-secondary hover:text-text-primary" title="Copy Tracking #" type="button">
+<span class="material-symbols-outlined text-[14px]">content_copy</span>
+</button>
+</div>
+</td>
+<td class="px-space-md py-3.5 whitespace-nowrap tabular-nums text-text-secondary">
+              Oct 23, 2024 • 19:15 CST
+            </td>
+<td class="px-space-md py-3.5 whitespace-nowrap tabular-nums font-body-semibold text-text-primary">
+              Oct 26, 2024 • 10:00 CST
+            </td>
+<td class="px-space-md py-3.5 whitespace-nowrap">
+<span class="inline-flex items-center px-2.5 py-1 rounded-full text-caption-meta font-body-semibold bg-status-info-bg text-status-info-text">
+                In Transit
+              </span>
+</td>
+<td class="px-space-md py-3.5 text-right whitespace-nowrap">
+<div class="inline-flex items-center gap-1">
+<button class="px-2.5 py-1 text-caption-meta font-body-semibold text-primary hover:text-primary-hover rounded hover:bg-app-bg" type="button">
+                  View Details
+                </button>
+<button class="p-1 text-text-secondary hover:text-text-primary rounded hover:bg-app-bg" type="button">
+<span class="material-symbols-outlined text-[18px]">more_vert</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 6: Delivery Exception -->
+<tr class="hover:bg-app-bg/60 transition-colors bg-status-danger-bg/10">
+<td class="px-space-md py-3.5">
+<input class="w-4 h-4 rounded text-primary-container focus:ring-primary-container cursor-pointer" type="checkbox"/>
+</td>
+<td class="px-space-md py-3.5">
+<div class="font-body-semibold text-text-primary tracking-tight">#SHP-2024-8835</div>
+<div class="text-caption-meta font-caption-meta text-text-secondary">BOL-99402-OUT</div>
+</td>
+<td class="px-space-md py-3.5">
+<a class="inline-flex items-center gap-1 font-body-semibold text-primary hover:text-primary-hover" href="#">
+<span>#OUT-2024-9388</span>
+<span class="material-symbols-outlined text-[14px]">open_in_new</span>
+</a>
+</td>
+<td class="px-space-md py-3.5">
+<div class="font-body-semibold text-text-primary">Midwest Retail Fulfillment</div>
+<div class="text-caption-meta font-caption-meta text-text-secondary">Oklahoma City Central, OK • Zone 5</div>
+</td>
+<td class="px-space-md py-3.5">
+<div class="font-body-semibold text-text-primary">Knight-Swift Logistics</div>
+<div class="text-caption-meta font-caption-meta text-text-secondary">LTL Guaranteed Freight</div>
+</td>
+<td class="px-space-md py-3.5">
+<div class="inline-flex items-center gap-1.5 font-mono text-caption-meta bg-app-bg px-2 py-0.5 rounded text-text-primary">
+<span>1Z-9935-KSL-8835</span>
+<button class="text-text-secondary hover:text-text-primary" title="Copy Tracking #" type="button">
+<span class="material-symbols-outlined text-[14px]">content_copy</span>
+</button>
+</div>
+</td>
+<td class="px-space-md py-3.5 whitespace-nowrap tabular-nums text-text-secondary">
+              Oct 22, 2024 • 21:00 CST
+            </td>
+<td class="px-space-md py-3.5 whitespace-nowrap tabular-nums font-body-semibold text-status-danger-text">
+              Revised: Oct 25, 2024 (Weather)
+            </td>
+<td class="px-space-md py-3.5 whitespace-nowrap">
+<span class="inline-flex items-center px-2.5 py-1 rounded-full text-caption-meta font-body-semibold bg-status-danger-bg text-status-danger-text">
+                Exception (Delay)
+              </span>
+</td>
+<td class="px-space-md py-3.5 text-right whitespace-nowrap">
+<div class="inline-flex items-center gap-1">
+<button class="px-2.5 py-1 text-caption-meta font-body-semibold text-primary hover:text-primary-hover rounded hover:bg-app-bg" type="button">
+                  View Details
+                </button>
+<button class="p-1 text-text-secondary hover:text-text-primary rounded hover:bg-app-bg" type="button">
+<span class="material-symbols-outlined text-[18px]">more_vert</span>
+</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination & Rows Controls -->
+<div class="p-space-md bg-surface flex flex-col sm:flex-row items-center justify-between gap-space-md">
+<div class="flex items-center gap-space-md text-caption-meta font-caption-meta text-text-secondary">
+<span>Showing <strong class="text-text-primary font-body-semibold">1 to 6</strong> of <strong class="text-text-primary font-body-semibold">28</strong> Shipments</span>
+<div class="flex items-center gap-2">
+<span>Rows per page:</span>
+<select class="bg-app-bg rounded px-2 py-1 text-text-primary font-form-label focus:outline-none cursor-pointer">
+<option>10</option>
+<option>25</option>
+<option>50</option>
+</select>
+</div>
+</div>
+<div class="inline-flex items-center gap-1">
+<button class="w-8 h-8 rounded flex items-center justify-center text-text-secondary hover:bg-app-bg disabled:opacity-40" disabled="" type="button">
+<span class="material-symbols-outlined text-[18px]">chevron_left</span>
+</button>
+<button class="w-8 h-8 rounded flex items-center justify-center text-caption-meta font-body-semibold bg-primary-container text-on-primary" type="button">
+          1
+        </button>
+<button class="w-8 h-8 rounded flex items-center justify-center text-caption-meta font-body-semibold text-text-primary hover:bg-app-bg" type="button">
+          2
+        </button>
+<button class="w-8 h-8 rounded flex items-center justify-center text-caption-meta font-body-semibold text-text-primary hover:bg-app-bg" type="button">
+          3
+        </button>
+<button class="w-8 h-8 rounded flex items-center justify-center text-caption-meta font-body-semibold text-text-primary hover:bg-app-bg" type="button">
+          4
+        </button>
+<button class="w-8 h-8 rounded flex items-center justify-center text-text-secondary hover:bg-app-bg" type="button">
+<span class="material-symbols-outlined text-[18px]">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Real-Time Freight Telemetry Feed Bar -->
+<div class="bg-surface rounded-xl p-space-md shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm">
+<div class="flex items-center gap-2.5">
+<span class="w-2.5 h-2.5 rounded-full bg-status-success-text"></span>
+<span class="text-caption-meta font-body-semibold text-text-primary">
+        Automated BOL EDI Gateway Active
+      </span>
+<span class="text-caption-meta font-caption-meta text-text-secondary hidden md:inline">
+        • 100% of dispatched pallets assigned verifiable electronic tracking.
+      </span>
+</div>
+<div class="flex items-center gap-4 text-caption-meta font-caption-meta text-text-secondary">
+<span>Auto-sync interval: 30s</span>
+<button class="inline-flex items-center gap-1 font-body-semibold text-primary hover:text-primary-hover" type="button">
+<span class="material-symbols-outlined text-[14px]">sync</span>
+<span>Sync Telemetry Now</span>
+</button>
+</div>
+</div>
+</div></main></div></body></html>

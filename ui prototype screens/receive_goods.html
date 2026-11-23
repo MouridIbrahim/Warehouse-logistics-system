@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_dashboard" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base { html, body { margin: 0; padding: 0; } body { overscroll-behavior: none; } main > :first-child { margin-top: 0 !important; } main > :last-child { margin-bottom: 0 !important; } } ::-webkit-scrollbar { display: none; }</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { colors: { "status-info-text": "#1D4ED8", "on-tertiary-container": "#fffbff", "sidebar-text": "#E2E8F0", "text-secondary": "#64748B", "status-info-bg": "#DBEAFE", "on-secondary-fixed-variant": "#404752", "on-background": "#0b1c30", "tertiary-fixed": "#ffdcc3", "surface-container-highest": "#d3e4fe", "status-danger-text": "#991B1B", "inverse-surface": "#213145", "status-warning-text": "#92400E", "on-tertiary-fixed-variant": "#6e3900", "status-neutral-bg": "#F1F5F9", "on-secondary-fixed": "#151c26", "primary-fixed-dim": "#ffb68f", "inverse-primary": "#ffb68f", "app-bg": "#F6F7F9", "surface-container-lowest": "#ffffff", "primary-hover": "#A94B0D", "status-success-bg": "#DCFCE7", "on-surface": "#0b1c30", "surface-tint": "#9c4400", "on-surface-variant": "#564238", "on-secondary-container": "#5c636e", "status-danger-bg": "#FEE2E2", "on-error": "#ffffff", "secondary": "#585f6a", "on-primary": "#ffffff", "secondary-container": "#d9e0ed", "surface-bright": "#f8f9ff", "status-neutral-text": "#475569", "tertiary": "#8d4b00", "secondary-fixed": "#dce3f0", "outline": "#8a7266", "primary-fixed": "#ffdbca", "surface-container-low": "#eff4ff", "background": "#f8f9ff", "tertiary-fixed-dim": "#ffb77d", "sidebar-muted": "#94A3B8", "surface-container-high": "#dce9ff", "surface": "#FFFFFF", "status-warning-bg": "#FEF3C7", "on-tertiary-fixed": "#2f1500", "text-primary": "#18212F", "inverse-on-surface": "#eaf1ff", "secondary-fixed-dim": "#c0c7d4", "outline-variant": "#ddc1b3", "on-primary-fixed-variant": "#773200", "tertiary-container": "#b15f00", "error-container": "#ffdad6", "primary-container": "#bc570f", "primary": "#984200", "on-secondary": "#ffffff", "on-primary-fixed": "#331200", "border-default": "#E2E8F0", "error": "#ba1a1a", "surface-dim": "#cbdbf5", "on-error-container": "#93000a", "status-success-text": "#166534", "on-primary-container": "#fffbff", "sidebar-bg": "#242B35", "on-tertiary": "#ffffff", "surface-variant": "#d3e4fe", "surface-container": "#e5eeff" }, borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, spacing: { "margin": "2rem", "margin-mobile": "1rem", "space-lg": "1.5rem", "space-xs": "0.25rem", "space-xl": "2rem", "gutter": "1.5rem", "space-sm": "0.5rem", "space-md": "1rem", "gutter-mobile": "1rem" }, fontFamily: { "table-header": ["Inter"], "headline-h1": ["Inter"], "display-kpi-mobile": ["Inter"], "headline-h1-mobile": ["Inter"], "headline-h3": ["Inter"], "body-semibold": ["Inter"], "caption-meta": ["Inter"], "headline-h2": ["Inter"], "button-text": ["Inter"], "form-label": ["Inter"], "display-kpi": ["Inter"], "body-default": ["Inter"], "table-data": ["Inter"] }, fontSize: { "table-header": ["12px", { "lineHeight": "16px", "letterSpacing": "0.04em", "fontWeight": "600" }], "headline-h1": ["28px", { "lineHeight": "36px", "letterSpacing": "-0.02em", "fontWeight": "700" }], "display-kpi-mobile": ["26px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700" }], "headline-h1-mobile": ["22px", { "lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "700" }], "headline-h3": ["16px", { "lineHeight": "24px", "letterSpacing": "-0.005em", "fontWeight": "600" }], "body-semibold": ["14px", { "lineHeight": "20px", "fontWeight": "600" }], "caption-meta": ["12px", { "lineHeight": "16px", "fontWeight": "400" }], "headline-h2": ["20px", { "lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600" }], "button-text": ["14px", { "lineHeight": "20px", "fontWeight": "600" }], "form-label": ["13px", { "lineHeight": "18px", "fontWeight": "500" }], "display-kpi": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }], "body-default": ["14px", { "lineHeight": "20px", "fontWeight": "400" }], "table-data": ["13px", { "lineHeight": "18px", "fontWeight": "400" }] } } } };</script></head><body class="bg-app-bg text-text-primary antialiased"><aside class="fixed left-0 top-0 h-screen w-[250px] bg-sidebar-bg text-sidebar-text z-50 flex flex-col justify-between border-r border-border-default/20"><div class="flex flex-col flex-1 min-h-0"><div class="h-16 px-space-md flex items-center gap-space-sm border-b border-border-default/20 shrink-0"><img alt="Logistics Brand Mark" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/ALJJyrBIIjTx9TJyaLvDoO3WBkgxTJtN5pX7Jsi9HcxR_YMth4Fw5SB1h6d45hF55umb91ZHS_7iiuxcK3gsTD4jsBWsUR3S5StgJwEFYSfFOUCbpXbnseB2H1exYiZ95-BcxwF9xKKVX0ckAfZcbij8HvqSpCzHsRTXO-yXJrOZ-t3FlfcNNNmDBSMN0GZpSxhf3Qs87Aoe4k7dR8QIQzEmWycADB2a5sF2w5gTKdctH3gP"/><div class="flex flex-col"><span class="text-xs font-bold tracking-wider text-sidebar-text leading-none uppercase">LOGISTICS</span><span class="text-[10px] font-semibold text-sidebar-muted tracking-widest mt-0.5">WAREHOUSE SYSTEM</span></div></div><div class="flex-1 overflow-y-auto px-space-sm py-space-md space-y-space-md"><div class="space-y-1"><div class="px-space-sm text-[11px] font-bold text-sidebar-muted tracking-wider uppercase font-caption-meta">OVERVIEW</div><nav class="space-y-0.5" data-active-classes="bg-[#C45D16] text-white font-semibold rounded-lg shadow-sm"><a class="flex items-center px-space-sm py-2 rounded-lg text-sidebar-text text-sm hover:bg-primary-hover hover:text-on-primary transition-colors" data-path="dashboard" href="#"><span>Dashboard</span></a></nav></div><div class="space-y-1"><div class="px-space-sm text-[11px] font-bold text-sidebar-muted tracking-wider uppercase font-caption-meta">CATALOG &amp; STORAGE</div><nav class="space-y-0.5" data-active-classes="bg-[#C45D16] text-white font-semibold rounded-lg shadow-sm"><a class="flex items-center px-space-sm py-2 rounded-lg text-sidebar-text text-sm hover:bg-primary-hover hover:text-on-primary transition-colors" data-path="products" href="#"><span>Products</span></a><a class="flex items-center px-space-sm py-2 rounded-lg text-sidebar-text text-sm hover:bg-primary-hover hover:text-on-primary transition-colors" data-path="warehouses" href="#"><span>Warehouses</span></a><a class="flex items-center px-space-sm py-2 rounded-lg text-sidebar-text text-sm hover:bg-primary-hover hover:text-on-primary transition-colors" data-path="inventory" href="#"><span>Inventory</span></a></nav></div><div class="space-y-1"><div class="px-space-sm text-[11px] font-bold text-sidebar-muted tracking-wider uppercase font-caption-meta">OPERATIONS</div><nav class="space-y-0.5" data-active-classes="bg-[#C45D16] text-white font-semibold rounded-lg shadow-sm"><a aria-current="page" class="flex items-center px-space-sm py-2 transition-colors bg-[#C45D16] text-white font-semibold rounded-lg shadow-sm" data-path="inbound-operations" href="#"><span>Inbound Operations</span></a><a class="flex items-center px-space-sm py-2 rounded-lg text-sidebar-text text-sm hover:bg-primary-hover hover:text-on-primary transition-colors" data-path="outbound-operations" href="#"><span>Outbound Operations</span></a><a class="flex items-center px-space-sm py-2 rounded-lg text-sidebar-text text-sm hover:bg-primary-hover hover:text-on-primary transition-colors" data-path="shipments" href="#"><span>Shipments</span></a></nav></div><div class="space-y-1"><div class="px-space-sm text-[11px] font-bold text-sidebar-muted tracking-wider uppercase font-caption-meta">INSIGHTS</div><nav class="space-y-0.5" data-active-classes="bg-[#C45D16] text-white font-semibold rounded-lg shadow-sm"><a class="flex items-center px-space-sm py-2 rounded-lg text-sidebar-text text-sm hover:bg-primary-hover hover:text-on-primary transition-colors" data-path="reports-and-analytics" href="#"><span>Reports &amp; Analytics</span></a><a class="flex items-center px-space-sm py-2 rounded-lg text-sidebar-text text-sm hover:bg-primary-hover hover:text-on-primary transition-colors" data-path="audit-logs" href="#"><span>Audit Logs</span></a></nav></div><div class="space-y-1"><div class="px-space-sm text-[11px] font-bold text-sidebar-muted tracking-wider uppercase font-caption-meta">ADMINISTRATION</div><nav class="space-y-0.5" data-active-classes="bg-[#C45D16] text-white font-semibold rounded-lg shadow-sm"><a class="flex items-center px-space-sm py-2 rounded-lg text-sidebar-text text-sm hover:bg-primary-hover hover:text-on-primary transition-colors" data-path="user-management" href="#"><span>User Management</span></a><a class="flex items-center px-space-sm py-2 rounded-lg text-sidebar-text text-sm hover:bg-primary-hover hover:text-on-primary transition-colors" data-path="roles-and-permissions" href="#"><span>Roles &amp; Permissions</span></a><a class="flex items-center px-space-sm py-2 rounded-lg text-sidebar-text text-sm hover:bg-primary-hover hover:text-on-primary transition-colors" data-path="system-settings" href="#"><span>System Settings</span></a></nav></div></div></div><div class="p-space-sm border-t border-border-default/20 bg-sidebar-bg shrink-0"><div class="space-y-1 mb-2"><div class="px-space-sm text-[11px] font-bold text-sidebar-muted tracking-wider uppercase font-caption-meta">ACCOUNT</div><nav class="space-y-0.5" data-active-classes="bg-[#C45D16] text-white font-semibold rounded-lg shadow-sm"><a class="flex items-center px-space-sm py-2 rounded-lg text-sidebar-text text-sm hover:bg-primary-hover hover:text-on-primary transition-colors" data-path="my-profile" href="#"><span>My Profile</span></a></nav></div><div class="flex items-center justify-between p-space-sm rounded-lg bg-inverse-surface/40"><div class="flex items-center gap-space-sm"><img alt="Marcus Vance" class="w-8 h-8 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDpJz5Ls2ywARcAECd_jYcyZHGBDfEL_b4f4aVJ4mEEd3MQJnxtzu-2lOE3PbHZphx3RQF8w1yhT-huSPglZYuxsgyhlzhQdkz8ahqCxjyLBF0O7A-pcOY3ZttTTrbeAcDDWHCZpXK8-OsbjLVs9ZolkuocYtJfSxcuc2-S6tq6rh3Uj091DeFL_nfGOzTbGfMgtGS6OpTQ30y4vXstBnvRqIUiCw9NQWfGM1_Z9WrJ"/><div class="flex flex-col min-w-0"><span class="text-xs font-semibold text-sidebar-text truncate leading-tight">Marcus Vance</span><span class="text-[11px] text-sidebar-muted truncate leading-tight">Warehouse Manager</span></div></div><button class="text-sidebar-muted hover:text-on-primary p-1 rounded-md transition-colors" type="button"><span class="material-symbols-outlined text-[18px]">logout</span></button></div></div></aside><div class="pl-[250px]"><header class="fixed top-0 left-[250px] right-0 h-16 bg-surface z-40 border-b border-border-default flex items-center justify-between px-space-xl"><div class="flex items-center text-xs font-semibold text-text-secondary gap-2"><span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-status-success-bg text-status-success-text text-[11px] font-semibold"><span class="w-1.5 h-1.5 rounded-full bg-status-success-text"></span>Warehouse Status: Operational</span><span class="text-border-default">/</span><span class="text-text-primary font-bold">Inbound Operations</span></div><div class="flex items-center gap-space-md"><div class="relative w-80"><span class="material-symbols-outlined absolute left-3 top-2.5 text-text-secondary text-[18px]">search</span><input class="w-full pl-9 pr-3 py-1.5 text-xs bg-app-bg border border-border-default rounded-lg focus:outline-none focus:border-primary text-text-primary placeholder:text-text-secondary transition-all" placeholder="Search products, orders, SKU..." type="text"/></div><div class="flex items-center gap-1"><button class="relative p-2 text-text-secondary hover:text-text-primary rounded-lg transition-colors" type="button"><span class="material-symbols-outlined text-[20px]">notifications</span><span class="absolute top-1.5 right-1.5 w-2 h-2 bg-primary rounded-full ring-2 ring-surface"></span></button><button class="p-2 text-text-secondary hover:text-text-primary rounded-lg transition-colors" type="button"><span class="material-symbols-outlined text-[20px]">help</span></button></div><div class="h-5 w-px bg-border-default mx-1"></div><div class="flex items-center gap-space-sm pl-1"><img alt="Marcus Vance" class="w-8 h-8 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDpJz5Ls2ywARcAECd_jYcyZHGBDfEL_b4f4aVJ4mEEd3MQJnxtzu-2lOE3PbHZphx3RQF8w1yhT-huSPglZYuxsgyhlzhQdkz8ahqCxjyLBF0O7A-pcOY3ZttTTrbeAcDDWHCZpXK8-OsbjLVs9ZolkuocYtJfSxcuc2-S6tq6rh3Uj091DeFL_nfGOzTbGfMgtGS6OpTQ30y4vXstBnvRqIUiCw9NQWfGM1_Z9WrJ"/><div class="hidden sm:flex flex-col text-left"><span class="text-xs font-bold text-text-primary leading-tight">Marcus Vance</span><span class="text-[10px] text-text-secondary leading-tight">Operations Lead / Warehouse Manager</span></div><span class="material-symbols-outlined text-text-secondary text-[16px]">expand_more</span></div></div></header><main class="relative pt-16 min-h-screen bg-app-bg px-space-xl py-space-lg"><div class="flex flex-col w-full space-y-space-lg">
+<!-- Context Breadcrumb & Session Banner -->
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-space-md">
+<div class="space-y-1">
+<nav class="flex items-center gap-2 font-caption-meta text-text-secondary text-caption-meta">
+<a class="hover:text-primary transition-colors" href="#">Operations</a>
+<span>/</span>
+<a class="hover:text-primary transition-colors" href="#">Inbound Operations</a>
+<span>/</span>
+<span class="text-text-primary font-medium">INB-2024-0982</span>
+<span>/</span>
+<span class="font-semibold text-primary">Receive Goods</span>
+</nav>
+<div class="flex flex-wrap items-baseline gap-3 pt-0.5">
+<h1 class="font-headline-h1 text-headline-h1 text-text-primary tracking-tight">Receive Goods — #INB-2024-0982</h1>
+<div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-status-success-bg text-status-success-text font-caption-meta text-caption-meta font-semibold shadow-sm">
+<span class="w-2 h-2 rounded-full bg-status-success-text animate-pulse"></span>
+          Receiving Session Active (Dock Scanner Linked)
+        </div>
+</div>
+<p class="font-caption-meta text-caption-meta text-text-secondary">
+        Central Logistics Hub (WH-KM-001) • Dock Gate 03 • Carrier: <span class="font-medium text-text-primary">Knight-Swift BOL-88492</span> • Gate In: 08:14 EST
+      </p>
+</div>
+<!-- Top Action Pair -->
+<div class="flex items-center gap-space-sm self-start md:self-center shrink-0">
+<button class="px-4 py-2.5 rounded-lg bg-surface text-text-primary font-button-text text-button-text hover:bg-app-bg transition-all shadow-sm flex items-center gap-1.5 border border-border-default" type="button">
+<span class="material-symbols-outlined text-[18px] text-text-secondary">arrow_back</span>
+        Cancel / Back to Order
+      </button>
+<button class="px-5 py-2.5 rounded-lg bg-[#C45D16] hover:bg-primary-hover text-on-primary font-button-text text-button-text flex items-center gap-2 transition-all shadow-md active:scale-95" onclick="triggerConfirmReceiptModal()" type="button">
+<span class="material-symbols-outlined text-[18px]">verified</span>
+<span>Confirm Receipt &amp; Update Inventory</span>
+</button>
+</div>
+</div>
+<!-- Hardware Scanner Control Terminal Bar -->
+<div class="bg-surface rounded-xl p-space-md shadow-sm border border-border-default">
+<div class="flex flex-col lg:flex-row lg:items-center justify-between gap-space-md">
+<!-- Input & Rapid Match -->
+<div class="flex flex-1 flex-col sm:flex-row items-stretch sm:items-center gap-3">
+<div class="relative flex-1">
+<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-text-secondary">
+<span class="material-symbols-outlined text-[20px] text-primary">barcode_scanner</span>
+</div>
+<input class="w-full pl-10 pr-28 py-2.5 bg-app-bg border border-border-default rounded-lg font-body-default text-body-default text-text-primary placeholder:text-text-secondary focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all font-mono" id="barcode-input" placeholder="Scan Barcode / SKU / UPC (Press Enter to match line item)..." type="text" value="0849201948102"/>
+<div class="absolute inset-y-0 right-1.5 flex items-center">
+<span class="px-2 py-1 rounded bg-surface border border-border-default text-[10px] font-mono font-semibold text-text-secondary">AUTO-MATCH</span>
+</div>
+</div>
+<button class="px-4 py-2.5 bg-surface-container-high text-on-surface hover:bg-surface-variant font-button-text text-button-text rounded-lg flex items-center justify-center gap-1.5 border border-border-default transition-colors" onclick="simulateBarcodeScan()" type="button">
+<span class="material-symbols-outlined text-[18px]">document_scanner</span>
+          Simulate Trigger
+        </button>
+</div>
+<!-- Telemetry Hardware Pill & Bulk Action -->
+<div class="flex items-center justify-between lg:justify-end gap-space-md pt-2 lg:pt-0 border-t lg:border-t-0 border-border-default">
+<div class="flex items-center gap-2.5 px-3 py-1.5 rounded-lg bg-app-bg border border-border-default">
+<div class="w-2.5 h-2.5 rounded-full bg-status-success-text"></div>
+<div class="flex flex-col text-left">
+<span class="font-caption-meta text-[11px] font-bold text-text-primary uppercase tracking-wider">Zebra TC57 #04</span>
+<span class="font-caption-meta text-[10px] text-text-secondary">Signal 98% • Batt 87% • Synced</span>
+</div>
+<span class="material-symbols-outlined text-text-secondary text-[18px]">wifi</span>
+</div>
+<button class="px-3.5 py-2 bg-surface hover:bg-app-bg border border-border-default rounded-lg font-body-semibold text-body-semibold text-text-primary flex items-center gap-1.5 transition-colors text-xs shadow-sm" type="button">
+<span class="material-symbols-outlined text-[16px] text-text-secondary">done_all</span>
+          Scan All Items (Complete Manifest)
+        </button>
+</div>
+</div>
+</div>
+<!-- Operational Progress & High-Density Manifest Metric Badges -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-space-md">
+<div class="bg-surface p-4 rounded-xl shadow-sm border border-border-default flex items-center justify-between">
+<div>
+<span class="font-caption-meta text-caption-meta text-text-secondary uppercase tracking-wider block">Manifest Progress</span>
+<div class="flex items-baseline gap-2 mt-1">
+<span class="font-headline-h2 text-headline-h2 font-bold text-text-primary">2 / 3</span>
+<span class="text-xs font-semibold text-status-success-text">66% Verified</span>
+</div>
+<div class="w-32 bg-border-default h-1.5 rounded-full mt-2 overflow-hidden">
+<div class="bg-status-success-text h-full rounded-full" style="width: 66.6%;"></div>
+</div>
+</div>
+<div class="w-10 h-10 rounded-lg bg-status-success-bg flex items-center justify-center text-status-success-text">
+<span class="material-symbols-outlined text-[22px]">inventory_2</span>
+</div>
+</div>
+<div class="bg-surface p-4 rounded-xl shadow-sm border border-border-default flex items-center justify-between">
+<div>
+<span class="font-caption-meta text-caption-meta text-text-secondary uppercase tracking-wider block">Units Staged Now</span>
+<div class="flex items-baseline gap-2 mt-1">
+<span class="font-headline-h2 text-headline-h2 font-bold text-[#C45D16]">+80</span>
+<span class="text-xs text-text-secondary">of 220 total</span>
+</div>
+<span class="font-caption-meta text-[11px] text-text-secondary mt-1 block">Pending instant allocation</span>
+</div>
+<div class="w-10 h-10 rounded-lg bg-status-warning-bg flex items-center justify-center text-[#C45D16]">
+<span class="material-symbols-outlined text-[22px]">forklift</span>
+</div>
+</div>
+<div class="bg-surface p-4 rounded-xl shadow-sm border border-border-default flex items-center justify-between">
+<div>
+<span class="font-caption-meta text-caption-meta text-text-secondary uppercase tracking-wider block">Discrepancy Count</span>
+<div class="flex items-baseline gap-2 mt-1">
+<span class="font-headline-h2 text-headline-h2 font-bold text-status-success-text">0</span>
+<span class="text-xs font-semibold text-status-success-text">Zero Defect</span>
+</div>
+<span class="font-caption-meta text-[11px] text-text-secondary mt-1 block">PO matching accurate</span>
+</div>
+<div class="w-10 h-10 rounded-lg bg-status-neutral-bg flex items-center justify-center text-text-secondary">
+<span class="material-symbols-outlined text-[22px]">rule</span>
+</div>
+</div>
+<div class="bg-surface p-4 rounded-xl shadow-sm border border-border-default flex items-center justify-between">
+<div>
+<span class="font-caption-meta text-caption-meta text-text-secondary uppercase tracking-wider block">Dock Gate Lead</span>
+<div class="flex items-baseline gap-2 mt-1">
+<span class="font-body-semibold text-body-semibold text-text-primary">M. Vance</span>
+<span class="text-[11px] text-status-info-text font-mono">OP-882</span>
+</div>
+<span class="font-caption-meta text-[11px] text-text-secondary mt-1 block">Gate 03 Central Ramps</span>
+</div>
+<div class="w-10 h-10 rounded-lg bg-status-info-bg flex items-center justify-center text-status-info-text">
+<span class="material-symbols-outlined text-[22px]">badge</span>
+</div>
+</div>
+</div>
+<!-- Manifest Receiving Data Grid Card -->
+<div class="bg-surface rounded-xl shadow-sm border border-border-default overflow-hidden flex flex-col">
+<!-- Header of manifest section -->
+<div class="px-space-md py-3.5 bg-surface-container-low border-b border-border-default flex flex-wrap items-center justify-between gap-3">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[20px] text-primary">fact_check</span>
+<h2 class="font-headline-h3 text-headline-h3 text-text-primary">Receiving Manifest Line Items</h2>
+<span class="px-2 py-0.5 rounded-full bg-status-neutral-bg text-status-neutral-text font-caption-meta text-caption-meta font-medium">3 Line Items Total</span>
+</div>
+<div class="flex items-center gap-3">
+<span class="font-caption-meta text-caption-meta text-text-secondary">Auto-persist enabled</span>
+<div class="w-2 h-2 rounded-full bg-status-success-text"></div>
+</div>
+</div>
+<!-- Responsive Table -->
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-app-bg border-b border-border-default text-text-secondary font-table-header text-table-header uppercase">
+<th class="py-3 px-4 font-semibold">Item / SKU &amp; Barcode</th>
+<th class="py-3 px-3 font-semibold text-right">Expected</th>
+<th class="py-3 px-3 font-semibold text-right">Prev Recv</th>
+<th class="py-3 px-4 font-semibold text-center min-w-[170px]">Recv Now</th>
+<th class="py-3 px-3 font-semibold text-left">Variance Indicator</th>
+<th class="py-3 px-4 font-semibold text-left min-w-[210px]">Putaway Destination</th>
+<th class="py-3 px-4 font-semibold text-left min-w-[190px]">Inspection Status</th>
+<th class="py-3 px-3 font-semibold text-left">Notes / Flags</th>
+<th class="py-3 px-4 font-semibold text-center">Status</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-border-default font-table-data text-table-data text-text-primary">
+<!-- Row 1: Heavy Duty Pallet Straps (Completed) -->
+<tr class="hover:bg-app-bg/50 transition-colors bg-surface">
+<td class="py-3.5 px-4">
+<div class="flex items-start gap-3">
+<div class="w-9 h-9 rounded bg-app-bg border border-border-default flex items-center justify-center text-text-secondary shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-[18px]">straighten</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-body-semibold text-body-semibold text-text-primary">Heavy Duty Pallet Straps 19mm</span>
+<div class="flex items-center gap-2 mt-0.5 text-text-secondary font-mono text-[11px]">
+<span class="bg-status-neutral-bg px-1.5 py-0.5 rounded text-text-primary font-bold">SKU-8842</span>
+<span>UPC: 849201948102</span>
+</div>
+</div>
+</div>
+</td>
+<td class="py-3.5 px-3 text-right font-mono tabular-nums font-semibold">40</td>
+<td class="py-3.5 px-3 text-right font-mono tabular-nums text-text-secondary">40</td>
+<td class="py-3.5 px-4 text-center">
+<div class="inline-flex items-center justify-center px-3 py-1.5 rounded-lg bg-status-neutral-bg text-text-secondary font-mono text-sm font-semibold opacity-80 cursor-not-allowed">
+                0
+              </div>
+</td>
+<td class="py-3.5 px-3">
+<span class="inline-flex items-center gap-1 font-caption-meta text-caption-meta font-medium text-status-success-text">
+<span class="material-symbols-outlined text-[16px]">check_circle</span>
+                0 Variance (Matched)
+              </span>
+</td>
+<td class="py-3.5 px-4">
+<div class="flex items-center gap-1.5 font-mono text-xs text-text-secondary bg-app-bg px-2.5 py-1.5 rounded-lg border border-border-default w-fit">
+<span class="material-symbols-outlined text-[16px] text-primary">warehouse</span>
+                Bay 14-C-02 (Central Hub)
+              </div>
+</td>
+<td class="py-3.5 px-4">
+<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-status-success-bg text-status-success-text font-caption-meta text-[11px] font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-status-success-text"></span>
+                Passed (Good Condition)
+              </span>
+</td>
+<td class="py-3.5 px-3">
+<span class="font-caption-meta text-[11px] text-text-secondary italic">Standard batch verified</span>
+</td>
+<td class="py-3.5 px-4 text-center">
+<span class="inline-block px-2.5 py-0.5 rounded-full bg-status-success-bg text-status-success-text font-caption-meta text-caption-meta font-semibold">
+                Completed
+              </span>
+</td>
+</tr>
+<!-- Row 2: Shrink Film Industrial Grade (Completed) -->
+<tr class="hover:bg-app-bg/50 transition-colors bg-surface">
+<td class="py-3.5 px-4">
+<div class="flex items-start gap-3">
+<div class="w-9 h-9 rounded bg-app-bg border border-border-default flex items-center justify-center text-text-secondary shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-[18px]">layers</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-body-semibold text-body-semibold text-text-primary">Shrink Film Industrial Grade 500mm</span>
+<div class="flex items-center gap-2 mt-0.5 text-text-secondary font-mono text-[11px]">
+<span class="bg-status-neutral-bg px-1.5 py-0.5 rounded text-text-primary font-bold">SKU-7721</span>
+<span>UPC: 789104882190</span>
+</div>
+</div>
+</div>
+</td>
+<td class="py-3.5 px-3 text-right font-mono tabular-nums font-semibold">60</td>
+<td class="py-3.5 px-3 text-right font-mono tabular-nums text-text-secondary">60</td>
+<td class="py-3.5 px-4 text-center">
+<div class="inline-flex items-center justify-center px-3 py-1.5 rounded-lg bg-status-neutral-bg text-text-secondary font-mono text-sm font-semibold opacity-80 cursor-not-allowed">
+                0
+              </div>
+</td>
+<td class="py-3.5 px-3">
+<span class="inline-flex items-center gap-1 font-caption-meta text-caption-meta font-medium text-status-success-text">
+<span class="material-symbols-outlined text-[16px]">check_circle</span>
+                0 Variance (Matched)
+              </span>
+</td>
+<td class="py-3.5 px-4">
+<div class="flex items-center gap-1.5 font-mono text-xs text-text-secondary bg-app-bg px-2.5 py-1.5 rounded-lg border border-border-default w-fit">
+<span class="material-symbols-outlined text-[16px] text-primary">warehouse</span>
+                Bay 02-A-11 (Rack Alpha)
+              </div>
+</td>
+<td class="py-3.5 px-4">
+<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-status-success-bg text-status-success-text font-caption-meta text-[11px] font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-status-success-text"></span>
+                Passed (Good Condition)
+              </span>
+</td>
+<td class="py-3.5 px-3">
+<span class="font-caption-meta text-[11px] text-text-secondary italic">Roll cores unbroken</span>
+</td>
+<td class="py-3.5 px-4 text-center">
+<span class="inline-block px-2.5 py-0.5 rounded-full bg-status-success-bg text-status-success-text font-caption-meta text-caption-meta font-semibold">
+                Completed
+              </span>
+</td>
+</tr>
+<!-- Row 3: Corrugated Shipping Boxes (Active Input Target) -->
+<tr class="bg-surface-container-low/60 hover:bg-surface-container-low transition-colors border-l-4 border-l-[#C45D16]">
+<td class="py-4 px-4">
+<div class="flex items-start gap-3">
+<div class="w-9 h-9 rounded bg-primary-fixed flex items-center justify-center text-primary shrink-0 mt-0.5 border border-primary/20">
+<span class="material-symbols-outlined text-[20px]">package_2</span>
+</div>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-2">
+<span class="font-body-semibold text-body-semibold text-text-primary">Double-Wall Shipping Boxes (18x14x12)</span>
+<span class="px-1.5 py-0.5 bg-[#C45D16] text-white text-[10px] font-bold rounded uppercase tracking-wider">Active</span>
+</div>
+<div class="flex items-center gap-2 mt-0.5 text-text-secondary font-mono text-[11px]">
+<span class="bg-surface px-1.5 py-0.5 rounded border border-border-default text-text-primary font-bold">SKU-4402</span>
+<span>UPC: 994821038102</span>
+</div>
+</div>
+</div>
+</td>
+<td class="py-4 px-3 text-right font-mono tabular-nums font-bold text-base">120</td>
+<td class="py-4 px-3 text-right font-mono tabular-nums text-text-secondary">40</td>
+<!-- Interactive Numeric Stepper -->
+<td class="py-4 px-4">
+<div class="flex items-center justify-center">
+<div class="flex items-center bg-surface border border-primary/40 rounded-lg shadow-sm p-0.5 focus-within:ring-2 focus-within:ring-primary/20">
+<button class="w-8 h-8 rounded flex items-center justify-center text-text-secondary hover:text-text-primary hover:bg-app-bg transition-colors" onclick="adjustQty(-1)" title="Decrement" type="button">
+<span class="material-symbols-outlined text-[16px]">remove</span>
+</button>
+<input class="w-14 text-center font-mono font-bold text-base text-text-primary focus:outline-none bg-transparent" id="stepper-input" max="80" min="0" oninput="updateCalculations(this.value)" type="number" value="80"/>
+<button class="w-8 h-8 rounded flex items-center justify-center text-text-secondary hover:text-text-primary hover:bg-app-bg transition-colors" onclick="adjustQty(1)" title="Increment" type="button">
+<span class="material-symbols-outlined text-[16px]">add</span>
+</button>
+</div>
+</div>
+</td>
+<!-- Dynamic Variance Indicator -->
+<td class="py-4 px-3">
+<div class="inline-flex items-center gap-1 font-caption-meta text-caption-meta font-semibold text-status-success-text bg-status-success-bg px-2 py-1 rounded" id="variance-badge">
+<span class="material-symbols-outlined text-[16px]">task_alt</span>
+<span id="variance-text">0 (Full Receipt)</span>
+</div>
+</td>
+<!-- Putaway Destination Location Picker -->
+<td class="py-4 px-4">
+<div class="relative">
+<select class="w-full pl-3 pr-8 py-1.5 bg-surface border border-border-default rounded-lg font-mono text-xs text-text-primary focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all cursor-pointer font-medium" id="location-select">
+<option selected="" value="Bay 15-A-01">Bay 15-A-01 (Bulk Storage A)</option>
+<option value="Bay 15-A-02">Bay 15-A-02 (Bulk Storage A)</option>
+<option value="Bay 12-F-04">Bay 12-F-04 (Overflow Mezzanine)</option>
+<option value="Dock Staging C">Dock Staging Area C</option>
+</select>
+</div>
+</td>
+<!-- Inspection Status Dropdown -->
+<td class="py-4 px-4">
+<select class="w-full px-2.5 py-1.5 bg-surface border border-border-default rounded-lg font-body-default text-xs text-text-primary focus:outline-none focus:border-primary font-medium" id="condition-select" onchange="checkConditionAlert(this.value)">
+<option selected="" value="passed">Passed (Good Condition)</option>
+<option value="damaged">Damaged / Rejected</option>
+<option value="quarantine">Quarantine / Sample Check</option>
+</select>
+</td>
+<!-- Notes Trigger Field -->
+<td class="py-4 px-3">
+<div class="relative">
+<input class="w-full text-xs py-1.5 px-2 bg-surface border border-border-default rounded placeholder:text-text-secondary/70 focus:outline-none focus:border-primary text-text-primary" placeholder="Add note or lot #..." type="text" value="Pallet intact; strap sealed"/>
+</div>
+</td>
+<!-- Status Badge -->
+<td class="py-4 px-4 text-center">
+<span class="inline-block px-2.5 py-1 rounded-full bg-status-warning-bg text-status-warning-text font-caption-meta text-caption-meta font-bold border border-status-warning-text/20">
+                Ready to Confirm
+              </span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Sub-table Action Utility Bar -->
+<div class="px-space-md py-3 bg-surface border-t border-border-default flex flex-wrap items-center justify-between gap-3 text-xs text-text-secondary">
+<div class="flex items-center gap-4">
+<span class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-status-success-text">check_circle</span>
+          2 Lines Verified
+        </span>
+<span class="flex items-center gap-1.5 text-text-primary font-medium">
+<span class="material-symbols-outlined text-[16px] text-[#C45D16]">pending</span>
+          1 Line Awaiting Write-Back (+80 units)
+        </span>
+</div>
+<div class="flex items-center gap-2">
+<button class="text-text-primary hover:text-primary font-medium inline-flex items-center gap-1" type="button">
+<span class="material-symbols-outlined text-[16px]">print</span>
+          Print Putaway Labels
+        </button>
+<span class="text-border-default">•</span>
+<button class="text-text-primary hover:text-primary font-medium inline-flex items-center gap-1" type="button">
+<span class="material-symbols-outlined text-[16px]">file_upload</span>
+          Attach BOL / Photos
+        </button>
+</div>
+</div>
+</div>
+<!-- Operational Receipt Summary & Immutable Confirmation Panel -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-lg">
+<!-- Left Column: Inventory Stock Movement Impact Notice -->
+<div class="lg:col-span-8 bg-surface rounded-xl p-space-lg shadow-sm border border-border-default flex flex-col justify-between space-y-space-md">
+<div class="space-y-3">
+<div class="flex items-center justify-between border-b border-border-default pb-3">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[22px] text-primary">sync_saved_locally</span>
+<h3 class="font-headline-h3 text-headline-h3 text-text-primary">Inventory Impact Preview &amp; Audit Seal</h3>
+</div>
+<span class="font-mono text-xs px-2.5 py-1 rounded bg-status-neutral-bg text-status-neutral-text font-semibold">EVENT-ID: MOV-99201-EST</span>
+</div>
+<!-- Live Impact Breakdown -->
+<div class="bg-app-bg rounded-lg p-3.5 border border-border-default flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-[#C45D16]/10 text-[#C45D16] flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[24px]">move_to_inbox</span>
+</div>
+<div>
+<p class="font-body-semibold text-body-semibold text-text-primary">
+                +80 Units (Double-Wall Boxes / SKU-4402)
+              </p>
+<p class="font-caption-meta text-caption-meta text-text-secondary">
+                Will be booked into on-hand usable inventory at <span class="font-mono font-medium text-text-primary">Bay 15-A-01 (Bulk Storage A)</span>
+</p>
+</div>
+</div>
+<div class="text-right shrink-0">
+<span class="text-xs font-semibold text-status-success-text bg-status-success-bg px-2 py-0.5 rounded">PO Completion: 100%</span>
+<div class="font-mono text-[11px] text-text-secondary mt-0.5">Manifest Balance: Cleared</div>
+</div>
+</div>
+<!-- System Guard Alert Note -->
+<div class="rounded-lg p-3 bg-surface-container-high/40 border border-status-info-text/20 flex items-start gap-3">
+<span class="material-symbols-outlined text-status-info-text text-[20px] shrink-0 mt-0.5">info</span>
+<p class="font-caption-meta text-caption-meta text-text-secondary leading-relaxed">
+<strong class="text-text-primary">Operational Notice:</strong> Confirming receipt will immutably record this transaction in the Stock Movement History, broadcast instant putaway tasks to floor automated guided forklifts (AGVs), and adjust master inventory balance across connected dispatch terminals.
+          </p>
+</div>
+</div>
+<!-- Verified Operator Footer -->
+<div class="pt-3 border-t border-border-default flex flex-wrap items-center justify-between gap-3">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-status-success-bg text-status-success-text flex items-center justify-center font-bold text-xs">
+            MV
+          </div>
+<div>
+<div class="flex items-center gap-2">
+<span class="text-xs font-bold text-text-primary">Marcus Vance</span>
+<span class="text-[10px] font-mono bg-status-success-bg text-status-success-text px-1.5 py-0.2 rounded font-semibold">RFID VERIFIED</span>
+</div>
+<span class="text-[11px] text-text-secondary">Zebra Terminal TC57 #04 • Warehouse Manager</span>
+</div>
+</div>
+<div class="font-mono text-xs text-text-secondary text-right">
+          Timestamp: <span class="font-semibold text-text-primary">2024-11-04 09:42:18 EST</span>
+</div>
+</div>
+</div>
+<!-- Right Column: Final Executable Action Card -->
+<div class="lg:col-span-4 bg-surface rounded-xl p-space-lg shadow-sm border border-border-default flex flex-col justify-between space-y-space-md">
+<div class="space-y-4">
+<span class="font-caption-meta text-caption-meta text-text-secondary uppercase tracking-wider block font-bold">Execution Gate</span>
+<div class="space-y-2.5">
+<div class="flex justify-between text-xs py-1 border-b border-border-default">
+<span class="text-text-secondary">Expected Manifest Qty:</span>
+<span class="font-mono font-bold text-text-primary">220 Units</span>
+</div>
+<div class="flex justify-between text-xs py-1 border-b border-border-default">
+<span class="text-text-secondary">Prior Cumulative Received:</span>
+<span class="font-mono font-medium text-text-primary">140 Units</span>
+</div>
+<div class="flex justify-between text-xs py-1 border-b border-border-default">
+<span class="text-text-secondary">Current Session Input:</span>
+<span class="font-mono font-bold text-[#C45D16] text-sm" id="summary-recv-count">+80 Units</span>
+</div>
+<div class="flex justify-between text-xs py-1">
+<span class="text-text-secondary">Final Net Discrepancy:</span>
+<span class="font-mono font-bold text-status-success-text" id="summary-discrepancy">0 (Clean Match)</span>
+</div>
+</div>
+<div class="p-3 bg-app-bg rounded-lg border border-border-default">
+<div class="flex items-center justify-between text-[11px] text-text-secondary font-mono mb-1">
+<span>RECEIPT HASH:</span>
+<span class="font-bold text-text-primary">#RCV-0982-A7F</span>
+</div>
+<div class="h-1 w-full bg-border-default rounded overflow-hidden">
+<div class="h-full bg-[#C45D16] w-full"></div>
+</div>
+</div>
+</div>
+<!-- Action Button Group -->
+<div class="space-y-2.5 pt-2">
+<button class="w-full py-3.5 px-4 rounded-lg bg-[#C45D16] hover:bg-primary-hover text-on-primary font-button-text text-button-text flex items-center justify-center gap-2 shadow-md active:scale-[0.98] transition-all" id="confirm-btn" onclick="triggerConfirmReceiptModal()" type="button">
+<span class="material-symbols-outlined text-[20px]">task_alt</span>
+<span id="confirm-btn-label">Confirm Receipt (+80 Units)</span>
+</button>
+<button class="w-full py-2.5 px-3 rounded-lg bg-surface border border-border-default hover:bg-app-bg text-text-secondary hover:text-text-primary font-caption-meta text-xs transition-colors flex items-center justify-center gap-1.5" type="button">
+<span class="material-symbols-outlined text-[16px]">pending_actions</span>
+          Save Partial Session Draft
+        </button>
+</div>
+</div>
+</div>
+<!-- Operational Confirmation Modal Dialog (Rendered hidden by default) -->
+<div class="fixed inset-0 z-50 flex items-center justify-center bg-inverse-surface/60 backdrop-blur-sm hidden" id="confirmation-dialog">
+<div class="bg-surface rounded-xl shadow-2xl border border-border-default max-w-lg w-full p-space-lg mx-4 space-y- space-y-4 animate-in fade-in zoom-in-95 duration-150">
+<div class="flex items-start justify-between">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-status-success-bg text-status-success-text flex items-center justify-center">
+<span class="material-symbols-outlined text-[24px]">verified_user</span>
+</div>
+<div>
+<h3 class="font-headline-h2 text-headline-h2 text-text-primary">Confirm Inbound Receipt</h3>
+<p class="font-caption-meta text-caption-meta text-text-secondary">PO #INB-2024-0982 • Final Reconciliation</p>
+</div>
+</div>
+<button class="text-text-secondary hover:text-text-primary p-1 rounded" onclick="closeConfirmModal()">
+<span class="material-symbols-outlined text-[20px]">close</span>
+</button>
+</div>
+<div class="bg-app-bg p-3.5 rounded-lg border border-border-default space-y-2 text-xs">
+<div class="flex justify-between font-body-semibold">
+<span class="text-text-secondary">Line Item:</span>
+<span class="text-text-primary font-mono">SKU-4402 (Shipping Boxes)</span>
+</div>
+<div class="flex justify-between">
+<span class="text-text-secondary">Destination Location:</span>
+<span class="text-text-primary font-mono font-bold" id="modal-destination">Bay 15-A-01</span>
+</div>
+<div class="flex justify-between">
+<span class="text-text-secondary">Quantity to Book:</span>
+<span class="text-primary font-mono font-bold text-sm" id="modal-qty">+80 Units</span>
+</div>
+<div class="flex justify-between">
+<span class="text-text-secondary">Quality Inspection:</span>
+<span class="text-status-success-text font-bold" id="modal-condition">PASSED</span>
+</div>
+</div>
+<p class="text-xs text-text-secondary leading-normal">
+        By executing this confirmation, inventory balances will immediately update and the shipment status will transition to <span class="font-bold text-text-primary">100% Fully Received</span>.
+      </p>
+<div class="flex items-center justify-end gap-3 pt-2">
+<button class="px-4 py-2 rounded-lg bg-surface border border-border-default text-text-primary text-xs font-semibold hover:bg-app-bg transition-colors" onclick="closeConfirmModal()" type="button">
+          Return to Edit
+        </button>
+<button class="px-5 py-2 rounded-lg bg-[#C45D16] hover:bg-primary-hover text-on-primary text-xs font-bold shadow-md transition-all flex items-center gap-1.5" onclick="finalizeReceipt()" type="button">
+<span class="material-symbols-outlined text-[18px]">check_circle</span>
+          Commit Write-Back
+        </button>
+</div>
+</div>
+</div>
+<!-- Operational Toast Notification container -->
+<div class="fixed bottom-6 right-6 z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none" id="toast-notification">
+<div class="bg-inverse-surface text-inverse-on-surface px-4 py-3 rounded-lg shadow-xl flex items-center gap-3 border border-border-default/20">
+<span class="material-symbols-outlined text-status-success-text text-[20px]">check_circle</span>
+<div class="flex flex-col text-xs">
+<span class="font-bold" id="toast-title">Stock Movement Written</span>
+<span class="text-sidebar-muted" id="toast-desc">+80 units committed to Bay 15-A-01.</span>
+</div>
+</div>
+</div>
+</div>
+<script>
+  function adjustQty(delta) {
+    const input = document.getElementById('stepper-input');
+    if (!input) return;
+    let current = parseInt(input.value) || 0;
+    let nextVal = Math.max(0, Math.min(80, current + delta));
+    input.value = nextVal;
+    updateCalculations(nextVal);
+  }
+
+  function updateCalculations(val) {
+    const num = parseInt(val) || 0;
+    const expectedRemaining = 80;
+    const diff = num - expectedRemaining;
+
+    // Update text in row
+    const varianceBadge = document.getElementById('variance-badge');
+    const varianceText = document.getElementById('variance-text');
+    const summaryRecv = document.getElementById('summary-recv-count');
+    const summaryDiscrepancy = document.getElementById('summary-discrepancy');
+    const confirmBtnLabel = document.getElementById('confirm-btn-label');
+
+    if (summaryRecv) summaryRecv.textContent = '+' + num + ' Units';
+    if (confirmBtnLabel) confirmBtnLabel.textContent = 'Confirm Receipt (+' + num + ' Units)';
+
+    if (diff === 0) {
+      if (varianceText) varianceText.textContent = '0 (Full Receipt)';
+      if (varianceBadge) {
+        varianceBadge.className = 'inline-flex items-center gap-1 font-caption-meta text-caption-meta font-semibold text-status-success-text bg-status-success-bg px-2 py-1 rounded';
+      }
+      if (summaryDiscrepancy) {
+        summaryDiscrepancy.textContent = '0 (Clean Match)';
+        summaryDiscrepancy.className = 'font-mono font-bold text-status-success-text';
+      }
+    } else if (diff < 0) {
+      const short = Math.abs(diff);
+      if (varianceText) varianceText.textContent = '-' + short + ' Shortage';
+      if (varianceBadge) {
+        varianceBadge.className = 'inline-flex items-center gap-1 font-caption-meta text-caption-meta font-semibold text-status-warning-text bg-status-warning-bg px-2 py-1 rounded';
+      }
+      if (summaryDiscrepancy) {
+        summaryDiscrepancy.textContent = '-' + short + ' Shortage Detected';
+        summaryDiscrepancy.className = 'font-mono font-bold text-status-warning-text';
+      }
+    } else {
+      if (varianceText) varianceText.textContent = '+' + diff + ' Overage';
+      if (varianceBadge) {
+        varianceBadge.className = 'inline-flex items-center gap-1 font-caption-meta text-caption-meta font-semibold text-status-danger-text bg-status-danger-bg px-2 py-1 rounded';
+      }
+      if (summaryDiscrepancy) {
+        summaryDiscrepancy.textContent = '+' + diff + ' Overage Flagged';
+        summaryDiscrepancy.className = 'font-mono font-bold text-status-danger-text';
+      }
+    }
+  }
+
+  function simulateBarcodeScan() {
+    const input = document.getElementById('barcode-input');
+    if (!input) return;
+    input.value = '994821038102'; // Corresponds to active line item SKU-4402
+    showToast('Barcode Matched', 'Recognized SKU-4402 (Shipping Boxes)');
+    const stepper = document.getElementById('stepper-input');
+    if (stepper) {
+      stepper.classList.add('ring-2', 'ring-primary');
+      setTimeout(() => stepper.classList.remove('ring-2', 'ring-primary'), 1200);
+    }
+  }
+
+  function triggerConfirmReceiptModal() {
+    const modal = document.getElementById('confirmation-dialog');
+    const stepperVal = document.getElementById('stepper-input')?.value || '80';
+    const locSelect = document.getElementById('location-select');
+    const locVal = locSelect ? locSelect.value : 'Bay 15-A-01';
+    const conditionSelect = document.getElementById('condition-select');
+    const condVal = conditionSelect ? conditionSelect.options[conditionSelect.selectedIndex].text : 'Passed';
+
+    document.getElementById('modal-qty').textContent = '+' + stepperVal + ' Units';
+    document.getElementById('modal-destination').textContent = locVal;
+    document.getElementById('modal-condition').textContent = condVal;
+
+    if (modal) modal.classList.remove('hidden');
+  }
+
+  function closeConfirmModal() {
+    const modal = document.getElementById('confirmation-dialog');
+    if (modal) modal.classList.add('hidden');
+  }
+
+  function finalizeReceipt() {
+    closeConfirmModal();
+    showToast('Inventory Updated Successfully', 'Stock movement posted & order marked 100% Completed.');
+    const confirmBtn = document.getElementById('confirm-btn');
+    if (confirmBtn) {
+      confirmBtn.disabled = true;
+      confirmBtn.classList.add('opacity-50', 'cursor-not-allowed');
+      confirmBtn.innerHTML = '<span class="material-symbols-outlined text-[20px]">check</span> Transaction Recorded';
+    }
+  }
+
+  function showToast(title, desc) {
+    const toast = document.getElementById('toast-notification');
+    const toastTitle = document.getElementById('toast-title');
+    const toastDesc = document.getElementById('toast-desc');
+    if (!toast) return;
+    if (toastTitle) toastTitle.textContent = title;
+    if (toastDesc) toastDesc.textContent = desc;
+
+    toast.classList.remove('translate-y-20', 'opacity-0');
+    toast.classList.add('translate-y-0', 'opacity-100');
+
+    setTimeout(() => {
+      toast.classList.remove('translate-y-0', 'opacity-100');
+      toast.classList.add('translate-y-20', 'opacity-0');
+    }, 3500);
+  }
+
+  function checkConditionAlert(val) {
+    if (val === 'damaged' || val === 'quarantine') {
+      showToast('Quality Alert Logged', 'Item flagged for inspection review before final allocation.');
+    }
+  }
+</script></main></div></body></html>
