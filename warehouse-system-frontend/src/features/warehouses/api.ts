@@ -42,6 +42,31 @@ export async function listWarehouses(
   return data
 }
 
+export async function exportWarehouses(
+  term?: string,
+  active?: boolean,
+  from?: string,
+  to?: string,
+): Promise<void> {
+  const { data } = await api.get<Blob>('/api/v1/warehouses/export', {
+    params: {
+      term: term || undefined,
+      active: active !== undefined ? active : undefined,
+      from: from || undefined,
+      to: to || undefined,
+    },
+    responseType: 'blob',
+  })
+  const url = window.URL.createObjectURL(new Blob([data]))
+  const link = document.createElement('a')
+  link.href = url
+  link.download = 'warehouses.csv'
+  document.body.appendChild(link)
+  link.click()
+  document.body.removeChild(link)
+  window.URL.revokeObjectURL(url)
+}
+
 export async function getWarehouse(id: number): Promise<WarehouseDto> {
   const { data } = await api.get<WarehouseDto>(`/api/v1/warehouses/${id}`)
   return data

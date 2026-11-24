@@ -9,7 +9,7 @@ import { StatusBadge } from '../../components/ui/StatusBadge'
 import { EmptyState } from '../../components/ui/EmptyState'
 import { FilterToolbar } from '../../components/ui/filter'
 import { ActiveFilterChips } from '../../components/ui/filter'
-import { listOutboundOrders } from './api'
+import { listOutboundOrders, exportOutboundOrders } from './api'
 import type { OutboundOrderDto } from './api'
 import { listWarehouses } from '../warehouses/api'
 import type { WarehouseDto } from '../warehouses/api'
@@ -108,6 +108,14 @@ export function OutboundOrdersPage() {
             }}
             onReset={() => { setTerm(''); setStatus(''); setWarehouseId(null); setFrom(''); setTo('') }}
           />
+          <Button
+            variant="secondary"
+            className="ml-2"
+            onClick={() => exportOutboundOrders(term || undefined, status || undefined, warehouseId || undefined, from || undefined, to || undefined)}
+          >
+            <span className="material-symbols-outlined text-[16px]">download</span>
+            Export CSV
+          </Button>
         </div>
 
         <div className="overflow-x-auto">

@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class WarehouseService {
@@ -39,6 +40,24 @@ public class WarehouseService {
         Warehouse warehouse = warehouseRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Warehouse", id));
         return WarehouseDto.from(warehouse);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Map<String, Object>> exportAll(String term, Boolean active, Instant from, Instant to) {
+        List<Warehouse> warehouses = warehouseRepository.search(term, active, from, to,
+                org.springframework.data.domain.Pageable.unpaged())
+                .getContent();
+        return warehouses.stream().map(w -> {
+            Map<String, Object> map = new java.util.HashMap<>();
+            map.put("id", w.getId());
+            map.put("code", w.getCode());
+            map.put("name", w.getName());
+            map.put("address", w.getAddress() != null ? w.getAddress() : "");
+            map.put("active", w.isActive() ? "Active" : "Inactive");
+            map.put("createdAt", w.getCreatedAt() != null ? w.getCreatedAt().toString() : "");
+            map.put("updatedAt", w.getUpdatedAt() != null ? w.getUpdatedAt().toString() : "");
+            return map;
+        }).toList();
     }
 
     @Transactional

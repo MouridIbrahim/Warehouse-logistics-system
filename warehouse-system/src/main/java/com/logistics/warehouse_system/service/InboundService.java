@@ -33,6 +33,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class InboundService {
@@ -70,6 +71,28 @@ public class InboundService {
         Page<InboundOrder> page = inboundOrderRepository.search(term, status, warehouseId, from, to, pageable);
         List<InboundOrderDto> content = page.getContent().stream().map(InboundOrderDto::summary).toList();
         return PageResponse.of(page, content);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Map<String, Object>> exportAll(String term, InboundStatus status, Long warehouseId,
+                                               Instant from, Instant to) {
+        List<InboundOrder> orders = inboundOrderRepository.search(term, status, warehouseId, from, to,
+                org.springframework.data.domain.Pageable.unpaged())
+                .getContent();
+        return orders.stream().map(o -> {
+            Map<String, Object> map = new java.util.HashMap<>();
+            map.put("id", o.getId());
+            map.put("referenceNumber", o.getReferenceNumber());
+            map.put("warehouseId", o.getWarehouse().getId());
+            map.put("status", o.getStatus());
+            map.put("receivedAt", o.getReceivedAt() != null ? o.getReceivedAt().toString() : "");
+            map.put("createdById", o.getCreatedBy() != null ? o.getCreatedBy().getId() : null);
+            map.put("createdByName", o.getCreatedBy() != null ? o.getCreatedBy().getDisplayName() : "");
+            map.put("notes", o.getNotes() != null ? o.getNotes() : "");
+            map.put("createdAt", o.getCreatedAt() != null ? o.getCreatedAt().toString() : "");
+            map.put("updatedAt", o.getUpdatedAt() != null ? o.getUpdatedAt().toString() : "");
+            return map;
+        }).toList();
     }
 
     @Transactional(readOnly = true)

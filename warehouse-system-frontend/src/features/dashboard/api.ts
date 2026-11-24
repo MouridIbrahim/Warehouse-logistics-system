@@ -15,9 +15,17 @@ export interface DashboardDto {
   shipmentStatusCounts: ShipmentStatusCount[]
 }
 
-export async function fetchDashboard(from?: string, to?: string): Promise<DashboardDto> {
+export async function fetchDashboard(
+  warehouseId?: number,
+  from?: string,
+  to?: string,
+): Promise<DashboardDto> {
   const { data } = await api.get<DashboardDto>('/api/v1/reports/dashboard', {
-    params: { from: from || undefined, to: to || undefined },
+    params: {
+      warehouseId: warehouseId || undefined,
+      from: from || undefined,
+      to: to || undefined,
+    },
   })
   return data
 }
@@ -34,4 +42,21 @@ export async function fetchWarehouseCount(): Promise<number> {
     params: { page: 0, size: 1 },
   })
   return data.totalElements
+}
+
+export async function downloadCustomReport(
+  type: 'inventory-movements' | 'inbound-summary' | 'outbound-summary' | 'shipment-summary',
+  warehouseId?: number,
+  from?: string,
+  to?: string,
+): Promise<Blob> {
+  const { data } = await api.get<Blob>(`/api/v1/reports/${type}`, {
+    params: {
+      warehouseId: warehouseId || undefined,
+      from: from || undefined,
+      to: to || undefined,
+    },
+    responseType: 'blob',
+  })
+  return data
 }

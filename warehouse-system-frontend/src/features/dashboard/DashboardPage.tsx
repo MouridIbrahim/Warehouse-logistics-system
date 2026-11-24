@@ -56,14 +56,18 @@ export function DashboardPage() {
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
-    Promise.all([fetchDashboard(), fetchProductCount(), fetchWarehouseCount()])
-      .then(([dash, products, warehouses]) => {
+    Promise.all([
+      fetchDashboard(undefined),
+      fetchProductCount(),
+      fetchWarehouseCount(),
+    ])
+      .then(([dash, products, warehouseCount]) => {
         const activeShipments = (dash.shipmentStatusCounts ?? [])
           .filter((s) => !['DELIVERED', 'CANCELLED'].includes(s.status))
           .reduce((sum, s) => sum + s.count, 0)
         setStats({
           totalProducts: products,
-          totalWarehouses: warehouses,
+          totalWarehouses: warehouseCount,
           totalInventory: dash.totalInventoryOnHand,
           pendingInbound: dash.pendingInboundOrders,
           pendingOutbound: dash.pendingOutboundOrders,

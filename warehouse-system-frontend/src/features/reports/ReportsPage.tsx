@@ -2,8 +2,11 @@ import { useEffect, useState } from 'react'
 import { PageHeader } from '../../components/ui/PageHeader'
 import { Button } from '../../components/ui/Button'
 import { StatusBadge } from '../../components/ui/StatusBadge'
-import { fetchDashboard } from '../dashboard/api'
+import { Select } from '../../components/ui/Select'
+import { fetchDashboard, downloadCustomReport } from '../dashboard/api'
 import type { DashboardDto } from '../dashboard/api'
+import { listWarehouses } from '../warehouses/api'
+import type { WarehouseDto } from '../warehouses/api'
 import { shipmentBadge } from '../shipments/ShipmentsPage'
 
 function KpiCard({
@@ -41,15 +44,21 @@ function KpiCard({
 export function ReportsPage() {
   const [from, setFrom] = useState('')
   const [to, setTo] = useState('')
+  const [warehouseId, setWarehouseId] = useState<number | null>(null)
+  const [warehouses, setWarehouses] = useState<WarehouseDto[]>([])
   const [data, setData] = useState<DashboardDto | null>(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
+    listWarehouses(undefined, 0, 100).then((d) => setWarehouses(d.content))
+  }, [])
+
+  useEffect(() => {
     setLoading(true)
-    fetchDashboard(from || undefined, to || undefined)
+    fetchDashboard(warehouseId || undefined, from || undefined, to || undefined)
       .then(setData)
       .finally(() => setLoading(false))
-  }, [from, to])
+  }, [warehouseId, from, to])
 
   const maxVolume = data ? Math.max(data.inboundVolume, data.outboundVolume, 1) : 1
 
@@ -92,6 +101,92 @@ export function ReportsPage() {
         )}
       </div>
 
+      <div className="mt-4 flex flex-wrap items-end gap-3">
+        <div className="flex flex-col gap-1.5">
+          <label className="text-form-label text-text-primary">Warehouse</label>
+          <Select
+            value={warehouseId ? String(warehouseId) : ''}
+            onChange={(v) => setWarehouseId(v ? Number(v) : null)}
+            placeholder="All warehouses"
+            options={warehouses.map((w) => ({ value: String(w.id), label: w.code + ' — ' + w.name }))}
+          />
+        </div>
+        <div className="flex items-end gap-2">
+          <Button
+            variant="secondary"
+            onClick={() =>
+              downloadCustomReport(
+                'inventory-movements',
+                warehouseId || undefined,
+                from || undefined,
+                to || undefined,
+              )
+                .then((blob) => downloadBlob(blob, 'inventory-movements.csv'))
+                .catch((err) => {
+                  alert('Export failed: ' + (err?.message ?? String(err)))
+                })
+            }
+          >
+            <span className="material-symbols-outlined mr-1">inventory_2</span>
+            Inventory Movements
+          </Button>
+          <Button
+            variant="secondary"
+            onClick={() =>
+              downloadCustomReport(
+                'inbound-summary',
+                warehouseId || undefined,
+                from || undefined,
+                to || undefined,
+              )
+                .then((blob) => downloadBlob(blob, 'inbound-summary.csv'))
+                .catch((err) => {
+                  alert('Export failed: ' + (err?.message ?? String(err)))
+                })
+            }
+          >
+            <span className="material-symbols-outlined mr-1">inventory_2</span>
+            Inbound Summary
+          </Button>
+          <Button
+            variant="secondary"
+            onClick={() =>
+              downloadCustomReport(
+                'outbound-summary',
+                warehouseId || undefined,
+                from || undefined,
+                to || undefined,
+              )
+                .then((blob) => downloadBlob(blob, 'outbound-summary.csv'))
+                .catch((err) => {
+                  alert('Export failed: ' + (err?.message ?? String(err)))
+                })
+            }
+          >
+            <span className="material-symbols-outlined mr-1">outbox</span>
+            Outbound Summary
+          </Button>
+          <Button
+            variant="secondary"
+            onClick={() =>
+              downloadCustomReport(
+                'shipment-summary',
+                warehouseId || undefined,
+                from || undefined,
+                to || undefined,
+              )
+                .then((blob) => downloadBlob(blob, 'shipment-summary.csv'))
+                .catch((err) => {
+                  alert('Export failed: ' + (err?.message ?? String(err)))
+                })
+            }
+          >
+            <span className="material-symbols-outlined mr-1">local_shipping</span>
+            Shipment Summary
+          </Button>
+        </div>
+      </div>
+
       {loading && !data ? (
         <div className="mt-6 text-text-secondary">
           <span className="material-symbols-outlined animate-spin align-middle mr-2">sync</span>
@@ -105,6 +200,44 @@ export function ReportsPage() {
             <KpiCard label="Inventory On Hand" value={data.totalInventoryOnHand.toLocaleString()} icon="package_2" />
             <KpiCard label="Pending Inbound" value={data.pendingInboundOrders.toLocaleString()} icon="inventory_2" tone="warning" />
             <KpiCard label="Pending Outbound" value={data.pendingOutboundOrders.toLocaleString()} icon="outbox" tone="warning" />
+          </div>
+
+          <div className="mt-6 bg-surface rounded-xl border border-border-default p-space-lg shadow-sm">
+            <h2 className="text-headline-h3 font-semibold text-text-primary">Volume Comparison</h2>
+            <div className="mt-6 space-y-4">
+              <div>
+                <div className="flex justify-between text-caption-meta text-text-secondary mb-1.5">
+                  <span>Inbound Volume</span>
+                  <span className="font-semibold tabular-nums text-text-primary">
+                    {data.inboundVolume.toLocaleString()}
+                  </span>
+                </div>
+                <div className="h-3 rounded-full bg-status-neutral-bg overflow-hidden">
+                  <div
+                    className="h-full bg-status-info rounded-full"
+                    style={{ width: `${(data.inboundVolume / maxVolume) * 100}%` }}
+                  />
+                </div>
+              </div>
+              <div>
+                <div className="flex justify-between text-caption-meta text-text-secondary mb-1.5">
+                  <span>Outbound Volume</span>
+                  <span className="font-semibold tabular-nums text-text-primary">
+                    {data.outboundVolume.toLocaleString()}
+                  </span>
+                </div>
+                <div className="h-3 rounded-full bg-status-neutral-bg overflow-hidden">
+                  <div
+                    className="h-full bg-sidebar-bg rounded-full"
+                    style={{ width: `${(data.outboundVolume / maxVolume) * 100}%` }}
+                  />
+                </div>
+              </div>
+            </div>
+            <p className="text-caption-meta text-text-secondary mt-4">
+              Volumes are cumulative totals for the selected period. Trend history
+              requires a date-range-specific query API.
+            </p>
           </div>
 
           <div className="mt-6 grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -162,4 +295,15 @@ export function ReportsPage() {
       ) : null}
     </div>
   )
+}
+
+function downloadBlob(blob: Blob, fileName: string) {
+  const url = window.URL.createObjectURL(blob)
+  const link = document.createElement('a')
+  link.href = url
+  link.download = fileName
+  document.body.appendChild(link)
+  link.click()
+  document.body.removeChild(link)
+  window.URL.revokeObjectURL(url)
 }

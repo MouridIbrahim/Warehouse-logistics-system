@@ -18,13 +18,23 @@ import com.logistics.warehouse_system.repository.ShipmentRepository;
 import com.logistics.warehouse_system.repository.ShipmentStatusHistoryRepository;
 import com.logistics.warehouse_system.repository.UserRepository;
 import com.logistics.warehouse_system.security.SecurityUtils;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.Instant;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ShipmentService {
@@ -52,6 +62,28 @@ public class ShipmentService {
         Page<Shipment> page = shipmentRepository.search(term, status, from, to, pageable);
         List<ShipmentDto> content = page.getContent().stream().map(ShipmentDto::from).toList();
         return PageResponse.of(page, content);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Map<String, Object>> exportAll(String term, ShipmentStatus status, Instant from, Instant to,
+                                               Long warehouseId) {
+        List<Shipment> shipments = shipmentRepository.search(term, status, from, to,
+                org.springframework.data.domain.Pageable.unpaged())
+                .getContent();
+        return shipments.stream().map(s -> {
+            Map<String, Object> map = new java.util.HashMap<>();
+            map.put("id", s.getId());
+            map.put("trackingNumber", s.getTrackingNumber());
+            map.put("outboundOrderId", s.getOutboundOrder() != null ? s.getOutboundOrder().getId() : null);
+            map.put("outboundReferenceNumber", s.getOutboundOrder() != null ? s.getOutboundOrder().getReferenceNumber() : "");
+            map.put("carrierName", s.getCarrierName() != null ? s.getCarrierName() : "");
+            map.put("status", s.getStatus());
+            map.put("shippedAt", s.getShippedAt() != null ? s.getShippedAt().toString() : "");
+            map.put("deliveredAt", s.getDeliveredAt() != null ? s.getDeliveredAt().toString() : "");
+            map.put("createdAt", s.getCreatedAt() != null ? s.getCreatedAt().toString() : "");
+            map.put("updatedAt", s.getUpdatedAt() != null ? s.getUpdatedAt().toString() : "");
+            return map;
+        }).toList();
     }
 
     @Transactional(readOnly = true)
@@ -120,6 +152,81 @@ public class ShipmentService {
         auditLogService.record("SHIPMENT_STATUS_CHANGED", "SHIPMENT", shipment.getId(),
                 "from " + current + " to " + target);
         return ShipmentDto.from(shipment);
+    }
+
+    @Transactional
+    public ShipmentDto splitShipment(Long id, String trackingNumber, String carrierName) {
+        Shipment shipment = shipmentRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Shipment", id));
+
+        if (shipment.getStatus() != ShipmentStatus.PENDING && shipment.getStatus() != ShipmentStatus.IN_TRANSIT) {
+            throw new BadRequestException("Cannot split shipment with status " + shipment.getStatus());
+        }
+
+        if (shipmentRepository.existsByTrackingNumber(trackingNumber)) {
+            throw new ConflictException("Tracking number already exists: " + trackingNumber);
+        }
+
+        OutboundOrder outboundOrder = shipment.getOutboundOrder();
+        if (outboundOrder.getStatus() != OutboundStatus.DISPATCHED) {
+            throw new ConflictException("Outbound order must be DISPATCHED to split shipment");
+        }
+
+        Shipment newShipment = Shipment.builder()
+                .trackingNumber(trackingNumber)
+                .outboundOrder(outboundOrder)
+                .carrierName(carrierName != null ? carrierName : shipment.getCarrierName())
+                .status(ShipmentStatus.PENDING)
+                .build();
+        shipmentRepository.save(newShipment);
+
+        auditLogService.record("SHIPMENT_SPLIT", "SHIPMENT", newShipment.getId(),
+                "split from shipment #" + id + " with tracking " + trackingNumber);
+        return ShipmentDto.from(newShipment);
+    }
+
+    private static final Path POD_STORAGE = Paths.get("uploads/pods");
+
+    @Transactional
+    public ShipmentDto uploadPod(Long id, MultipartFile file) throws IOException {
+        Shipment shipment = shipmentRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Shipment", id));
+
+        if (shipment.getStatus() != ShipmentStatus.IN_TRANSIT && shipment.getStatus() != ShipmentStatus.DELIVERED) {
+            throw new BadRequestException("POD can only be uploaded for IN_TRANSIT or DELIVERED shipments");
+        }
+
+        Files.createDirectories(POD_STORAGE);
+        String originalFileName = StringUtils.cleanPath(file.getOriginalFilename());
+        String storedFileName = System.currentTimeMillis() + "_" + originalFileName;
+        Path targetPath = POD_STORAGE.resolve(storedFileName);
+        Files.copy(file.getInputStream(), targetPath);
+
+        Instant now = Instant.now();
+        shipment.setPodFileName(storedFileName);
+        shipment.setPodUploadedAt(now);
+        shipmentRepository.save(shipment);
+
+        auditLogService.record("SHIPMENT_POD_UPLOADED", "SHIPMENT", shipment.getId(),
+                "POD file: " + storedFileName);
+        return ShipmentDto.from(shipment);
+    }
+
+    @Transactional(readOnly = true)
+    public Resource downloadPod(Long id) throws MalformedURLException {
+        Shipment shipment = shipmentRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Shipment", id));
+
+        if (shipment.getPodFileName() == null) {
+            throw new NotFoundException("POD file", id);
+        }
+
+        Path filePath = POD_STORAGE.resolve(shipment.getPodFileName()).normalize();
+        Resource resource = new UrlResource(filePath.toUri());
+        if (!resource.exists()) {
+            throw new NotFoundException("POD file not found on disk", id);
+        }
+        return resource;
     }
 
     @Transactional(readOnly = true)

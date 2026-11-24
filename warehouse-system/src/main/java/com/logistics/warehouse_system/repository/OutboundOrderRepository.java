@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.time.Instant;
+import java.util.List;
 import java.util.Optional;
 
 public interface OutboundOrderRepository extends JpaRepository<OutboundOrder, Long> {
@@ -52,5 +53,20 @@ public interface OutboundOrderRepository extends JpaRepository<OutboundOrder, Lo
                                @Param("to") Instant to,
                                Pageable pageable);
 
+    @EntityGraph(attributePaths = {"createdBy", "warehouse"})
+    @Query("""
+            select distinct o from OutboundOrder o
+            where (:warehouseId is null or o.warehouse.id = :warehouseId)
+              and (:from is null or o.createdAt >= :from)
+              and (:to is null or o.createdAt <= :to)
+            order by o.createdAt desc, o.id desc
+            """)
+    List<OutboundOrder> findAllForReport(@Param("warehouseId") Long warehouseId,
+                                         @Param("from") Instant from,
+                                         @Param("to") Instant to);
+
     long countByStatus(OutboundStatus status);
+
+    @Query("select count(o) from OutboundOrder o where o.status = :status and (:warehouseId is null or o.warehouse.id = :warehouseId)")
+    long countByStatusAndWarehouse(OutboundStatus status, @Param("warehouseId") Long warehouseId);
 }

@@ -7,5 +7,6 @@ public record UpdateProductRequest(
         @Size(max = 150) String name,
         @Size(max = 2000) String description,
         @Size(max = 50) String unitOfMeasure,
-        Boolean active) {
+        Boolean active,
+        Integer lowStockThreshold) {
 }

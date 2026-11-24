@@ -10,6 +10,7 @@ public record ProductDto(
         String name,
         String description,
         String unitOfMeasure,
+        Integer lowStockThreshold,
         boolean active,
         Instant createdAt,
         Instant updatedAt) {
@@ -21,6 +22,7 @@ public record ProductDto(
                 product.getName(),
                 product.getDescription(),
                 product.getUnitOfMeasure(),
+                product.getLowStockThreshold(),
                 product.isActive(),
                 product.getCreatedAt(),
                 product.getUpdatedAt());

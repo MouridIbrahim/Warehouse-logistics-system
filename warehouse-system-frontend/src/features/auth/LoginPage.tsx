@@ -3,10 +3,12 @@ import type { FormEvent } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from './auth-context'
 import { getErrorMessage } from '../../lib/api'
+import { useToast } from '../../components/ui/toast'
 
 export function LoginPage() {
   const { login } = useAuth()
   const navigate = useNavigate()
+  const { addToast } = useToast()
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
@@ -19,6 +21,11 @@ export function LoginPage() {
     setError(null)
     try {
       await login(username, password)
+      addToast({
+        type: 'success',
+        title: 'Welcome back',
+        message: 'You have successfully signed in',
+      })
       navigate('/app')
     } catch (err) {
       setError(getErrorMessage(err))

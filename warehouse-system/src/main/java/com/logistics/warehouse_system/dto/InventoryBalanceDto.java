@@ -12,6 +12,9 @@ public record InventoryBalanceDto(
         Long storageLocationId,
         String storageLocationCode,
         Integer quantityOnHand,
+        Integer reservedQuantity,
+        Integer availableQuantity,
+        Integer lowStockThreshold,
         Instant updatedAt) {
 
     public static InventoryBalanceDto from(InventoryBalance balance) {
@@ -23,6 +26,9 @@ public record InventoryBalanceDto(
                 balance.getStorageLocation().getId(),
                 balance.getStorageLocation().getCode(),
                 balance.getQuantityOnHand(),
+                balance.getReservedQuantity(),
+                balance.getAvailableQuantity(),
+                balance.getProduct().getLowStockThreshold(),
                 balance.getUpdatedAt());
     }
 }

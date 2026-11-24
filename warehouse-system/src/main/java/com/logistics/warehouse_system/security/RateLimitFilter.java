@@ -82,7 +82,7 @@ public class RateLimitFilter extends OncePerRequestFilter {
             String key = "ratelimit:" + ip;
             Long count = redisTemplate.opsForValue().increment(key);
             if (count == 1) {
-                redisTemplate.expire(key, java.time.Duration.ofSeconds(windowSeconds / 1000));
+                redisTemplate.expire(key, java.time.Duration.ofSeconds(windowSeconds));
             }
             return count <= maxRequests;
         } catch (Exception e) {

@@ -20,7 +20,7 @@ public interface InventoryBalanceRepository extends JpaRepository<InventoryBalan
             where (:productId is null or b.product.id = :productId)
               and (:locationId is null or b.storageLocation.id = :locationId)
               and (:quantityCondition is null or
-                (:quantityCondition = 'LOW_STOCK' and b.quantityOnHand < 10) or
+                (:quantityCondition = 'LOW_STOCK' and b.quantityOnHand < b.product.lowStockThreshold) or
                 (:quantityCondition = 'OUT_OF_STOCK' and b.quantityOnHand = 0) or
                 (:quantityCondition = 'IN_STOCK' and b.quantityOnHand > 0))
             """)
@@ -31,4 +31,7 @@ public interface InventoryBalanceRepository extends JpaRepository<InventoryBalan
 
     @Query("select sum(b.quantityOnHand) from InventoryBalance b")
     Long totalQuantityOnHand();
+
+    @Query("select sum(b.quantityOnHand) from InventoryBalance b where (:warehouseId is null or b.storageLocation.warehouse.id = :warehouseId)")
+    Long totalQuantityOnHandByWarehouse(@Param("warehouseId") Long warehouseId);
 }

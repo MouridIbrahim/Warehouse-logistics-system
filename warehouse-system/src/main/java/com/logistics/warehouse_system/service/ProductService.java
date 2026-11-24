@@ -15,6 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductService {
@@ -36,6 +38,42 @@ public class ProductService {
     }
 
     @Transactional(readOnly = true)
+    public List<Map<String, Object>> exportAll(String term, String unitOfMeasure, Boolean active,
+                                               Instant from, Instant to) {
+        List<Product> products = productRepository.search(term, unitOfMeasure, active, from, to,
+                org.springframework.data.domain.Pageable.unpaged())
+                .getContent();
+        return products.stream().map(p -> {
+            Map<String, Object> map = new java.util.HashMap<>();
+            map.put("id", p.getId());
+            map.put("sku", p.getSku());
+            map.put("name", p.getName());
+            map.put("description", p.getDescription() != null ? p.getDescription() : "");
+            map.put("unitOfMeasure", p.getUnitOfMeasure() != null ? p.getUnitOfMeasure() : "");
+            map.put("active", p.isActive() ? "Active" : "Inactive");
+            map.put("createdAt", p.getCreatedAt() != null ? p.getCreatedAt().toString() : "");
+            map.put("updatedAt", p.getUpdatedAt() != null ? p.getUpdatedAt().toString() : "");
+            return map;
+        }).toList();
+    }
+
+    @Transactional(readOnly = true)
+    public List<Map<String, Object>> getLowStockProducts() {
+        List<Product> products = productRepository.findByLowStockThresholdGreaterThan(0);
+        return products.stream().map(p -> {
+            Map<String, Object> map = new java.util.HashMap<>();
+            map.put("id", p.getId());
+            map.put("sku", p.getSku());
+            map.put("name", p.getName());
+            map.put("description", p.getDescription() != null ? p.getDescription() : "");
+            map.put("unitOfMeasure", p.getUnitOfMeasure() != null ? p.getUnitOfMeasure() : "");
+            map.put("lowStockThreshold", p.getLowStockThreshold());
+            map.put("active", p.isActive());
+            return map;
+        }).toList();
+    }
+
+    @Transactional(readOnly = true)
     public ProductDto get(Long id) {
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Product", id));
@@ -52,6 +90,7 @@ public class ProductService {
                 .name(request.name())
                 .description(request.description())
                 .unitOfMeasure(request.unitOfMeasure())
+                .lowStockThreshold(request.lowStockThreshold() != null ? request.lowStockThreshold() : 10)
                 .active(true)
                 .build();
         productRepository.save(product);
@@ -81,6 +120,9 @@ public class ProductService {
         }
         if (request.active() != null) {
             product.setActive(request.active());
+        }
+        if (request.lowStockThreshold() != null) {
+            product.setLowStockThreshold(request.lowStockThreshold());
         }
 
         productRepository.save(product);

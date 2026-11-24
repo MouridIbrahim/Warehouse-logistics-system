@@ -6,7 +6,7 @@ import { useAuth } from '../auth/auth-context'
 import { Button } from '../../components/ui/Button'
 import { StatusBadge } from '../../components/ui/StatusBadge'
 import { Modal } from '../../components/ui/Modal'
-import { getShipment, getShipmentHistory, SHIPMENT_TRANSITIONS, updateShipmentStatus } from './api'
+import { getShipment, getShipmentHistory, SHIPMENT_TRANSITIONS, updateShipmentStatus, uploadPod, downloadPod } from './api'
 import { shipmentBadge } from './ShipmentsPage'
 import type { ShipmentDto, ShipmentStatusHistoryDto } from './api'
 
@@ -22,8 +22,10 @@ export function ShipmentDetailsPage() {
   const [shipment, setShipment] = useState<ShipmentDto | null>(null)
   const [history, setHistory] = useState<ShipmentStatusHistoryDto[]>([])
   const [statusOpen, setStatusOpen] = useState(false)
+  const [podOpen, setPodOpen] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [updating, setUpdating] = useState(false)
+  const [uploading, setUploading] = useState(false)
 
   useEffect(() => {
     getShipment(shipmentId)
@@ -44,6 +46,20 @@ export function ShipmentDetailsPage() {
       setError(getErrorMessage(err))
     } finally {
       setUpdating(false)
+    }
+  }
+
+  async function handlePodUpload(file: File) {
+    setUploading(true)
+    setError(null)
+    try {
+      const updated = await uploadPod(shipmentId, file)
+      setShipment(updated)
+      setPodOpen(false)
+    } catch (err) {
+      setError(getErrorMessage(err))
+    } finally {
+      setUploading(false)
     }
   }
 
@@ -82,6 +98,31 @@ export function ShipmentDetailsPage() {
         {canManage && allowed.length > 0 && (
           <Button icon="update" onClick={() => setStatusOpen(true)}>
             Update Status
+          </Button>
+        )}
+        {canManage && (shipment.status === 'IN_TRANSIT' || shipment.status === 'DELIVERED') && (
+          <Button icon="upload" onClick={() => setPodOpen(true)}>
+            Upload POD
+          </Button>
+        )}
+        {shipment.podFileName && (
+          <Button
+            icon="download"
+            variant="secondary"
+            onClick={() => {
+              downloadPod(shipmentId).then((blob) => {
+                const url = window.URL.createObjectURL(blob)
+                const link = document.createElement('a')
+                link.href = url
+                link.download = shipment.podFileName ?? 'pod'
+                document.body.appendChild(link)
+                link.click()
+                document.body.removeChild(link)
+                window.URL.revokeObjectURL(url)
+              })
+            }}
+          >
+            Download POD
           </Button>
         )}
       </div>
@@ -199,6 +240,12 @@ export function ShipmentDetailsPage() {
         onConfirm={handleStatusChange}
         updating={updating}
       />
+      <PodUploadModal
+        open={podOpen}
+        onClose={() => setPodOpen(false)}
+        onUpload={handlePodUpload}
+        uploading={uploading}
+      />
     </div>
   )
 }
@@ -260,6 +307,51 @@ function UpdateStatusModal({
           onClick={() => selected && onConfirm(selected, note || undefined)}
         >
           {updating ? 'Updating...' : 'Update Status'}
+        </Button>
+      </div>
+    </Modal>
+  )
+}
+
+function PodUploadModal({
+  open,
+  onClose,
+  onUpload,
+  uploading,
+}: {
+  open: boolean
+  onClose: () => void
+  onUpload: (file: File) => void
+  uploading: boolean
+}) {
+  const [file, setFile] = useState<File | null>(null)
+
+  return (
+    <Modal open={open} onClose={onClose} title="Upload Proof of Delivery">
+      <p className="text-body-default text-text-secondary">
+        Upload a signed delivery receipt or POD document (PDF, JPG, PNG).
+      </p>
+      <div className="mt-4 flex flex-col gap-1.5">
+        <label className="text-form-label text-text-primary">POD file *</label>
+        <input
+          type="file"
+          accept=".pdf,.jpg,.jpeg,.png"
+          className="h-10 px-3 text-body-default text-text-primary bg-surface border border-border-default rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/30"
+          onChange={(e) => {
+            const f = e.target.files?.[0] ?? null
+            setFile(f)
+          }}
+        />
+      </div>
+      <div className="flex items-center justify-end gap-2 mt-6">
+        <Button variant="secondary" onClick={onClose}>
+          Cancel
+        </Button>
+        <Button
+          disabled={!file || uploading}
+          onClick={() => file && onUpload(file)}
+        >
+          {uploading ? 'Uploading...' : 'Upload POD'}
         </Button>
       </div>
     </Modal>

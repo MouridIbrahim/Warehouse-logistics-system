@@ -8,6 +8,11 @@ import { RequireRole } from '../features/auth/RequireRole'
 import { ADMIN, AUDIT_VIEW, SHIPMENT_VIEW } from '../features/auth/permissions'
 import { AppLayout } from '../components/layout/AppLayout'
 import { AccessDeniedPage } from '../components/layout/AccessDeniedPage'
+import { ToastProvider } from '../components/ui/Toast.tsx'
+
+const ToastWrapped = ({ children }: { children: React.ReactNode }) => (
+  <ToastProvider>{children}</ToastProvider>
+)
 
 const DashboardPage = lazy(() =>
   import('../features/dashboard/DashboardPage').then((m) => ({ default: m.DashboardPage })),
@@ -23,6 +28,9 @@ const WarehouseDetailsPage = lazy(() =>
 )
 const InventoryPage = lazy(() =>
   import('../features/inventory/InventoryPage').then((m) => ({ default: m.InventoryPage })),
+)
+const CycleCountPage = lazy(() =>
+  import('../features/inventory/CycleCountPage').then((m) => ({ default: m.CycleCountPage })),
 )
 const InboundOrdersPage = lazy(() =>
   import('../features/inbound/InboundOrdersPage').then((m) => ({ default: m.InboundOrdersPage })),
@@ -68,9 +76,9 @@ const SettingsPage = lazy(() =>
 )
 
 export const router = createBrowserRouter([
-  { path: '/', element: <LandingPage /> },
-  { path: '/login', element: <LoginPage /> },
-  { path: '/register', element: <RegisterPage /> },
+  { path: '/', element: <ToastWrapped><LandingPage /></ToastWrapped> },
+  { path: '/login', element: <ToastWrapped><LoginPage /></ToastWrapped> },
+  { path: '/register', element: <ToastWrapped><RegisterPage /></ToastWrapped> },
   {
     path: '/app',
     element: (
@@ -85,6 +93,7 @@ export const router = createBrowserRouter([
       { path: 'warehouses', element: <WarehousesPage /> },
       { path: 'warehouses/:id', element: <WarehouseDetailsPage /> },
       { path: 'inventory', element: <InventoryPage /> },
+      { path: 'cycle-count', element: <CycleCountPage /> },
       { path: 'inbound', element: <InboundOrdersPage /> },
       { path: 'inbound/new', element: <CreateInboundOrderPage /> },
       { path: 'inbound/:id', element: <InboundOrderDetailsPage /> },

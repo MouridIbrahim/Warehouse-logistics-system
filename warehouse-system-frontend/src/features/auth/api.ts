@@ -30,3 +30,8 @@ export async function changePassword(payload: {
 export async function logout(): Promise<void> {
   await api.post('/api/v1/auth/logout')
 }
+
+export async function refreshToken(): Promise<{ accessToken: string }> {
+  const { data } = await api.post<{ accessToken: string }>('/api/v1/auth/refresh')
+  return data
+}

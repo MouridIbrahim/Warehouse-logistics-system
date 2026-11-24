@@ -44,4 +44,19 @@ public interface ShipmentRepository extends JpaRepository<Shipment, Long> {
 
     @Query("select s.status, count(s) from Shipment s group by s.status")
     List<Object[]> countGroupedByStatus();
+
+    @Query("select s.status, count(s) from Shipment s where (:warehouseId is null or s.outboundOrder.warehouse.id = :warehouseId) group by s.status")
+    List<Object[]> countGroupedByStatus(@Param("warehouseId") Long warehouseId);
+
+    @EntityGraph(attributePaths = "outboundOrder")
+    @Query("""
+            select s from Shipment s
+            where (:warehouseId is null or s.outboundOrder.warehouse.id = :warehouseId)
+              and (:from is null or s.createdAt >= :from)
+              and (:to is null or s.createdAt <= :to)
+            order by s.createdAt desc, s.id desc
+            """)
+    List<Shipment> findAllForReport(@Param("warehouseId") Long warehouseId,
+                                    @Param("from") Instant from,
+                                    @Param("to") Instant to);
 }

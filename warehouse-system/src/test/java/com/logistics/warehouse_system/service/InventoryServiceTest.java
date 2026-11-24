@@ -129,4 +129,41 @@ class InventoryServiceTest {
                 new CreateAdjustmentRequest(1L, 2L, 5, null)))
                 .isInstanceOf(NotFoundException.class);
     }
+
+    @Test
+    void negativeCycleCountIsRejected() {
+        assertThatThrownBy(() -> inventoryService.cycleCount(1L, 2L, -1, null))
+                .isInstanceOf(BadRequestException.class);
+    }
+
+    @Test
+    void cycleCountCapsReservedQuantityAtPhysicalCount() {
+        InventoryBalance balance = balance(10);
+        balance.setReservedQuantity(8);
+        when(productRepository.findById(1L)).thenReturn(Optional.of(balance.getProduct()));
+        when(storageLocationRepository.findById(2L)).thenReturn(Optional.of(balance.getStorageLocation()));
+        when(inventoryBalanceRepository.findByProductIdAndStorageLocationId(1L, 2L))
+                .thenReturn(Optional.of(balance));
+
+        inventoryService.cycleCount(1L, 2L, 5, "physical count");
+
+        assertThat(balance.getQuantityOnHand()).isEqualTo(5);
+        assertThat(balance.getReservedQuantity()).isEqualTo(5);
+        verify(inventoryMovementRepository).save(org.mockito.ArgumentMatchers.any(InventoryMovement.class));
+    }
+
+    @Test
+    void adjustmentCapsReservedQuantityAtAdjustedOnHand() {
+        InventoryBalance balance = balance(10);
+        balance.setReservedQuantity(8);
+        when(productRepository.findById(1L)).thenReturn(Optional.of(balance.getProduct()));
+        when(storageLocationRepository.findById(2L)).thenReturn(Optional.of(balance.getStorageLocation()));
+        when(inventoryBalanceRepository.findByProductIdAndStorageLocationId(1L, 2L))
+                .thenReturn(Optional.of(balance));
+
+        inventoryService.adjust(new CreateAdjustmentRequest(1L, 2L, -3, "damaged stock"));
+
+        assertThat(balance.getQuantityOnHand()).isEqualTo(7);
+        assertThat(balance.getReservedQuantity()).isEqualTo(7);
+    }
 }

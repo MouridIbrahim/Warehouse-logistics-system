@@ -30,7 +30,7 @@ class ProductServiceTest {
         when(productRepository.existsBySku("SKU1")).thenReturn(true);
 
         assertThatThrownBy(() -> productService.create(
-                new CreateProductRequest("SKU1", "Product 1", null, "pcs")))
+                new CreateProductRequest("SKU1", "Product 1", null, "pcs", null)))
                 .isInstanceOf(ConflictException.class);
     }
 
@@ -39,7 +39,7 @@ class ProductServiceTest {
         when(productRepository.existsBySku("SKU1")).thenReturn(false);
 
         ProductDto dto = productService.create(
-                new CreateProductRequest("SKU1", "Product 1", "desc", "pcs"));
+                new CreateProductRequest("SKU1", "Product 1", "desc", "pcs", null));
 
         assertThat(dto.sku()).isEqualTo("SKU1");
         assertThat(dto.name()).isEqualTo("Product 1");

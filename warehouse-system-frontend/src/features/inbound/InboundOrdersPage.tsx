@@ -9,7 +9,7 @@ import { StatusBadge } from '../../components/ui/StatusBadge'
 import { EmptyState } from '../../components/ui/EmptyState'
 import { FilterToolbar } from '../../components/ui/filter'
 import { ActiveFilterChips } from '../../components/ui/filter'
-import { listInboundOrders } from './api'
+import { listInboundOrders, exportInboundOrders, confirmInboundOrder } from './api'
 import type { InboundOrderDto } from './api'
 import { listWarehouses } from '../warehouses/api'
 import type { WarehouseDto } from '../warehouses/api'
@@ -30,6 +30,40 @@ export function InboundOrdersPage() {
   const [data, setData] = useState<PageResponse<InboundOrderDto> | null>(null)
   const [loading, setLoading] = useState(true)
   const [warehouses, setWarehouses] = useState<WarehouseDto[]>([])
+  const [selectedIds, setSelectedIds] = useState<string[]>([])
+  const [bulkLoading, setBulkLoading] = useState(false)
+
+  function refresh() {
+    setLoading(true)
+    listInboundOrders(term || undefined, status || undefined, page, size, warehouseId ? Number(warehouseId) : undefined, from || undefined, to || undefined).then(setData).finally(() => setLoading(false))
+  }
+
+  const toggleAll = (checked: boolean) => {
+    if (checked) {
+      setSelectedIds(data?.content.map((o) => String(o.id)) || [])
+    } else {
+      setSelectedIds([])
+    }
+  }
+
+  const toggleItem = (id: string) => {
+    setSelectedIds((prev) =>
+      prev.includes(id) ? prev.filter((i) => i !== id) : [...prev, id]
+    )
+  }
+
+  async function confirmSelected() {
+    setBulkLoading(true)
+    const results = await Promise.allSettled(
+      selectedIds.map((id) => confirmInboundOrder(Number(id)))
+    )
+    const failed = results.filter((r) => r.status === 'rejected').length
+    if (failed === 0) {
+      setSelectedIds([])
+      refresh()
+    }
+    setBulkLoading(false)
+  }
 
   useEffect(() => {
     listWarehouses('', 0, 100).then((d) => setWarehouses(d.content))
@@ -108,12 +142,48 @@ export function InboundOrdersPage() {
             }}
             onReset={() => { setTerm(''); setStatus(''); setWarehouseId(null); setFrom(''); setTo('') }}
           />
+          <Button
+            variant="secondary"
+            className="ml-2"
+            onClick={() => exportInboundOrders(term || undefined, status || undefined, warehouseId || undefined, from || undefined, to || undefined)}
+          >
+            <span className="material-symbols-outlined text-[16px]">download</span>
+            Export CSV
+          </Button>
+          {selectedIds.length > 0 && (
+            <div className="flex items-center gap-2">
+              <span className="text-caption-meta text-text-secondary">
+                {selectedIds.length} selected
+              </span>
+              <Button
+                variant="primary"
+                disabled={bulkLoading}
+                onClick={() => confirmSelected()}
+              >
+                {bulkLoading ? 'Confirming...' : 'Confirm Selected'}
+              </Button>
+              <Button
+                variant="secondary"
+                onClick={() => setSelectedIds([])}
+              >
+                Clear selection
+              </Button>
+            </div>
+          )}
         </div>
 
         <div className="overflow-x-auto">
           <table className="w-full text-left">
             <thead className="bg-app-bg text-table-header uppercase text-text-secondary select-none">
               <tr>
+                <th className="px-4 py-3">
+                  <input
+                    type="checkbox"
+                    className="w-4 h-4 rounded accent-[#C45D16]"
+                    checked={selectedIds.length > 0 && selectedIds.length === (data?.content.length ?? 0)}
+                    onChange={(e) => toggleAll(e.target.checked)}
+                  />
+                </th>
                 <th className="px-4 py-3">Reference</th>
                 <th className="px-4 py-3">Warehouse</th>
                 <th className="px-4 py-3 text-center">Items</th>
@@ -133,14 +203,22 @@ export function InboundOrdersPage() {
               ) : data && data.content.length > 0 ? (
                 data.content.map((o) => (
                   <tr key={o.id} className="hover:bg-app-bg/50 transition-colors">
-                    <td className="px-4 py-3">
-                      <Link
-                        to={`/app/inbound/${o.id}`}
-                        className="text-body-semibold tabular-nums text-text-primary hover:text-primary"
-                      >
-                        {o.referenceNumber}
-                      </Link>
-                    </td>
+'                <td className="px-4 py-3">
+                  <input
+                    type="checkbox"
+                    className="w-4 h-4 rounded accent-[#C45D16]"
+                    checked={selectedIds.includes(o.id.toString())}
+                    onChange={() => toggleItem(o.id.toString())}
+                  />
+                </td>
+                <td className="px-4 py-3">
+                  <Link
+                    to={`/app/inbound/${o.id}`}
+                    className="text-body-semibold tabular-nums text-text-primary hover:text-primary"
+                  >
+                    {o.referenceNumber}
+                  </Link>
+                </td>'
                     <td className="px-4 py-3">
                       <span className="text-table-data text-text-secondary">#{o.warehouseId}</span>
                     </td>
@@ -202,3 +280,4 @@ export function InboundOrdersPage() {
     </div>
   )
 }
+

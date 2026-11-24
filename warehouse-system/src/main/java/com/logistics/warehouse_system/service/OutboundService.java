@@ -33,6 +33,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class OutboundService {
@@ -44,6 +45,7 @@ public class OutboundService {
     private final UserRepository userRepository;
     private final InventoryBalanceRepository inventoryBalanceRepository;
     private final InventoryMovementRepository inventoryMovementRepository;
+    private final InventoryService inventoryService;
     private final AuditLogService auditLogService;
 
     public OutboundService(OutboundOrderRepository outboundOrderRepository,
@@ -53,6 +55,7 @@ public class OutboundService {
                            UserRepository userRepository,
                            InventoryBalanceRepository inventoryBalanceRepository,
                            InventoryMovementRepository inventoryMovementRepository,
+                           InventoryService inventoryService,
                            AuditLogService auditLogService) {
         this.outboundOrderRepository = outboundOrderRepository;
         this.warehouseRepository = warehouseRepository;
@@ -61,6 +64,7 @@ public class OutboundService {
         this.userRepository = userRepository;
         this.inventoryBalanceRepository = inventoryBalanceRepository;
         this.inventoryMovementRepository = inventoryMovementRepository;
+        this.inventoryService = inventoryService;
         this.auditLogService = auditLogService;
     }
 
@@ -70,6 +74,28 @@ public class OutboundService {
         Page<OutboundOrder> page = outboundOrderRepository.search(term, status, warehouseId, from, to, pageable);
         List<OutboundOrderDto> content = page.getContent().stream().map(OutboundOrderDto::summary).toList();
         return PageResponse.of(page, content);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Map<String, Object>> exportAll(String term, OutboundStatus status, Long warehouseId,
+                                               Instant from, Instant to) {
+        List<OutboundOrder> orders = outboundOrderRepository.search(term, status, warehouseId, from, to,
+                org.springframework.data.domain.Pageable.unpaged())
+                .getContent();
+        return orders.stream().map(o -> {
+            Map<String, Object> map = new java.util.HashMap<>();
+            map.put("id", o.getId());
+            map.put("referenceNumber", o.getReferenceNumber());
+            map.put("warehouseId", o.getWarehouse().getId());
+            map.put("status", o.getStatus());
+            map.put("requestedAt", o.getRequestedAt() != null ? o.getRequestedAt().toString() : "");
+            map.put("createdById", o.getCreatedBy() != null ? o.getCreatedBy().getId() : null);
+            map.put("createdByName", o.getCreatedBy() != null ? o.getCreatedBy().getDisplayName() : "");
+            map.put("notes", o.getNotes() != null ? o.getNotes() : "");
+            map.put("createdAt", o.getCreatedAt() != null ? o.getCreatedAt().toString() : "");
+            map.put("updatedAt", o.getUpdatedAt() != null ? o.getUpdatedAt().toString() : "");
+            return map;
+        }).toList();
     }
 
     @Transactional(readOnly = true)
@@ -113,6 +139,14 @@ public class OutboundService {
         }
 
         outboundOrderRepository.save(order);
+
+        // Reserve stock for each item
+        for (OutboundOrderItem item : order.getItems()) {
+            inventoryService.reserveStock(item.getProduct().getId(),
+                    item.getStorageLocation().getId(),
+                    item.getRequestedQuantity());
+        }
+
         auditLogService.record("OUTBOUND_CREATED", "OUTBOUND_ORDER", order.getId());
         return OutboundOrderDto.detail(order);
     }
@@ -136,12 +170,12 @@ public class OutboundService {
                     .findByProductIdAndStorageLocationId(productId, locationId)
                     .orElseThrow(() -> new ConflictException(
                             "Insufficient stock for product at location"));
-            int newQuantity = balance.getQuantityOnHand() - item.getRequestedQuantity();
-            if (newQuantity < 0) {
+            if (balance.getQuantityOnHand() < item.getRequestedQuantity()) {
                 throw new ConflictException(
                         "Insufficient stock for product '" + item.getProduct().getSku() + "'");
             }
-            balance.setQuantityOnHand(newQuantity);
+            balance.setQuantityOnHand(balance.getQuantityOnHand() - item.getRequestedQuantity());
+            balance.setReservedQuantity(balance.getReservedQuantity() - item.getRequestedQuantity());
             inventoryBalanceRepository.save(balance);
 
             InventoryMovement movement = InventoryMovement.builder()
@@ -161,6 +195,27 @@ public class OutboundService {
         order.setRequestedAt(now);
         outboundOrderRepository.save(order);
         auditLogService.record("OUTBOUND_DISPATCHED", "OUTBOUND_ORDER", order.getId());
+        return OutboundOrderDto.detail(order);
+    }
+
+    @Transactional
+    public OutboundOrderDto cancel(Long id) {
+        OutboundOrder order = outboundOrderRepository.findByIdWithItems(id)
+                .orElseThrow(() -> new NotFoundException("Outbound order", id));
+        if (order.getStatus() != OutboundStatus.DRAFT) {
+            throw new ConflictException("Cannot cancel outbound order in status " + order.getStatus());
+        }
+
+        // Release reserved stock for each item
+        for (OutboundOrderItem item : order.getItems()) {
+            inventoryService.releaseStock(item.getProduct().getId(),
+                    item.getStorageLocation().getId(),
+                    item.getRequestedQuantity());
+        }
+
+        order.setStatus(OutboundStatus.CANCELLED);
+        outboundOrderRepository.save(order);
+        auditLogService.record("OUTBOUND_CANCELLED", "OUTBOUND_ORDER", order.getId());
         return OutboundOrderDto.detail(order);
     }
 }

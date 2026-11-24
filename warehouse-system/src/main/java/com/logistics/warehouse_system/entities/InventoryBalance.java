@@ -47,6 +47,10 @@ public class InventoryBalance {
     @Column(name = "quantity_on_hand", nullable = false)
     private Integer quantityOnHand = 0;
 
+    @Builder.Default
+    @Column(name = "reserved_quantity", nullable = false)
+    private Integer reservedQuantity = 0;
+
     @Version
     @Column(nullable = false)
     private Long version;
@@ -54,4 +58,12 @@ public class InventoryBalance {
     @UpdateTimestamp
     @Column(name = "updated_at", nullable = false)
     private Instant updatedAt;
+
+    public Integer getAvailableQuantity() {
+        return quantityOnHand - reservedQuantity;
+    }
+
+    public boolean canReserve(int quantity) {
+        return quantityOnHand - reservedQuantity - quantity >= 0;
+    }
 }

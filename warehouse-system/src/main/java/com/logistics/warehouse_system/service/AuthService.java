@@ -5,6 +5,7 @@ import com.logistics.warehouse_system.dto.LoginResponse;
 import com.logistics.warehouse_system.dto.UserDto;
 import com.logistics.warehouse_system.entities.User;
 import com.logistics.warehouse_system.exception.NotFoundException;
+import com.logistics.warehouse_system.exception.ConflictException;
 import com.logistics.warehouse_system.repository.UserRepository;
 import com.logistics.warehouse_system.security.AppUserDetails;
 import com.logistics.warehouse_system.security.JwtService;
@@ -39,7 +40,7 @@ public class AuthService {
                 .orElseThrow(() -> new NotFoundException("User", request.username()));
 
         if (user.isAccountLocked()) {
-            throw new RuntimeException("Account is locked. Please try again later.");
+            throw new ConflictException("Account is locked. Please try again later.");
         }
 
         try {

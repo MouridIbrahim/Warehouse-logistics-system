@@ -13,20 +13,41 @@ interface ItemRow {
   storageLocationId: string
   receivedQuantity: string
 }
+import { useFormDraft } from '../../components/ui/toast'
 
 export function CreateInboundOrderPage() {
   const navigate = useNavigate()
-  const [referenceNumber, setReferenceNumber] = useState('')
-  const [warehouseId, setWarehouseId] = useState('')
-  const [notes, setNotes] = useState('')
-  const [items, setItems] = useState<ItemRow[]>([
-    { productId: '', storageLocationId: '', receivedQuantity: '1' },
-  ])
+  const [draftData, saveDraft, clearDraft] = useFormDraft<{
+    referenceNumber: string
+    warehouseId: string
+    notes: string
+    items: ItemRow[]
+  }>('inbound-create', {
+    referenceNumber: '',
+    warehouseId: '',
+    notes: '',
+    items: [{ productId: '', storageLocationId: '', receivedQuantity: '1' }],
+  })
+
+  const [referenceNumber, setReferenceNumber] = useState(draftData.referenceNumber)
+  const [warehouseId, setWarehouseId] = useState(draftData.warehouseId)
+  const [notes, setNotes] = useState(draftData.notes)
+  const [items, setItems] = useState(draftData.items)
   const [productOptions, setProductOptions] = useState<{ value: string; label: string }[]>([])
   const [warehouseOptions, setWarehouseOptions] = useState<{ value: string; label: string }[]>([])
   const [locationOptions, setLocationOptions] = useState<{ value: string; label: string }[]>([])
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
+
+  // Persist form draft as user types
+  useEffect(() => {
+    saveDraft({
+      referenceNumber,
+      warehouseId,
+      notes,
+      items,
+    })
+  }, [referenceNumber, warehouseId, notes, items, saveDraft])
 
   useEffect(() => {
     listProducts(undefined, 0, 100).then((d) =>
@@ -75,6 +96,7 @@ export function CreateInboundOrderPage() {
         notes: notes || undefined,
         items: parsedItems,
       })
+      clearDraft()
       navigate('/app/inbound')
     } catch (err) {
       setError(getErrorMessage(err))

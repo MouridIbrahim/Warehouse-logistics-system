@@ -54,6 +54,12 @@ public class Shipment {
     @Column(name = "delivered_at")
     private Instant deliveredAt;
 
+    @Column(name = "pod_file_name", length = 255)
+    private String podFileName;
+
+    @Column(name = "pod_uploaded_at")
+    private Instant podUploadedAt;
+
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
     private Instant createdAt;

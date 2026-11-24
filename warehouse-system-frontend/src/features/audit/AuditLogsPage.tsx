@@ -4,9 +4,10 @@ import { formatDateTime, humanize } from '../../lib/format'
 import { PageHeader } from '../../components/ui/PageHeader'
 import { Pagination } from '../../components/ui/Pagination'
 import { EmptyState } from '../../components/ui/EmptyState'
+import { Button } from '../../components/ui/Button'
 import { FilterToolbar } from '../../components/ui/filter'
 import { ActiveFilterChips } from '../../components/ui/filter'
-import { listAuditLogs } from './api'
+import { listAuditLogs, exportAuditLogs } from './api'
 import type { AuditDto } from './api'
 import { listUsers } from '../users/api'
 import type { UserDto } from '../../types'
@@ -127,6 +128,14 @@ export function AuditLogsPage() {
             }}
             onReset={() => { setEntityType(''); setAction(''); setActorUserId(null); setFrom(''); setTo('') }}
           />
+          <Button
+            variant="secondary"
+            className="ml-2"
+            onClick={() => exportAuditLogs(entityType || undefined, action || undefined, actorUserId ? String(actorUserId) : undefined, from || undefined, to || undefined)}
+          >
+            <span className="material-symbols-outlined text-[16px]">download</span>
+            Export CSV
+          </Button>
         </div>
 
         <div className="overflow-x-auto">

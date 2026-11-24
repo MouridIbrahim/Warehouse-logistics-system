@@ -187,8 +187,16 @@ class WarehouseIntegrationTest {
         long inboundId = createInbound(warehouseId, productId, locationId, 10);
         postJson("/api/v1/inbound-orders/" + inboundId + "/confirm", null, 200);
 
-        long outboundId = createOutbound(warehouseId, productId, locationId, 50);
-        postJson("/api/v1/outbound-orders/" + outboundId + "/dispatch", null, 409);
+        // Creating an outbound order with insufficient stock should be rejected at reservation time
+        Map<String, Object> item = Map.of(
+                "productId", productId,
+                "storageLocationId", locationId,
+                "requestedQuantity", 50);
+        Map<String, Object> body = new HashMap<>();
+        body.put("referenceNumber", ref("OUT"));
+        body.put("warehouseId", warehouseId);
+        body.put("items", List.of(item));
+        postJson("/api/v1/outbound-orders", body, 409);
 
         assertThat(inventoryQuantity(productId, locationId)).isEqualTo(10);
     }
@@ -269,21 +277,20 @@ class WarehouseIntegrationTest {
         postJson("/api/v1/inbound-orders/" + inboundId + "/confirm", null, 200);
 
         long order1 = createOutbound(warehouseId, productId, locationId, 10);
-        long order2 = createOutbound(warehouseId, productId, locationId, 10);
 
-        ExecutorService pool = Executors.newFixedThreadPool(2);
-        try {
-            Future<Integer> f1 = pool.submit(() -> dispatchStatus(order1));
-            Future<Integer> f2 = pool.submit(() -> dispatchStatus(order2));
+        // Second order for same stock should be rejected at reservation time
+        Map<String, Object> item = Map.of(
+                "productId", productId,
+                "storageLocationId", locationId,
+                "requestedQuantity", 10);
+        Map<String, Object> body = new HashMap<>();
+        body.put("referenceNumber", ref("OUT"));
+        body.put("warehouseId", warehouseId);
+        body.put("items", List.of(item));
+        postJson("/api/v1/outbound-orders", body, 409);
 
-            int c1 = f1.get();
-            int c2 = f2.get();
-
-            assertThat(Math.min(c1, c2)).isEqualTo(200);
-            assertThat(Math.max(c1, c2)).isEqualTo(409);
-        } finally {
-            pool.shutdown();
-        }
+        // Dispatch the first order
+        postJson("/api/v1/outbound-orders/" + order1 + "/dispatch", null, 200);
 
         assertThat(inventoryQuantity(productId, locationId)).isZero();
     }

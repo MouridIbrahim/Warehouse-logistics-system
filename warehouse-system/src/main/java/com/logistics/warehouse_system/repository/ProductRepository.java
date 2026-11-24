@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.time.Instant;
+import java.util.List;
 import java.util.Optional;
 
 public interface ProductRepository extends JpaRepository<Product, Long> {
@@ -36,4 +37,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
                          @Param("from") Instant from,
                          @Param("to") Instant to,
                          Pageable pageable);
+
+    List<Product> findByLowStockThresholdGreaterThan(Integer threshold);
 }

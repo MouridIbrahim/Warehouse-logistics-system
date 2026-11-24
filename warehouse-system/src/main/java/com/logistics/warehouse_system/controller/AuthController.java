@@ -5,6 +5,7 @@ import com.logistics.warehouse_system.dto.LoginRequest;
 import com.logistics.warehouse_system.dto.LoginResponse;
 import com.logistics.warehouse_system.dto.RegisterRequest;
 import com.logistics.warehouse_system.dto.UserDto;
+import com.logistics.warehouse_system.exception.BadRequestException;
 import com.logistics.warehouse_system.security.SecurityUtils;
 import com.logistics.warehouse_system.service.AuthService;
 import com.logistics.warehouse_system.service.UserService;
@@ -61,7 +62,7 @@ public class AuthController {
     public LoginResponse refresh(@CookieValue(name = REFRESH_TOKEN_COOKIE, required = false) String refreshToken,
                                  HttpServletResponse response) {
         if (refreshToken == null) {
-            throw new RuntimeException("Refresh token cookie not found");
+            throw new BadRequestException("Refresh token cookie not found");
         }
         LoginResponse loginResponse = authService.refresh(refreshToken);
         addRefreshTokenCookie(response, loginResponse.refreshToken());

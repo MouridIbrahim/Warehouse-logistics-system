@@ -13,7 +13,7 @@ import { FilterToolbar } from '../../components/ui/filter'
 import { ActiveFilterChips } from '../../components/ui/filter'
 import { useAuth } from '../auth/auth-context'
 import { ADMIN_MANAGER, hasAnyRole } from '../auth/permissions'
-import { createProduct, getProduct, listProducts, updateProduct } from './api'
+import { createProduct, getProduct, listProducts, updateProduct, exportProducts, exportLowStockProducts } from './api'
 import type { ProductDto } from './api'
 
 function initials(name: string): string {
@@ -65,6 +65,7 @@ export function ProductsPage() {
   }, [term, unitOfMeasure, active, from, to, page, size])
 
   function refresh() {
+    setLoading(true)
     listProducts(
       term || undefined,
       page,
@@ -73,7 +74,7 @@ export function ProductsPage() {
       active ? active === 'true' : undefined,
       from || undefined,
       to || undefined,
-    ).then(setData)
+    ).then(setData).finally(() => setLoading(false))
   }
 
   const activeChips = [
@@ -134,6 +135,36 @@ export function ProductsPage() {
             }}
             onReset={() => { setTerm(''); setUnitOfMeasure(''); setActive(''); setFrom(''); setTo('') }}
           />
+          <Button
+            variant="secondary"
+            className="ml-2"
+            onClick={() =>
+              exportProducts(
+                term || undefined,
+                unitOfMeasure || undefined,
+                active ? active === 'true' : undefined,
+                from || undefined,
+                to || undefined,
+              ).catch((err) => {
+                alert('Export failed: ' + (err?.message ?? String(err)))
+              })
+            }
+          >
+            <span className="material-symbols-outlined text-[16px]">download</span>
+            Export CSV
+          </Button>
+          <Button
+            variant="secondary"
+            className="ml-2"
+            onClick={() =>
+              exportLowStockProducts().catch((err) => {
+                alert('Export failed: ' + (err?.message ?? String(err)))
+              })
+            }
+          >
+            <span className="material-symbols-outlined text-[16px]">warning</span>
+            Export Low Stock
+          </Button>
         </div>
 
         <div className="overflow-x-auto">
@@ -144,6 +175,7 @@ export function ProductsPage() {
                 <th className="px-4 py-3">SKU</th>
                 <th className="px-4 py-3">Unit</th>
                 <th className="px-4 py-3 text-center">Status</th>
+                <th className="px-4 py-3 text-right">Low Stock</th>
                 <th className="px-4 py-3">Last Updated</th>
                 <th className="px-4 py-3 text-right">Actions</th>
               </tr>
@@ -151,7 +183,7 @@ export function ProductsPage() {
             <tbody className="divide-y divide-border-default/60 text-body-default text-text-primary">
               {loading && !data ? (
                 <tr>
-                  <td colSpan={6} className="px-4 py-8 text-center text-text-secondary">
+                  <td colSpan={7} className="px-4 py-8 text-center text-text-secondary">
                     <span className="material-symbols-outlined animate-spin align-middle mr-2">sync</span>
                     Loading products...
                   </td>
@@ -179,6 +211,15 @@ export function ProductsPage() {
                       <span className="text-table-data text-text-secondary">{p.unitOfMeasure ?? '—'}</span>
                     </td>
                     <td className="px-4 py-3 text-center">
+                      <span className={`font-semibold tabular-nums ${
+                        p.lowStockThreshold !== undefined && p.active
+                          ? 'text-status-warning-text'
+                          : 'text-text-secondary'
+                      }`}>
+                        {p.lowStockThreshold != null ? `⚠ ${p.lowStockThreshold}` : '—'}
+                      </span>
+                    </td>
+                    <td className="px-4 py-3 text-center">
                       <StatusBadge tone={p.active ? 'success' : 'neutral'}>
                         {p.active ? 'Active' : 'Inactive'}
                       </StatusBadge>
@@ -203,7 +244,7 @@ export function ProductsPage() {
                 ))
               ) : (
                 <tr>
-                  <td colSpan={6}>
+                  <td colSpan={7}>
                     <EmptyState
                       icon="inventory_2"
                       title="No products found"

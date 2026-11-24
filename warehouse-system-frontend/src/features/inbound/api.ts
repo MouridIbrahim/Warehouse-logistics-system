@@ -67,3 +67,30 @@ export async function confirmInboundOrder(id: number): Promise<InboundOrderDto> 
   const { data } = await api.post<InboundOrderDto>(`/api/v1/inbound-orders/${id}/confirm`)
   return data
 }
+
+export async function exportInboundOrders(
+  term?: string,
+  status?: string,
+  warehouseId?: number,
+  from?: string,
+  to?: string,
+): Promise<void> {
+  const { data } = await api.get<Blob>('/api/v1/inbound-orders/export', {
+    params: {
+      term: term || undefined,
+      status: status || undefined,
+      warehouseId: warehouseId || undefined,
+      from: from || undefined,
+      to: to || undefined,
+    },
+    responseType: 'blob',
+  })
+  const url = window.URL.createObjectURL(new Blob([data]))
+  const link = document.createElement('a')
+  link.href = url
+  link.download = 'inbound-orders.csv'
+  document.body.appendChild(link)
+  link.click()
+  document.body.removeChild(link)
+  window.URL.revokeObjectURL(url)
+}

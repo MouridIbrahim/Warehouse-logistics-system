@@ -13,6 +13,8 @@ public record ShipmentDto(
         String status,
         Instant shippedAt,
         Instant deliveredAt,
+        String podFileName,
+        Instant podUploadedAt,
         Instant createdAt,
         Instant updatedAt) {
 
@@ -26,6 +28,8 @@ public record ShipmentDto(
                 shipment.getStatus().name(),
                 shipment.getShippedAt(),
                 shipment.getDeliveredAt(),
+                shipment.getPodFileName(),
+                shipment.getPodUploadedAt(),
                 shipment.getCreatedAt(),
                 shipment.getUpdatedAt());
     }

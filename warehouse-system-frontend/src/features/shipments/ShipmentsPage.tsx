@@ -15,7 +15,7 @@ import { Modal } from '../../components/ui/Modal'
 import { FilterToolbar } from '../../components/ui/filter'
 import { ActiveFilterChips } from '../../components/ui/filter'
 import { listOutboundOrders } from '../outbound/api'
-import { createShipment, listShipments } from './api'
+import { createShipment, listShipments, exportShipments, splitShipment } from './api'
 import type { ShipmentDto } from './api'
 
 export function shipmentBadge(status: string): { tone: 'success' | 'warning' | 'info' | 'danger' | 'neutral'; label: string } {
@@ -59,6 +59,9 @@ export function ShipmentsPage() {
   const [data, setData] = useState<PageResponse<ShipmentDto> | null>(null)
   const [loading, setLoading] = useState(true)
   const [showCreate, setShowCreate] = useState(false)
+  const [splitTarget, setSplitTarget] = useState<ShipmentDto | null>(null)
+  const [splitTracking, setSplitTracking] = useState('')
+  const [splitCarrier, setSplitCarrier] = useState('')
 
   useEffect(() => {
     setLoading(true)
@@ -68,7 +71,8 @@ export function ShipmentsPage() {
   }, [term, status, from, to, page, size])
 
   function refresh() {
-    listShipments(term || undefined, status || undefined, page, size, from || undefined, to || undefined).then(setData)
+    setLoading(true)
+    listShipments(term || undefined, status || undefined, page, size, from || undefined, to || undefined).then(setData).finally(() => setLoading(false))
   }
 
   const activeChips = [
@@ -123,6 +127,14 @@ export function ShipmentsPage() {
             }}
             onReset={() => { setTerm(''); setStatus(''); setFrom(''); setTo('') }}
           />
+          <Button
+            variant="secondary"
+            className="ml-2"
+            onClick={() => exportShipments(term || undefined, status || undefined, from || undefined, to || undefined)}
+          >
+            <span className="material-symbols-outlined text-[16px]">download</span>
+            Export CSV
+          </Button>
         </div>
 
         <div className="overflow-x-auto">
@@ -173,16 +185,30 @@ export function ShipmentsPage() {
                         </span>
                       </td>
                       <td className="px-4 py-3 text-right whitespace-nowrap">
-                        <div className="flex items-center justify-end gap-1">
-                          <Link
-                            to={`/app/shipments/${s.id}`}
-                            className="p-1 rounded text-text-secondary hover:text-primary transition-colors"
-                            title="View details"
+                      <div className="flex items-center justify-end gap-1">
+                        <Link
+                          to={`/app/shipments/${s.id}`}
+                          className="p-1 rounded text-text-secondary hover:text-primary transition-colors"
+                          title="View details"
+                        >
+                          <span className="material-symbols-outlined text-[18px]">visibility</span>
+                        </Link>
+                        {s.status !== 'DELIVERED' && s.status !== 'CANCELLED' && (
+                          <button
+                            type="button"
+                            className="p-2 rounded text-text-secondary hover:text-status-danger-text transition-colors"
+                            onClick={() => {
+                              setSplitTarget(s)
+                              setSplitTracking(s.trackingNumber)
+                              setSplitCarrier(s.carrierName || '')
+                            }}
+                            title="Split shipment"
                           >
-                            <span className="material-symbols-outlined text-[18px]">visibility</span>
-                          </Link>
-                        </div>
-                      </td>
+                            <span className="material-symbols-outlined text-[18px]">content_copy</span>
+                          </button>
+                        )}
+                      </div>
+                    </td>
                     </tr>
                   )
                 })
@@ -217,6 +243,16 @@ export function ShipmentsPage() {
       </div>
 
       <CreateShipmentModal open={showCreate} onClose={() => setShowCreate(false)} onCreated={refresh} />
+      {splitTarget != null && (
+        <SplitShipmentModal
+          open={splitTarget != null}
+          onClose={() => { setSplitTarget(null); setSplitTracking(''); setSplitCarrier('') }}
+          splitTarget={splitTarget!}
+          initialTracking={splitTracking}
+          initialCarrier={splitCarrier}
+          onSplit={refresh}
+        />
+      )}
     </div>
   )
 }
@@ -309,6 +345,87 @@ function CreateShipmentModal({
           </Button>
           <Button type="submit" disabled={loading}>
             {loading ? 'Creating...' : 'Create Shipment'}
+          </Button>
+        </div>
+      </form>
+    </Modal>
+  )
+}
+
+function SplitShipmentModal({
+  open,
+  onClose,
+  splitTarget,
+  initialTracking,
+  initialCarrier,
+  onSplit,
+}: {
+  open: boolean
+  onClose: () => void
+  splitTarget: ShipmentDto
+  initialTracking: string
+  initialCarrier: string
+  onSplit: () => void
+}) {
+  const [trackingNumber, setTrackingNumber] = useState(initialTracking)
+  const [carrierName, setCarrierName] = useState(initialCarrier)
+  const [error, setError] = useState<string | null>(null)
+  const [loading, setLoading] = useState(false)
+
+  async function handleSubmit(e: FormEvent) {
+    e.preventDefault()
+    setLoading(true)
+    setError(null)
+    try {
+      await splitShipment(splitTarget.id, trackingNumber, carrierName || undefined)
+      setTrackingNumber('')
+      setCarrierName('')
+      onClose()
+      onSplit()
+    } catch (err) {
+      setError(getErrorMessage(err))
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  return (
+    <Modal open={open} onClose={onClose} title="Split Shipment">
+      <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
+        <div className="flex flex-col gap-1.5">
+          <label className="text-form-label text-text-primary">Original tracking number</label>
+          <span className="text-table-data text-text-secondary tabular-nums">{splitTarget.trackingNumber}</span>
+        </div>
+        <div className="flex flex-col gap-1.5">
+          <label className="text-form-label text-text-primary">New tracking number *</label>
+          <input
+            className="h-10 px-3 text-body-default text-text-primary bg-surface border border-border-default rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/30"
+            placeholder="e.g. TRK-0000002"
+            value={trackingNumber}
+            onChange={(e) => setTrackingNumber(e.target.value)}
+            required
+          />
+        </div>
+        <div className="flex flex-col gap-1.5">
+          <label className="text-form-label text-text-primary">Carrier</label>
+          <input
+            className="h-10 px-3 text-body-default text-text-primary bg-surface border border-border-default rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/30"
+            placeholder="e.g. DHL Express"
+            value={carrierName}
+            onChange={(e) => setCarrierName(e.target.value)}
+          />
+        </div>
+
+        {error && (
+          <div className="p-3 rounded-lg bg-status-danger-bg text-status-danger-text text-caption-meta">{error}</div>
+        )}
+
+        <div className="flex items-center justify-end gap-2 mt-2">
+          <Button type="button" variant="secondary" onClick={onClose}>
+            Cancel
+          </Button>
+          <Button type="submit" disabled={loading}>
+            {loading ? 'Splitting...' : 'Split Shipment'}
           </Button>
         </div>
       </form>

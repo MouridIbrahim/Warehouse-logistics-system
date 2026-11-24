@@ -10,6 +10,8 @@ export interface ShipmentDto {
   status: string
   shippedAt?: string
   deliveredAt?: string
+  podFileName?: string
+  podUploadedAt?: string
   createdAt?: string
   updatedAt?: string
 }
@@ -81,6 +83,59 @@ export async function updateShipmentStatus(
   const { data } = await api.patch<ShipmentDto>(`/api/v1/shipments/${id}/status`, {
     status,
     note,
+  })
+  return data
+}
+
+export async function exportShipments(
+  term?: string,
+  status?: string,
+  from?: string,
+  to?: string,
+): Promise<void> {
+  const { data } = await api.get<Blob>('/api/v1/shipments/export', {
+    params: {
+      term: term || undefined,
+      status: status || undefined,
+      from: from || undefined,
+      to: to || undefined,
+    },
+    responseType: 'blob',
+  })
+  const url = window.URL.createObjectURL(new Blob([data]))
+  const link = document.createElement('a')
+  link.href = url
+  link.download = 'shipments.csv'
+  document.body.appendChild(link)
+  link.click()
+  document.body.removeChild(link)
+  window.URL.revokeObjectURL(url)
+}
+
+export async function splitShipment(
+  shipmentId: number,
+  trackingNumber: string,
+  carrierName?: string,
+): Promise<ShipmentDto> {
+  const { data } = await api.post<ShipmentDto>(`/api/v1/shipments/${shipmentId}/split`, {
+    trackingNumber,
+    carrierName,
+  })
+  return data
+}
+
+export async function uploadPod(shipmentId: number, file: File): Promise<ShipmentDto> {
+  const formData = new FormData()
+  formData.append('file', file)
+  const { data } = await api.post<ShipmentDto>(`/api/v1/shipments/${shipmentId}/pod`, formData, {
+    headers: { 'Content-Type': 'multipart/form-data' },
+  })
+  return data
+}
+
+export async function downloadPod(shipmentId: number): Promise<Blob> {
+  const { data } = await api.get<Blob>(`/api/v1/shipments/${shipmentId}/pod`, {
+    responseType: 'blob',
   })
   return data
 }

@@ -14,7 +14,7 @@ import { FilterToolbar } from '../../components/ui/filter'
 import { ActiveFilterChips } from '../../components/ui/filter'
 import { useAuth } from '../auth/auth-context'
 import { ADMIN_MANAGER, hasAnyRole } from '../auth/permissions'
-import { createWarehouse, listWarehouses, updateWarehouse } from './api'
+import { createWarehouse, listWarehouses, updateWarehouse, exportWarehouses } from './api'
 import type { WarehouseDto } from './api'
 
 export function WarehousesPage() {
@@ -50,6 +50,7 @@ export function WarehousesPage() {
   }, [term, active, from, to, page, size])
 
   function refresh() {
+    setLoading(true)
     listWarehouses(
       term || undefined,
       page,
@@ -57,7 +58,7 @@ export function WarehousesPage() {
       active ? active === 'true' : undefined,
       from || undefined,
       to || undefined,
-    ).then(setData)
+    ).then(setData).finally(() => setLoading(false))
   }
 
   const activeChips = [
@@ -110,6 +111,14 @@ export function WarehousesPage() {
             }}
             onReset={() => { setTerm(''); setActive(''); setFrom(''); setTo('') }}
           />
+          <Button
+            variant="secondary"
+            className="ml-2"
+            onClick={() => exportWarehouses(term || undefined, active ? active === 'true' : undefined, from || undefined, to || undefined)}
+          >
+            <span className="material-symbols-outlined text-[16px]">download</span>
+            Export CSV
+          </Button>
         </div>
 
         <div className="overflow-x-auto">

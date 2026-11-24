@@ -45,6 +45,10 @@ public class Product {
     @Column(nullable = false)
     private boolean active = true;
 
+    @Builder.Default
+    @Column(name = "low_stock_threshold", nullable = false)
+    private Integer lowStockThreshold = 10;
+
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
     private Instant createdAt;

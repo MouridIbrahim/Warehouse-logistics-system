@@ -80,7 +80,8 @@ export function UsersPage() {
   }, [])
 
   function refresh() {
-    listUsers(term || undefined, role || undefined, active ? active === 'true' : undefined, page, size).then(setData)
+    setLoading(true)
+    listUsers(term || undefined, role || undefined, active ? active === 'true' : undefined, page, size).then(setData).finally(() => setLoading(false))
   }
 
   const activeChips = [
