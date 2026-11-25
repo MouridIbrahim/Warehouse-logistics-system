@@ -18,6 +18,7 @@ import com.logistics.warehouse_system.repository.UserRepository;
 import com.logistics.warehouse_system.security.SecurityUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -46,7 +47,22 @@ public class UserService {
 
     @Transactional(readOnly = true)
     public PageResponse<UserDto> list(String term, String role, Boolean active, Pageable pageable) {
-        Page<User> page = userRepository.search(term, role, active, pageable);
+        Specification<User> spec = Specification.allOf(
+                term == null || term.isBlank()
+                        ? Specification.unrestricted()
+                        : (root, query, cb) -> {
+                            String pattern = "%" + term.trim().toLowerCase(java.util.Locale.ROOT) + "%";
+                            return cb.or(
+                                    cb.like(cb.lower(root.get("username")), pattern),
+                                    cb.like(cb.lower(root.get("displayName")), pattern));
+                        },
+                role == null || role.isBlank()
+                        ? Specification.unrestricted()
+                        : (root, query, cb) -> cb.equal(root.join("roles").get("name"), role),
+                active == null
+                        ? Specification.unrestricted()
+                        : (root, query, cb) -> cb.equal(root.get("active"), active));
+        Page<User> page = userRepository.findAll(spec, pageable);
         List<UserDto> content = page.getContent().stream().map(UserDto::from).toList();
         return PageResponse.of(page, content);
     }

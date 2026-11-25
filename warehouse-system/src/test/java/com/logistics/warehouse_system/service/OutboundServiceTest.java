@@ -13,6 +13,7 @@ import com.logistics.warehouse_system.entities.Warehouse;
 import com.logistics.warehouse_system.exception.ConflictException;
 import com.logistics.warehouse_system.repository.InventoryBalanceRepository;
 import com.logistics.warehouse_system.repository.InventoryMovementRepository;
+import com.logistics.warehouse_system.repository.OrderItemCount;
 import com.logistics.warehouse_system.repository.OutboundOrderRepository;
 import com.logistics.warehouse_system.repository.ProductRepository;
 import com.logistics.warehouse_system.repository.StorageLocationRepository;
@@ -30,6 +31,10 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 
 import java.util.List;
 import java.util.Optional;
@@ -160,5 +165,22 @@ class OutboundServiceTest {
 
         assertThatThrownBy(() -> outboundService.dispatch(10L))
                 .isInstanceOf(ConflictException.class);
+    }
+
+    @Test
+    void listIncludesItemCountsWithoutLoadingItemDetails() {
+        OutboundOrder order = draftOrder(4);
+        Pageable pageable = PageRequest.of(0, 20);
+        when(outboundOrderRepository.findAll(
+                org.mockito.ArgumentMatchers.<Specification<OutboundOrder>>any(), any(Pageable.class)))
+                .thenReturn(new PageImpl<>(List.of(order), pageable, 1));
+        when(outboundOrderRepository.countItemsByOrderIds(List.of(10L)))
+                .thenReturn(List.of(new OrderItemCount(10L, 2L)));
+
+        var response = outboundService.list(null, null, null, null, null, pageable);
+
+        assertThat(response.content()).hasSize(1);
+        assertThat(response.content().get(0).items()).isEmpty();
+        assertThat(response.content().get(0).itemCount()).isEqualTo(2L);
     }
 }

@@ -169,7 +169,7 @@ export function OutboundOrdersPage() {
                       <span className="text-table-data text-text-secondary">#{o.warehouseId}</span>
                     </td>
                     <td className="px-4 py-3 text-center">
-                      <span className="tabular-nums text-text-primary">{o.items?.length ?? 0}</span>
+                      <span className="tabular-nums text-text-primary">{o.itemCount}</span>
                     </td>
                     <td className="px-4 py-3 text-center">
                       <StatusBadge tone={o.status === 'DISPATCHED' ? 'success' : 'warning'}>

@@ -16,9 +16,10 @@ public record InboundOrderDto(
         String notes,
         Instant createdAt,
         Instant updatedAt,
-        List<InboundOrderItemDto> items) {
+        List<InboundOrderItemDto> items,
+        long itemCount) {
 
-    public static InboundOrderDto summary(InboundOrder order) {
+    public static InboundOrderDto summary(InboundOrder order, long itemCount) {
         return new InboundOrderDto(
                 order.getId(),
                 order.getReferenceNumber(),
@@ -30,10 +31,12 @@ public record InboundOrderDto(
                 order.getNotes(),
                 order.getCreatedAt(),
                 order.getUpdatedAt(),
-                List.of());
+                List.of(),
+                itemCount);
     }
 
     public static InboundOrderDto detail(InboundOrder order) {
+        List<InboundOrderItemDto> items = order.getItems().stream().map(InboundOrderItemDto::from).toList();
         return new InboundOrderDto(
                 order.getId(),
                 order.getReferenceNumber(),
@@ -45,6 +48,7 @@ public record InboundOrderDto(
                 order.getNotes(),
                 order.getCreatedAt(),
                 order.getUpdatedAt(),
-                order.getItems().stream().map(InboundOrderItemDto::from).toList());
+                items,
+                items.size());
     }
 }

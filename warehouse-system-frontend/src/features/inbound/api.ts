@@ -23,6 +23,7 @@ export interface InboundOrderDto {
   createdAt?: string
   updatedAt?: string
   items: InboundOrderItemDto[]
+  itemCount: number
 }
 
 export async function listInboundOrders(

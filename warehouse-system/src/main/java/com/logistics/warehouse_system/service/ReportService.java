@@ -15,6 +15,8 @@ import com.logistics.warehouse_system.repository.InventoryBalanceRepository;
 import com.logistics.warehouse_system.repository.InventoryMovementRepository;
 import com.logistics.warehouse_system.repository.OutboundOrderRepository;
 import com.logistics.warehouse_system.repository.ShipmentRepository;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -84,7 +86,19 @@ public class ReportService {
     public List<Map<String, Object>> inventoryMovements(Long warehouseId, LocalDate from, LocalDate to) {
         Instant fromInstant = from == null ? null : from.atStartOfDay(ZoneOffset.UTC).toInstant();
         Instant toInstant = to == null ? null : to.plusDays(1).atStartOfDay(ZoneOffset.UTC).toInstant();
-        List<InventoryMovement> movements = inventoryMovementRepository.findAllForReport(warehouseId, fromInstant, toInstant);
+        Specification<InventoryMovement> spec = Specification.allOf(
+                warehouseId == null
+                        ? Specification.unrestricted()
+                        : (root, query, cb) -> cb.equal(
+                                root.get("storageLocation").get("warehouse").get("id"), warehouseId),
+                fromInstant == null
+                        ? Specification.unrestricted()
+                        : (root, query, cb) -> cb.greaterThanOrEqualTo(root.get("occurredAt"), fromInstant),
+                toInstant == null
+                        ? Specification.unrestricted()
+                        : (root, query, cb) -> cb.lessThanOrEqualTo(root.get("occurredAt"), toInstant));
+        List<InventoryMovement> movements = inventoryMovementRepository.findAll(
+                spec, Sort.by(Sort.Direction.DESC, "occurredAt", "id"));
         return movements.stream().map(m -> {
             Map<String, Object> row = new java.util.LinkedHashMap<>();
             row.put("Date", m.getOccurredAt() != null ? m.getOccurredAt().toString() : "");
@@ -103,7 +117,18 @@ public class ReportService {
     public List<Map<String, Object>> inboundSummary(Long warehouseId, LocalDate from, LocalDate to) {
         Instant fromInstant = from == null ? null : from.atStartOfDay(ZoneOffset.UTC).toInstant();
         Instant toInstant = to == null ? null : to.plusDays(1).atStartOfDay(ZoneOffset.UTC).toInstant();
-        List<InboundOrder> orders = inboundOrderRepository.findAllForReport(warehouseId, fromInstant, toInstant);
+        Specification<InboundOrder> spec = Specification.allOf(
+                warehouseId == null
+                        ? Specification.unrestricted()
+                        : (root, query, cb) -> cb.equal(root.get("warehouse").get("id"), warehouseId),
+                fromInstant == null
+                        ? Specification.unrestricted()
+                        : (root, query, cb) -> cb.greaterThanOrEqualTo(root.get("createdAt"), fromInstant),
+                toInstant == null
+                        ? Specification.unrestricted()
+                        : (root, query, cb) -> cb.lessThanOrEqualTo(root.get("createdAt"), toInstant));
+        List<InboundOrder> orders = inboundOrderRepository.findAll(
+                spec, Sort.by(Sort.Direction.DESC, "createdAt", "id"));
         return orders.stream().map(o -> {
             Map<String, Object> row = new java.util.LinkedHashMap<>();
             row.put("Reference Number", o.getReferenceNumber());
@@ -123,7 +148,18 @@ public class ReportService {
     public List<Map<String, Object>> outboundSummary(Long warehouseId, LocalDate from, LocalDate to) {
         Instant fromInstant = from == null ? null : from.atStartOfDay(ZoneOffset.UTC).toInstant();
         Instant toInstant = to == null ? null : to.plusDays(1).atStartOfDay(ZoneOffset.UTC).toInstant();
-        List<OutboundOrder> orders = outboundOrderRepository.findAllForReport(warehouseId, fromInstant, toInstant);
+        Specification<OutboundOrder> spec = Specification.allOf(
+                warehouseId == null
+                        ? Specification.unrestricted()
+                        : (root, query, cb) -> cb.equal(root.get("warehouse").get("id"), warehouseId),
+                fromInstant == null
+                        ? Specification.unrestricted()
+                        : (root, query, cb) -> cb.greaterThanOrEqualTo(root.get("createdAt"), fromInstant),
+                toInstant == null
+                        ? Specification.unrestricted()
+                        : (root, query, cb) -> cb.lessThanOrEqualTo(root.get("createdAt"), toInstant));
+        List<OutboundOrder> orders = outboundOrderRepository.findAll(
+                spec, Sort.by(Sort.Direction.DESC, "createdAt", "id"));
         return orders.stream().map(o -> {
             Map<String, Object> row = new java.util.LinkedHashMap<>();
             row.put("Reference Number", o.getReferenceNumber());
@@ -143,7 +179,19 @@ public class ReportService {
     public List<Map<String, Object>> shipmentSummary(Long warehouseId, LocalDate from, LocalDate to) {
         Instant fromInstant = from == null ? null : from.atStartOfDay(ZoneOffset.UTC).toInstant();
         Instant toInstant = to == null ? null : to.plusDays(1).atStartOfDay(ZoneOffset.UTC).toInstant();
-        List<Shipment> shipments = shipmentRepository.findAllForReport(warehouseId, fromInstant, toInstant);
+        Specification<Shipment> spec = Specification.allOf(
+                warehouseId == null
+                        ? Specification.unrestricted()
+                        : (root, query, cb) -> cb.equal(
+                                root.get("outboundOrder").get("warehouse").get("id"), warehouseId),
+                fromInstant == null
+                        ? Specification.unrestricted()
+                        : (root, query, cb) -> cb.greaterThanOrEqualTo(root.get("createdAt"), fromInstant),
+                toInstant == null
+                        ? Specification.unrestricted()
+                        : (root, query, cb) -> cb.lessThanOrEqualTo(root.get("createdAt"), toInstant));
+        List<Shipment> shipments = shipmentRepository.findAll(
+                spec, Sort.by(Sort.Direction.DESC, "createdAt", "id"));
         return shipments.stream().map(s -> {
             Map<String, Object> row = new java.util.LinkedHashMap<>();
             row.put("Tracking Number", s.getTrackingNumber());

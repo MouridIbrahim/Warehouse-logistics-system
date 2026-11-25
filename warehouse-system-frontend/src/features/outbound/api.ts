@@ -23,6 +23,7 @@ export interface OutboundOrderDto {
   createdAt?: string
   updatedAt?: string
   items: OutboundOrderItemDto[]
+  itemCount: number
 }
 
 export async function listOutboundOrders(

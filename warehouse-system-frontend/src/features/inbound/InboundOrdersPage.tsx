@@ -223,27 +223,27 @@ export function InboundOrdersPage() {
               ) : data && data.content.length > 0 ? (
                 data.content.map((o) => (
                   <tr key={o.id} className="hover:bg-app-bg/50 transition-colors">
-'                <td className="px-4 py-3">
-                  <input
-                    type="checkbox"
-                    className="w-4 h-4 rounded accent-[#C45D16]"
-                    checked={selectedIds.includes(o.id.toString())}
-                    onChange={() => toggleItem(o.id.toString())}
-                  />
-                </td>
-                <td className="px-4 py-3">
-                  <Link
-                    to={`/app/inbound/${o.id}`}
-                    className="text-body-semibold tabular-nums text-text-primary hover:text-primary"
-                  >
-                    {o.referenceNumber}
-                  </Link>
-                </td>'
+                    <td className="px-4 py-3">
+                      <input
+                        type="checkbox"
+                        className="w-4 h-4 rounded accent-[#C45D16]"
+                        checked={selectedIds.includes(o.id.toString())}
+                        onChange={() => toggleItem(o.id.toString())}
+                      />
+                    </td>
+                    <td className="px-4 py-3">
+                      <Link
+                        to={`/app/inbound/${o.id}`}
+                        className="text-body-semibold tabular-nums text-text-primary hover:text-primary"
+                      >
+                        {o.referenceNumber}
+                      </Link>
+                    </td>
                     <td className="px-4 py-3">
                       <span className="text-table-data text-text-secondary">#{o.warehouseId}</span>
                     </td>
                     <td className="px-4 py-3 text-center">
-                      <span className="tabular-nums text-text-primary">{o.items?.length ?? 0}</span>
+                      <span className="tabular-nums text-text-primary">{o.itemCount}</span>
                     </td>
                     <td className="px-4 py-3 text-center">
                       <StatusBadge tone={o.status === 'CONFIRMED' ? 'success' : 'warning'}>

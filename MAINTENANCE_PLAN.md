@@ -32,5 +32,5 @@
 - Large frontend bundle reported during the baseline build.
 - Front effect/state patterns may produce extra requests or cascading renders.
 - Inventory balances use optimistic versioning; concurrent operations must not produce negative or inconsistent stock.
-- Docker Compose config has no Redis service even though distributed rate limiting is configured.
+- Docker Compose includes Redis and `RateLimitFilter` uses it with an in-memory fallback; production should validate secured/high-availability Redis and fallback behavior.
 - Existing worktree changes must be preserved and tested before additional fixes are made.

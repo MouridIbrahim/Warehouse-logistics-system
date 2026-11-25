@@ -20,6 +20,7 @@ import com.logistics.warehouse_system.exception.ConflictException;
 import com.logistics.warehouse_system.exception.NotFoundException;
 import com.logistics.warehouse_system.repository.InventoryBalanceRepository;
 import com.logistics.warehouse_system.repository.InventoryMovementRepository;
+import com.logistics.warehouse_system.repository.OrderItemCount;
 import com.logistics.warehouse_system.repository.OutboundOrderRepository;
 import com.logistics.warehouse_system.repository.ProductRepository;
 import com.logistics.warehouse_system.repository.StorageLocationRepository;
@@ -36,6 +37,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.Instant;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class OutboundService {
@@ -75,7 +77,15 @@ public class OutboundService {
                                                Instant from, Instant to, Pageable pageable) {
         Page<OutboundOrder> page = outboundOrderRepository.findAll(
                 searchSpec(term, status, warehouseId, from, to), pageable);
-        List<OutboundOrderDto> content = page.getContent().stream().map(OutboundOrderDto::summary).toList();
+        Map<Long, Long> itemCounts = page.getContent().isEmpty()
+                ? Map.of()
+                : outboundOrderRepository.countItemsByOrderIds(
+                                page.getContent().stream().map(OutboundOrder::getId).toList())
+                        .stream()
+                        .collect(Collectors.toMap(OrderItemCount::orderId, OrderItemCount::itemCount));
+        List<OutboundOrderDto> content = page.getContent().stream()
+                .map(order -> OutboundOrderDto.summary(order, itemCounts.getOrDefault(order.getId(), 0L)))
+                .toList();
         return PageResponse.of(page, content);
     }
 

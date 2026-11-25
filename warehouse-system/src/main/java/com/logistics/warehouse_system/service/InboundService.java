@@ -21,6 +21,7 @@ import com.logistics.warehouse_system.exception.NotFoundException;
 import com.logistics.warehouse_system.repository.InboundOrderRepository;
 import com.logistics.warehouse_system.repository.InventoryBalanceRepository;
 import com.logistics.warehouse_system.repository.InventoryMovementRepository;
+import com.logistics.warehouse_system.repository.OrderItemCount;
 import com.logistics.warehouse_system.repository.ProductRepository;
 import com.logistics.warehouse_system.repository.StorageLocationRepository;
 import com.logistics.warehouse_system.repository.UserRepository;
@@ -36,6 +37,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.Instant;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class InboundService {
@@ -72,7 +74,15 @@ public class InboundService {
                                               Instant from, Instant to, Pageable pageable) {
         Page<InboundOrder> page = inboundOrderRepository.findAll(
                 searchSpec(term, status, warehouseId, from, to), pageable);
-        List<InboundOrderDto> content = page.getContent().stream().map(InboundOrderDto::summary).toList();
+        Map<Long, Long> itemCounts = page.getContent().isEmpty()
+                ? Map.of()
+                : inboundOrderRepository.countItemsByOrderIds(
+                                page.getContent().stream().map(InboundOrder::getId).toList())
+                        .stream()
+                        .collect(Collectors.toMap(OrderItemCount::orderId, OrderItemCount::itemCount));
+        List<InboundOrderDto> content = page.getContent().stream()
+                .map(order -> InboundOrderDto.summary(order, itemCounts.getOrDefault(order.getId(), 0L)))
+                .toList();
         return PageResponse.of(page, content);
     }
 

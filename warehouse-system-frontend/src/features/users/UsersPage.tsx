@@ -67,11 +67,14 @@ export function UsersPage() {
   const [editTarget, setEditTarget] = useState<UserDto | null>(null)
   const [resetTarget, setResetTarget] = useState<UserDto | null>(null)
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
     setLoading(true)
+    setError(null)
     listUsers(term || undefined, role || undefined, active ? active === 'true' : undefined, page, size)
       .then(setData)
+      .catch((err) => setError(getErrorMessage(err)))
       .finally(() => setLoading(false))
   }, [term, role, active, page, size])
 
@@ -81,7 +84,11 @@ export function UsersPage() {
 
   function refresh() {
     setLoading(true)
-    listUsers(term || undefined, role || undefined, active ? active === 'true' : undefined, page, size).then(setData).finally(() => setLoading(false))
+    setError(null)
+    listUsers(term || undefined, role || undefined, active ? active === 'true' : undefined, page, size)
+      .then(setData)
+      .catch((err) => setError(getErrorMessage(err)))
+      .finally(() => setLoading(false))
   }
 
   const activeChips = [
@@ -104,8 +111,14 @@ export function UsersPage() {
         }
       />
 
+      {error && (
+        <div role="alert" className="mt-4 p-3 rounded-lg bg-status-danger-bg text-status-danger-text text-caption-meta">
+          Could not load users: {error}
+        </div>
+      )}
+
       {activeChips.length > 0 && (
-        <ActiveFilterChips chips={activeChips} onClearAll={() => { setTerm(''); setRole('') }} />
+        <ActiveFilterChips chips={activeChips} onClearAll={() => { setTerm(''); setRole(''); setActive('') }} />
       )}
 
       <div className="mt-6 bg-surface rounded-xl border border-border-default shadow-sm overflow-hidden">
@@ -156,6 +169,12 @@ export function UsersPage() {
                   <td colSpan={5} className="px-4 py-8 text-center text-text-secondary">
                     <span className="material-symbols-outlined animate-spin align-middle mr-2">sync</span>
                     Loading users...
+                  </td>
+                </tr>
+              ) : error && !data ? (
+                <tr>
+                  <td colSpan={5} className="px-4 py-8 text-center text-status-danger-text">
+                    Users could not be loaded.
                   </td>
                 </tr>
               ) : data && data.content.length > 0 ? (

@@ -32,23 +32,19 @@ public interface OutboundOrderRepository extends JpaRepository<OutboundOrder, Lo
             """)
     Optional<OutboundOrder> findByIdWithItems(@Param("id") Long id);
 
+    @Query("""
+            select new com.logistics.warehouse_system.repository.OrderItemCount(o.id, count(i.id))
+            from OutboundOrder o left join o.items i
+            where o.id in :orderIds
+            group by o.id
+            """)
+    List<OrderItemCount> countItemsByOrderIds(@Param("orderIds") List<Long> orderIds);
+
     @EntityGraph(attributePaths = {"createdBy", "warehouse"})
     Page<OutboundOrder> findAllByOrderByCreatedAtDesc(Pageable pageable);
 
     @EntityGraph(attributePaths = {"createdBy", "warehouse"})
     Page<OutboundOrder> findByStatusOrderByCreatedAtDesc(OutboundStatus status, Pageable pageable);
-
-    @EntityGraph(attributePaths = {"createdBy", "warehouse"})
-    @Query("""
-            select distinct o from OutboundOrder o
-            where (:warehouseId is null or o.warehouse.id = :warehouseId)
-              and (:from is null or o.createdAt >= :from)
-              and (:to is null or o.createdAt <= :to)
-            order by o.createdAt desc, o.id desc
-            """)
-    List<OutboundOrder> findAllForReport(@Param("warehouseId") Long warehouseId,
-                                         @Param("from") Instant from,
-                                         @Param("to") Instant to);
 
     long countByStatus(OutboundStatus status);
 

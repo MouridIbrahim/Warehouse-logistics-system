@@ -48,10 +48,12 @@ public class WarehouseController {
     @GetMapping
     public PageResponse<WarehouseDto> list(@RequestParam(required = false) String term,
                                            @RequestParam(required = false) Boolean active,
-                                           @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Instant from,
-                                           @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Instant to,
+    @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from,
+    @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to,
                                            @PageableDefault(size = 20, sort = "id") Pageable pageable) {
-        return warehouseService.list(term, active, from, to, pageable);
+        Instant fromInstant = from != null ? from.atStartOfDay(ZoneOffset.UTC).toInstant() : null;
+        Instant toInstant = to != null ? to.plusDays(1).atStartOfDay(ZoneOffset.UTC).toInstant() : null;
+        return warehouseService.list(term, active, fromInstant, toInstant, pageable);
     }
 
     @GetMapping("/count")

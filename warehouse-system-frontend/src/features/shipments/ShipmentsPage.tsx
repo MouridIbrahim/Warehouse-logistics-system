@@ -58,6 +58,7 @@ export function ShipmentsPage() {
   const [size, setSize] = useState(20)
   const [data, setData] = useState<PageResponse<ShipmentDto> | null>(null)
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
   const [showCreate, setShowCreate] = useState(false)
   const [splitTarget, setSplitTarget] = useState<ShipmentDto | null>(null)
   const [splitTracking, setSplitTracking] = useState('')
@@ -65,14 +66,20 @@ export function ShipmentsPage() {
 
   useEffect(() => {
     setLoading(true)
+    setError(null)
     listShipments(term || undefined, status || undefined, page, size, from || undefined, to || undefined)
       .then(setData)
+      .catch((err) => setError(getErrorMessage(err)))
       .finally(() => setLoading(false))
   }, [term, status, from, to, page, size])
 
   function refresh() {
     setLoading(true)
-    listShipments(term || undefined, status || undefined, page, size, from || undefined, to || undefined).then(setData).finally(() => setLoading(false))
+    setError(null)
+    listShipments(term || undefined, status || undefined, page, size, from || undefined, to || undefined)
+      .then(setData)
+      .catch((err) => setError(getErrorMessage(err)))
+      .finally(() => setLoading(false))
   }
 
   const activeChips = [
@@ -97,6 +104,12 @@ export function ShipmentsPage() {
           )
         }
       />
+
+      {error && (
+        <div role="alert" className="mt-4 p-3 rounded-lg bg-status-danger-bg text-status-danger-text text-caption-meta">
+          Could not load shipments: {error}
+        </div>
+      )}
 
       {activeChips.length > 0 && (
         <ActiveFilterChips chips={activeChips} onClearAll={() => { setTerm(''); setStatus(''); setFrom(''); setTo('') }} />
@@ -155,6 +168,12 @@ export function ShipmentsPage() {
                   <td colSpan={6} className="px-4 py-8 text-center text-text-secondary">
                     <span className="material-symbols-outlined animate-spin align-middle mr-2">sync</span>
                     Loading shipments...
+                  </td>
+                </tr>
+              ) : error && !data ? (
+                <tr>
+                  <td colSpan={6} className="px-4 py-8 text-center text-status-danger-text">
+                    Shipments could not be loaded.
                   </td>
                 </tr>
               ) : data && data.content.length > 0 ? (

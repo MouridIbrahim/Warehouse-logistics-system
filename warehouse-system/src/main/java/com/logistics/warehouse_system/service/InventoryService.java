@@ -21,6 +21,8 @@ import com.logistics.warehouse_system.repository.UserRepository;
 import com.logistics.warehouse_system.security.SecurityUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -82,7 +84,14 @@ public class InventoryService {
 
     @Transactional(readOnly = true)
     public PageResponse<InventoryMovementDto> listMovements(Long productId, Long locationId, Pageable pageable) {
-        Page<InventoryMovement> page = inventoryMovementRepository.search(productId, locationId, null, null, null, pageable);
+        Specification<InventoryMovement> spec = Specification.allOf(
+                productId == null
+                        ? Specification.unrestricted()
+                        : (root, query, cb) -> cb.equal(root.get("product").get("id"), productId),
+                locationId == null
+                        ? Specification.unrestricted()
+                        : (root, query, cb) -> cb.equal(root.get("storageLocation").get("id"), locationId));
+        Page<InventoryMovement> page = inventoryMovementRepository.findAll(spec, pageable);
         List<InventoryMovementDto> content = page.getContent().stream().map(InventoryMovementDto::from).toList();
         return PageResponse.of(page, content);
     }

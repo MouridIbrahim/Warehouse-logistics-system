@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import type { PageResponse } from '../../types'
 import { formatDateTime } from '../../lib/format'
+import { getErrorMessage } from '../../lib/api'
 import { PageHeader } from '../../components/ui/PageHeader'
 import { Pagination } from '../../components/ui/Pagination'
 import { StatusBadge } from '../../components/ui/StatusBadge'
@@ -248,12 +249,14 @@ function MovementsTable() {
   const [size, setSize] = useState(20)
   const [data, setData] = useState<PageResponse<InventoryMovementDto> | null>(null)
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
   const [reverseTarget, setReverseTarget] = useState<InventoryMovementDto | null>(null)
   const [reversing, setReversing] = useState(false)
   const { addToast } = useToast()
 
   useEffect(() => {
     setLoading(true)
+    setError(null)
     listMovements(
       page,
       size,
@@ -261,6 +264,7 @@ function MovementsTable() {
       locationId ? Number(locationId) : undefined,
     )
       .then(setData)
+      .catch((err) => setError(getErrorMessage(err)))
       .finally(() => setLoading(false))
   }, [productId, locationId, page, size])
 
@@ -317,6 +321,12 @@ function MovementsTable() {
         />
       </div>
 
+      {error && (
+        <div role="alert" className="p-3 text-caption-meta text-status-danger-text">
+          Could not load inventory movements: {error}
+        </div>
+      )}
+
       <div className="overflow-x-auto">
         <table className="w-full text-left">
           <thead className="bg-app-bg text-table-header uppercase text-text-secondary select-none">
@@ -336,6 +346,12 @@ function MovementsTable() {
                 <td colSpan={7} className="px-4 py-8 text-center text-text-secondary">
                   <span className="material-symbols-outlined animate-spin align-middle mr-2">sync</span>
                   Loading movements...
+                </td>
+              </tr>
+            ) : error && !data ? (
+              <tr>
+                <td colSpan={7} className="px-4 py-8 text-center text-status-danger-text">
+                  Inventory movements could not be loaded.
                 </td>
               </tr>
             ) : data && data.content.length > 0 ? (

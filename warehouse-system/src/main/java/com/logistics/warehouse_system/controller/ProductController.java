@@ -49,10 +49,12 @@ public class ProductController {
     public PageResponse<ProductDto> list(@RequestParam(required = false) String term,
                                          @RequestParam(required = false) String unitOfMeasure,
                                          @RequestParam(required = false) Boolean active,
-                                         @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Instant from,
-                                         @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Instant to,
+    @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from,
+    @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to,
                                          @PageableDefault(size = 20, sort = "id") Pageable pageable) {
-        return productService.list(term, unitOfMeasure, active, from, to, pageable);
+        Instant fromInstant = from != null ? from.atStartOfDay(ZoneOffset.UTC).toInstant() : null;
+        Instant toInstant = to != null ? to.plusDays(1).atStartOfDay(ZoneOffset.UTC).toInstant() : null;
+        return productService.list(term, unitOfMeasure, active, fromInstant, toInstant, pageable);
     }
 
     @GetMapping("/count")
