@@ -23,6 +23,7 @@ function initials(name: string): string {
 
 export function ProductsPage() {
   const { user } = useAuth()
+  const canManage = hasAnyRole(user, ADMIN_MANAGER)
   const [term, setTerm] = useState('')
   const [unitOfMeasure, setUnitOfMeasure] = useState('')
   const [active, setActive] = useState('')
@@ -91,7 +92,7 @@ export function ProductsPage() {
         title="Products"
         description="Manage the product catalogue, SKU definitions, and stock availability."
         actions={
-          hasAnyRole(user, ADMIN_MANAGER) ? (
+          canManage ? (
             <Button icon="add" onClick={() => setShowCreate(true)}>
               Add Product
             </Button>
@@ -231,13 +232,14 @@ export function ProductsPage() {
                     </td>
                     <td className="px-4 py-3 text-right whitespace-nowrap">
                       <div className="flex items-center justify-end gap-1">
-                        <button
+                        {canManage && <button
+                          type="button"
                           className="p-1 rounded text-text-secondary hover:text-primary transition-colors"
                           title="Edit"
                           onClick={() => setEditTarget(p)}
                         >
                           <span className="material-symbols-outlined text-[18px]">edit</span>
-                        </button>
+                        </button>}
                       </div>
                     </td>
                   </tr>

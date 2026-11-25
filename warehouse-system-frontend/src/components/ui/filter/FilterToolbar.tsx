@@ -50,6 +50,7 @@ export function FilterToolbar({
               search
             </span>
             <input
+              aria-label={search.placeholder ?? 'Search'}
               className="w-full pl-9 pr-3 h-[38px] text-body-default bg-app-bg rounded-lg placeholder:text-sidebar-muted text-text-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
               placeholder={search.placeholder ?? 'Search...'}
               value={search.value}
@@ -58,6 +59,7 @@ export function FilterToolbar({
             {search.value?.trim() && (
               <button
                 type="button"
+                aria-label="Clear search"
                 className="absolute right-3 top-2.5 p-1 text-text-secondary hover:text-text-primary"
                 onClick={() => search.onChange('')}
                 title="Clear search"
@@ -73,6 +75,7 @@ export function FilterToolbar({
             className="relative w-full sm:w-48"
           >
             <select
+              aria-label={sel.label ?? sel.placeholder ?? sel.key}
               value={sel.value}
               onChange={(e) => sel.onChange(e.target.value)}
               className="appearance-none h-[38px] pl-3 pr-8 bg-app-bg text-body-default text-text-primary rounded-lg cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary/20"
@@ -96,12 +99,14 @@ export function FilterToolbar({
         {dateRange && (
           <div className="flex items-center gap-2 w-full sm:w-auto">
             <input
+              aria-label="Start date"
               type="date"
               className="h-[38px] pl-3 pr-3 bg-app-bg text-body-default text-text-primary rounded-lg border border-border-default focus:outline-none focus:ring-2 focus:ring-primary/20"
               value={dateRange.startValue}
               onChange={(e) => dateRange.onStartChange(e.target.value)}
             />
             <input
+              aria-label="End date"
               type="date"
               className="h-[38px] pl-3 pr-3 bg-app-bg text-body-default text-text-primary rounded-lg border border-border-default focus:outline-none focus:ring-2 focus:ring-primary/20"
               value={dateRange.endValue}

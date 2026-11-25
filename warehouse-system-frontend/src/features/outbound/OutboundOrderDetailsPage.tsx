@@ -5,10 +5,14 @@ import { formatDateTime } from '../../lib/format'
 import { Button } from '../../components/ui/Button'
 import { StatusBadge } from '../../components/ui/StatusBadge'
 import { Modal } from '../../components/ui/Modal'
+import { useAuth } from '../auth/auth-context'
+import { OPERATIONS, hasAnyRole } from '../auth/permissions'
 import { dispatchOutboundOrder, getOutboundOrder } from './api'
 import type { OutboundOrderDto } from './api'
 
 export function OutboundOrderDetailsPage() {
+  const { user } = useAuth()
+  const canOperate = hasAnyRole(user, OPERATIONS)
   const { id } = useParams()
   const orderId = Number(id)
   const [order, setOrder] = useState<OutboundOrderDto | null>(null)
@@ -67,7 +71,7 @@ export function OutboundOrderDetailsPage() {
             Warehouse #{order.warehouseId} · Created by {order.createdByName}
           </p>
         </div>
-        {order.status === 'DRAFT' && (
+        {canOperate && order.status === 'DRAFT' && (
           <Button icon="local_shipping" onClick={() => setDispatchOpen(true)}>
             Dispatch
           </Button>

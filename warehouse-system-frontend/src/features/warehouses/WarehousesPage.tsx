@@ -19,6 +19,7 @@ import type { WarehouseDto } from './api'
 
 export function WarehousesPage() {
   const { user } = useAuth()
+  const canManage = hasAnyRole(user, ADMIN_MANAGER)
   const [term, setTerm] = useState('')
   const [active, setActive] = useState('')
   const [from, setFrom] = useState('')
@@ -74,7 +75,7 @@ export function WarehousesPage() {
         title="Warehouses"
         description="View and manage warehouses and their storage locations."
         actions={
-          hasAnyRole(user, ADMIN_MANAGER) ? (
+          canManage ? (
             <Button icon="add" onClick={() => setShowCreate(true)}>
               Add Warehouse
             </Button>
@@ -172,13 +173,14 @@ export function WarehousesPage() {
                         >
                           <span className="material-symbols-outlined text-[18px]">open_in_new</span>
                         </Link>
-                        <button
+                        {canManage && <button
+                          type="button"
                           className="p-1 rounded text-text-secondary hover:text-primary transition-colors"
                           title="Edit"
                           onClick={() => setEditTarget(w)}
                         >
                           <span className="material-symbols-outlined text-[18px]">edit</span>
-                        </button>
+                        </button>}
                       </div>
                     </td>
                   </tr>

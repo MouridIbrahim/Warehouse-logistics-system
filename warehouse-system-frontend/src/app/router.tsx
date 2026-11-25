@@ -5,7 +5,7 @@ import { LoginPage } from '../features/auth/LoginPage'
 import { RegisterPage } from '../features/auth/RegisterPage'
 import { RequireAuth } from '../features/auth/RequireAuth'
 import { RequireRole } from '../features/auth/RequireRole'
-import { ADMIN, AUDIT_VIEW, SHIPMENT_VIEW } from '../features/auth/permissions'
+import { ADMIN, AUDIT_VIEW, OPERATIONS, SHIPMENT_VIEW } from '../features/auth/permissions'
 import { AppLayout } from '../components/layout/AppLayout'
 import { AccessDeniedPage } from '../components/layout/AccessDeniedPage'
 import { ToastProvider } from '../components/ui/Toast.tsx'
@@ -95,10 +95,24 @@ export const router = createBrowserRouter([
       { path: 'inventory', element: <InventoryPage /> },
       { path: 'cycle-count', element: <CycleCountPage /> },
       { path: 'inbound', element: <InboundOrdersPage /> },
-      { path: 'inbound/new', element: <CreateInboundOrderPage /> },
+      {
+        path: 'inbound/new',
+        element: (
+          <RequireRole roles={OPERATIONS}>
+            <CreateInboundOrderPage />
+          </RequireRole>
+        ),
+      },
       { path: 'inbound/:id', element: <InboundOrderDetailsPage /> },
       { path: 'outbound', element: <OutboundOrdersPage /> },
-      { path: 'outbound/new', element: <CreateOutboundOrderPage /> },
+      {
+        path: 'outbound/new',
+        element: (
+          <RequireRole roles={OPERATIONS}>
+            <CreateOutboundOrderPage />
+          </RequireRole>
+        ),
+      },
       { path: 'outbound/:id', element: <OutboundOrderDetailsPage /> },
       {
         path: 'shipments',

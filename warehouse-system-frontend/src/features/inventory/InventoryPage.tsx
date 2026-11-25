@@ -10,8 +10,15 @@ import { FilterToolbar } from '../../components/ui/filter'
 import { ActiveFilterChips } from '../../components/ui/filter'
 import { Button } from '../../components/ui/Button'
 import { Modal } from '../../components/ui/Modal'
+import { Select } from '../../components/ui/Select'
+import { WorkflowProgress } from '../../components/ui/WorkflowProgress'
 import { useToast } from '../../components/ui/toast'
+import { useAuth } from '../auth/auth-context'
+import { ADMIN_MANAGER, hasAnyRole } from '../auth/permissions'
+import { listProducts } from '../products/api'
+import { listLocations, listWarehouses } from '../warehouses/api'
 import {
+  adjustStock,
   listBalances,
   listMovements,
   reverseAdjustment as reverseAdjustmentApi,
@@ -29,18 +36,19 @@ function movementBadge(type: string): { tone: 'success' | 'info' | 'neutral'; la
   }
 }
 
-function formatNumberInput(value: string): string {
-  return value.replace(/[^0-9-]/g, '')
-}
-
 export function InventoryPage() {
+  const { user } = useAuth()
+  const canAdjust = hasAnyRole(user, ADMIN_MANAGER)
   const [tab, setTab] = useState<'overview' | 'history'>('overview')
+  const [adjustmentOpen, setAdjustmentOpen] = useState(false)
+  const [refreshKey, setRefreshKey] = useState(0)
 
   return (
     <div>
       <PageHeader
         title="Inventory"
         description="Monitor stock across warehouses and trace inventory changes."
+        actions={canAdjust ? <Button icon="add" onClick={() => setAdjustmentOpen(true)}>Adjust stock</Button> : undefined}
       />
 
       <div className="mt-6">
@@ -63,21 +71,205 @@ export function InventoryPage() {
           </button>
         </div>
 
-        {tab === 'overview' ? <BalancesTable /> : <MovementsTable />}
+        {tab === 'overview' ? <BalancesTable key={refreshKey} /> : <MovementsTable />}
       </div>
+      <AdjustStockModal
+        open={adjustmentOpen}
+        onClose={() => setAdjustmentOpen(false)}
+        onAdjusted={() => setRefreshKey((key) => key + 1)}
+      />
     </div>
+  )
+}
+
+function AdjustStockModal({
+  open,
+  onClose,
+  onAdjusted,
+}: {
+  open: boolean
+  onClose: () => void
+  onAdjusted: () => void
+}) {
+  const [step, setStep] = useState(1)
+  const [productId, setProductId] = useState('')
+  const [warehouseId, setWarehouseId] = useState('')
+  const [locationId, setLocationId] = useState('')
+  const [quantityDelta, setQuantityDelta] = useState('')
+  const [notes, setNotes] = useState('')
+  const [productOptions, setProductOptions] = useState<{ value: string; label: string }[]>([])
+  const [warehouseOptions, setWarehouseOptions] = useState<{ value: string; label: string }[]>([])
+  const [locationOptions, setLocationOptions] = useState<{ value: string; label: string }[]>([])
+  const [optionsLoading, setOptionsLoading] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  const { addToast } = useToast()
+
+  useEffect(() => {
+    if (!open) return
+    let active = true
+    setOptionsLoading(true)
+    Promise.all([listProducts(undefined, 0, 100), listWarehouses(undefined, 0, 100)])
+      .then(([products, warehouses]) => {
+        if (!active) return
+        setProductOptions(products.content.map((product) => ({
+          value: String(product.id),
+          label: `${product.name} (${product.sku})`,
+        })))
+        setWarehouseOptions(warehouses.content.map((warehouse) => ({
+          value: String(warehouse.id),
+          label: warehouse.name,
+        })))
+      })
+      .catch((err) => {
+        if (active) setError(getErrorMessage(err))
+      })
+      .finally(() => {
+        if (active) setOptionsLoading(false)
+      })
+    return () => { active = false }
+  }, [open])
+
+  useEffect(() => {
+    if (!warehouseId) {
+      setLocationOptions([])
+      return
+    }
+    let active = true
+    setLocationOptions([])
+    listLocations(Number(warehouseId), undefined, 0, 100)
+      .then((locations) => {
+        if (active) setLocationOptions(locations.content.map((location) => ({
+          value: String(location.id),
+          label: location.code,
+        })))
+      })
+      .catch((err) => {
+        if (active) setError(getErrorMessage(err))
+      })
+    return () => { active = false }
+  }, [warehouseId])
+
+  function reset() {
+    setStep(1)
+    setProductId('')
+    setWarehouseId('')
+    setLocationId('')
+    setQuantityDelta('')
+    setNotes('')
+    setError(null)
+  }
+
+  function continueToReview() {
+    if (!productId || !locationId || quantityDelta === '' || !Number.isInteger(Number(quantityDelta))) {
+      setError('Choose a product and location, then enter a whole-number quantity change.')
+      return
+    }
+    setError(null)
+    setStep(2)
+  }
+
+  async function submitAdjustment() {
+    setLoading(true)
+    setError(null)
+    try {
+      await adjustStock({
+        productId: Number(productId),
+        storageLocationId: Number(locationId),
+        quantityDelta: Number(quantityDelta),
+        notes: notes || undefined,
+      })
+      addToast({ type: 'success', title: 'Stock adjusted', message: 'The inventory balance has been updated.' })
+      onAdjusted()
+      reset()
+      onClose()
+    } catch (err) {
+      setError(getErrorMessage(err))
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const selectedProduct = productOptions.find((option) => option.value === productId)?.label
+  const selectedWarehouse = warehouseOptions.find((option) => option.value === warehouseId)?.label
+  const selectedLocation = locationOptions.find((option) => option.value === locationId)?.label
+  const closeModal = () => {
+    reset()
+    onClose()
+  }
+
+  return (
+    <Modal open={open} onClose={closeModal} title="Adjust stock">
+      <WorkflowProgress steps={['Adjustment details', 'Review']} currentStep={step} />
+      {step === 1 ? (
+        <div className="space-y-4">
+          <p className="text-caption-meta text-text-secondary">Record a signed stock change for one product and location.</p>
+          <div className="flex flex-col gap-1.5">
+            <label htmlFor="adjustment-product" className="text-form-label text-text-primary">Product *</label>
+            <Select id="adjustment-product" value={productId} onChange={setProductId} placeholder="Select product" options={productOptions} />
+          </div>
+          <div className="flex flex-col gap-1.5">
+            <label htmlFor="adjustment-warehouse" className="text-form-label text-text-primary">Warehouse *</label>
+            <Select
+              id="adjustment-warehouse"
+              value={warehouseId}
+              onChange={(value) => {
+                setWarehouseId(value)
+                setLocationId('')
+              }}
+              placeholder="Select warehouse"
+              options={warehouseOptions}
+            />
+          </div>
+          <div className="flex flex-col gap-1.5">
+            <label htmlFor="adjustment-location" className="text-form-label text-text-primary">Storage location *</label>
+            <Select id="adjustment-location" value={locationId} onChange={setLocationId} placeholder="Select location" options={locationOptions} />
+          </div>
+          <div className="flex flex-col gap-1.5">
+            <label htmlFor="adjustment-quantity" className="text-form-label text-text-primary">Quantity change *</label>
+            <input id="adjustment-quantity" type="number" step={1} value={quantityDelta} onChange={(event) => setQuantityDelta(event.target.value)} className="h-10 rounded-lg border border-border-default bg-surface px-3 text-body-default text-text-primary focus:outline-none focus:ring-2 focus:ring-primary/30" />
+            <span className="text-caption-meta text-text-secondary">Use a positive number to add stock or a negative number to remove stock.</span>
+          </div>
+          <div className="flex flex-col gap-1.5">
+            <label htmlFor="adjustment-notes" className="text-form-label text-text-primary">Notes <span className="text-text-secondary">(optional)</span></label>
+            <textarea id="adjustment-notes" maxLength={2000} rows={2} value={notes} onChange={(event) => setNotes(event.target.value)} className="rounded-lg border border-border-default bg-surface px-3 py-2 text-body-default text-text-primary focus:outline-none focus:ring-2 focus:ring-primary/30" />
+          </div>
+          {optionsLoading && <p role="status" className="text-caption-meta text-text-secondary">Loading products and warehouses…</p>}
+        </div>
+      ) : (
+        <section aria-labelledby="adjustment-review-title" className="rounded-lg border border-border-default bg-app-bg p-4">
+          <h3 id="adjustment-review-title" className="text-body-semibold text-text-primary">Confirm stock adjustment</h3>
+          <p className="mt-1 text-caption-meta text-text-secondary">This creates an inventory movement and updates the stock balance.</p>
+          <dl className="mt-4 space-y-3 text-body-default">
+            <div><dt className="text-caption-meta text-text-secondary">Product</dt><dd className="font-semibold">{selectedProduct}</dd></div>
+            <div><dt className="text-caption-meta text-text-secondary">Warehouse / location</dt><dd className="font-semibold">{selectedWarehouse} / {selectedLocation}</dd></div>
+            <div><dt className="text-caption-meta text-text-secondary">Quantity change</dt><dd className="font-semibold tabular-nums">{Number(quantityDelta) > 0 ? '+' : ''}{quantityDelta} units</dd></div>
+            {notes && <div><dt className="text-caption-meta text-text-secondary">Notes</dt><dd>{notes}</dd></div>}
+          </dl>
+        </section>
+      )}
+      {error && <div role="alert" className="mt-4 rounded-lg bg-status-danger-bg p-3 text-caption-meta text-status-danger-text">{error}</div>}
+      <div className="mt-6 flex justify-end gap-2">
+        <Button type="button" variant="secondary" onClick={closeModal} disabled={loading}>Cancel</Button>
+        {step === 2 && <Button type="button" variant="secondary" onClick={() => { setError(null); setStep(1) }}>Back</Button>}
+        {step === 1 ? (
+          <Button type="button" onClick={continueToReview} disabled={optionsLoading}>Review adjustment</Button>
+        ) : (
+          <Button type="button" onClick={submitAdjustment} disabled={loading}>{loading ? 'Saving...' : 'Confirm adjustment'}</Button>
+        )}
+      </div>
+    </Modal>
   )
 }
 
 function BalancesTable() {
   const [search, setSearch] = useState('')
-  const [productId, setProductId] = useState('')
-  const [locationId, setLocationId] = useState('')
   const [quantityCondition, setQuantityCondition] = useState('')
   const [page, setPage] = useState(0)
   const [size, setSize] = useState(20)
   const [data, setData] = useState<PageResponse<InventoryBalanceDto> | null>(null)
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
   const QUANTITY_OPTIONS = [
     { value: 'LOW_STOCK', label: 'Low Stock (< threshold)' },
@@ -87,16 +279,18 @@ function BalancesTable() {
 
   useEffect(() => {
     setLoading(true)
+    setError(null)
     listBalances(
       page,
       size,
-      productId ? Number(productId) : undefined,
-      locationId ? Number(locationId) : undefined,
+      undefined,
+      undefined,
       quantityCondition || undefined,
     )
       .then(setData)
+      .catch((err) => setError(getErrorMessage(err)))
       .finally(() => setLoading(false))
-  }, [productId, locationId, quantityCondition, page, size])
+  }, [quantityCondition, page, size])
 
   const filtered = data
     ? {
@@ -105,15 +299,14 @@ function BalancesTable() {
           (b) =>
             !search ||
             b.productName.toLowerCase().includes(search.toLowerCase()) ||
-            b.productSku.toLowerCase().includes(search.toLowerCase()),
+            b.productSku.toLowerCase().includes(search.toLowerCase()) ||
+            b.storageLocationCode.toLowerCase().includes(search.toLowerCase()),
         ),
       }
     : null
 
   const activeChips = [
     ...(search ? [{ key: 'search', label: `Search: "${search}"`, value: search, onRemove: () => setSearch('') }] : []),
-    ...(productId ? [{ key: 'productId', label: `Product ID: ${productId}`, value: productId, onRemove: () => setProductId('') }] : []),
-    ...(locationId ? [{ key: 'locationId', label: `Location ID: ${locationId}`, value: locationId, onRemove: () => setLocationId('') }] : []),
     ...(quantityCondition ? [{ key: 'quantityCondition', label: `Quantity: ${QUANTITY_OPTIONS.find((o) => o.value === quantityCondition)?.label}`, value: quantityCondition, onRemove: () => setQuantityCondition('') }] : []),
   ]
 
@@ -121,41 +314,26 @@ function BalancesTable() {
     <div className="bg-surface rounded-xl border border-border-default shadow-sm overflow-hidden">
       <div className="p-space-md border-b border-border-default">
         {activeChips.length > 0 && (
-          <ActiveFilterChips chips={activeChips} onClearAll={() => { setSearch(''); setProductId(''); setLocationId(''); setQuantityCondition('') }} />
+          <ActiveFilterChips chips={activeChips} onClearAll={() => { setSearch(''); setQuantityCondition('') }} />
         )}
         <FilterToolbar
           search={{
             value: search,
             onChange: setSearch,
-            placeholder: 'Search product or SKU...',
+            placeholder: 'Search product, SKU, or location...',
           }}
-          selects={[
-            {
-              key: 'productId',
-              value: productId,
-              onChange: (v) => setProductId(formatNumberInput(v)),
-              options: [],
-              placeholder: 'Product ID',
-            },
-            {
-              key: 'locationId',
-              value: locationId,
-              onChange: (v) => setLocationId(formatNumberInput(v)),
-              options: [],
-              placeholder: 'Location ID',
-            },
-            {
+          selects={[{
               key: 'quantityCondition',
               value: quantityCondition,
               onChange: setQuantityCondition,
               options: QUANTITY_OPTIONS,
               placeholder: 'Quantity condition',
-            },
-          ]}
-          onReset={() => { setSearch(''); setProductId(''); setLocationId(''); setQuantityCondition('') }}
+            }]}
+          onReset={() => { setSearch(''); setQuantityCondition('') }}
         />
       </div>
 
+      {error && <div role="alert" className="p-3 text-caption-meta text-status-danger-text">Could not load inventory: {error}</div>}
       <div className="overflow-x-auto">
         <table className="w-full text-left">
           <thead className="bg-app-bg text-table-header uppercase text-text-secondary select-none">
@@ -173,9 +351,15 @@ function BalancesTable() {
           <tbody className="divide-y divide-border-default/60 text-body-default text-text-primary">
             {loading && !data ? (
               <tr>
-                <td colSpan={7} className="px-4 py-8 text-center text-text-secondary">
+                <td colSpan={8} className="px-4 py-8 text-center text-text-secondary">
                   <span className="material-symbols-outlined animate-spin align-middle mr-2">sync</span>
                   Loading inventory...
+                </td>
+              </tr>
+            ) : error && !data ? (
+              <tr>
+                <td colSpan={8} className="px-4 py-8 text-center text-status-danger-text">
+                  Inventory could not be loaded.
                 </td>
               </tr>
             ) : filtered && filtered.content.length > 0 ? (
@@ -215,8 +399,14 @@ function BalancesTable() {
               ))
             ) : (
               <tr>
-                <td colSpan={7}>
-                  <EmptyState icon="package_2" title="No inventory" description="Stock will appear once goods are received." />
+                <td colSpan={8}>
+                  <EmptyState
+                    icon="package_2"
+                    title={search || quantityCondition ? 'No matching inventory' : 'No inventory'}
+                    description={search || quantityCondition
+                      ? 'Try another search or reset the filters.'
+                      : 'Stock will appear once goods are received.'}
+                  />
                 </td>
               </tr>
             )}
@@ -243,8 +433,9 @@ function BalancesTable() {
 }
 
 function MovementsTable() {
-  const [productId, setProductId] = useState('')
-  const [locationId, setLocationId] = useState('')
+  const { user } = useAuth()
+  const canReverse = hasAnyRole(user, ADMIN_MANAGER)
+  const [search, setSearch] = useState('')
   const [page, setPage] = useState(0)
   const [size, setSize] = useState(20)
   const [data, setData] = useState<PageResponse<InventoryMovementDto> | null>(null)
@@ -257,37 +448,35 @@ function MovementsTable() {
   useEffect(() => {
     setLoading(true)
     setError(null)
-    listMovements(
-      page,
-      size,
-      productId ? Number(productId) : undefined,
-      locationId ? Number(locationId) : undefined,
-    )
+    listMovements(page, size)
       .then(setData)
       .catch((err) => setError(getErrorMessage(err)))
       .finally(() => setLoading(false))
-  }, [productId, locationId, page, size])
+  }, [page, size])
 
   const activeChips = [
-    ...(productId ? [{ key: 'productId', label: `Product ID: ${productId}`, value: productId, onRemove: () => setProductId('') }] : []),
-    ...(locationId ? [{ key: 'locationId', label: `Location ID: ${locationId}`, value: locationId, onRemove: () => setLocationId('') }] : []),
+    ...(search ? [{ key: 'search', label: `Search: "${search}"`, value: search, onRemove: () => setSearch('') }] : []),
   ]
+  const filtered = data
+    ? {
+        ...data,
+        content: data.content.filter((movement) =>
+          [movement.productName, movement.productSku, movement.storageLocationCode]
+            .some((value) => value.toLowerCase().includes(search.toLowerCase())),
+        ),
+      }
+    : null
 
   async function confirmReverse() {
     if (!reverseTarget) return
     setReversing(true)
     try {
       await reverseAdjustmentApi(reverseTarget.id)
-      await listMovements(
-        page,
-        size,
-        productId ? Number(productId) : undefined,
-        locationId ? Number(locationId) : undefined,
-      ).then(setData)
+      await listMovements(page, size).then(setData)
       setReverseTarget(null)
       addToast({ type: 'success', title: 'Adjustment reversed', message: 'A compensating movement was recorded.' })
-    } catch {
-      addToast({ type: 'error', title: 'Reverse failed', message: 'The adjustment could not be reversed.' })
+    } catch (err) {
+      addToast({ type: 'error', title: 'Reverse failed', message: getErrorMessage(err) })
     } finally {
       setReversing(false)
       setLoading(false)
@@ -298,26 +487,15 @@ function MovementsTable() {
     <div className="bg-surface rounded-xl border border-border-default shadow-sm overflow-hidden">
       <div className="p-space-md border-b border-border-default">
         {activeChips.length > 0 && (
-          <ActiveFilterChips chips={activeChips} onClearAll={() => { setProductId(''); setLocationId('') }} />
+          <ActiveFilterChips chips={activeChips} onClearAll={() => setSearch('')} />
         )}
         <FilterToolbar
-          selects={[
-            {
-              key: 'productId',
-              value: productId,
-              onChange: (v) => setProductId(formatNumberInput(v)),
-              options: [],
-              placeholder: 'Product ID',
-            },
-            {
-              key: 'locationId',
-              value: locationId,
-              onChange: (v) => setLocationId(formatNumberInput(v)),
-              options: [],
-              placeholder: 'Location ID',
-            },
-          ]}
-          onReset={() => { setProductId(''); setLocationId('') }}
+          search={{
+            value: search,
+            onChange: (value) => { setSearch(value); setPage(0) },
+            placeholder: 'Search product, SKU, or location...',
+          }}
+          onReset={() => setSearch('')}
         />
       </div>
 
@@ -354,8 +532,8 @@ function MovementsTable() {
                   Inventory movements could not be loaded.
                 </td>
               </tr>
-            ) : data && data.content.length > 0 ? (
-              data.content.map((m) => {
+            ) : filtered && filtered.content.length > 0 ? (
+              filtered.content.map((m) => {
                 const badge = movementBadge(m.movementType)
                 return (
                   <tr key={m.id} className="hover:bg-app-bg/50 transition-colors">
@@ -383,7 +561,7 @@ function MovementsTable() {
                       <span className="text-table-data text-text-secondary">{m.performedByName}</span>
                     </td>
                     <td className="px-4 py-3 text-right whitespace-nowrap">
-                      {m.movementType === 'ADJUSTMENT' && (
+                      {canReverse && m.movementType === 'ADJUSTMENT' && (
                         <button
                           type="button"
                           className="h-8 px-2 text-xs text-status-danger-text"
@@ -400,7 +578,11 @@ function MovementsTable() {
           : (
               <tr>
                 <td colSpan={7}>
-                  <EmptyState icon="history" title="No movements" description="Inventory changes will be recorded here." />
+                  <EmptyState
+                    icon="history"
+                    title={search ? 'No matching movements' : 'No movements'}
+                    description={search ? 'Try another search or clear the search field.' : 'Inventory changes will be recorded here.'}
+                  />
                 </td>
               </tr>
             )}

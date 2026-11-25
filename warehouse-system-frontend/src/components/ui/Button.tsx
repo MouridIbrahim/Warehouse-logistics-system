@@ -29,7 +29,7 @@ export function Button({
       className={`inline-flex items-center justify-center gap-1.5 h-10 px-4 rounded-lg font-button-text text-button-text font-semibold transition-colors disabled:opacity-60 disabled:cursor-not-allowed ${variantClasses[variant]} ${className}`}
       {...props}
     >
-      {icon && <span className="material-symbols-outlined text-[18px]">{icon}</span>}
+      {icon && <span className="material-symbols-outlined text-[18px]" aria-hidden="true">{icon}</span>}
       {children}
     </button>
   )

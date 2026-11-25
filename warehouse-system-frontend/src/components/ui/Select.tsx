@@ -9,16 +9,22 @@ export function Select({
   options,
   placeholder,
   className = '',
+  id,
+  ariaLabel,
 }: {
   value: string
   onChange: (value: string) => void
   options: SelectOption[]
   placeholder?: string
   className?: string
+  id?: string
+  ariaLabel?: string
 }) {
   return (
     <div className={`relative ${className}`}>
       <select
+        id={id}
+        aria-label={ariaLabel}
         value={value}
         onChange={(e) => onChange(e.target.value)}
         className="appearance-none h-[38px] pl-3 pr-8 bg-app-bg text-body-default text-text-primary rounded-lg cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary/20"

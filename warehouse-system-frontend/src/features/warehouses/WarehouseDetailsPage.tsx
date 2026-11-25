@@ -8,6 +8,8 @@ import { StatusBadge } from '../../components/ui/StatusBadge'
 import { SearchInput } from '../../components/ui/SearchInput'
 import { Pagination } from '../../components/ui/Pagination'
 import { Modal } from '../../components/ui/Modal'
+import { useAuth } from '../auth/auth-context'
+import { ADMIN_MANAGER, hasAnyRole } from '../auth/permissions'
 import { EmptyState } from '../../components/ui/EmptyState'
 import {
   createLocation,
@@ -19,6 +21,8 @@ import {
 import type { StorageLocationDto, WarehouseDto } from './api'
 
 export function WarehouseDetailsPage() {
+  const { user } = useAuth()
+  const canManage = hasAnyRole(user, ADMIN_MANAGER)
   const { id } = useParams()
   const warehouseId = Number(id)
   const [warehouse, setWarehouse] = useState<WarehouseDto | null>(null)
@@ -72,9 +76,11 @@ export function WarehouseDetailsPage() {
             {warehouse?.code} {warehouse?.address ? `· ${warehouse.address}` : ''}
           </p>
         </div>
-        <Button icon="add" onClick={() => setShowCreate(true)}>
-          Add Location
-        </Button>
+        {canManage && (
+          <Button icon="add" onClick={() => setShowCreate(true)}>
+            Add Location
+          </Button>
+        )}
       </div>
 
       <div className="mt-6 bg-surface rounded-xl border border-border-default shadow-sm overflow-hidden">
@@ -115,13 +121,14 @@ export function WarehouseDetailsPage() {
                     </td>
                     <td className="px-4 py-3 text-right whitespace-nowrap">
                       <div className="flex items-center justify-end gap-1">
-                        <button
+                        {canManage && <button
+                          type="button"
                           className="p-1 rounded text-text-secondary hover:text-primary transition-colors"
                           title="Edit"
                           onClick={() => setEditTarget(l)}
                         >
                           <span className="material-symbols-outlined text-[18px]">edit</span>
-                        </button>
+                        </button>}
                       </div>
                     </td>
                   </tr>
@@ -156,18 +163,22 @@ export function WarehouseDetailsPage() {
         )}
       </div>
 
-      <CreateLocationModal
-        warehouseId={warehouseId}
-        open={showCreate}
-        onClose={() => setShowCreate(false)}
-        onCreated={refresh}
-      />
-      <EditLocationModal
-        warehouseId={warehouseId}
-        location={editTarget}
-        onClose={() => setEditTarget(null)}
-        onUpdated={refresh}
-      />
+      {canManage && (
+        <>
+          <CreateLocationModal
+            warehouseId={warehouseId}
+            open={showCreate}
+            onClose={() => setShowCreate(false)}
+            onCreated={refresh}
+          />
+          <EditLocationModal
+            warehouseId={warehouseId}
+            location={editTarget}
+            onClose={() => setEditTarget(null)}
+            onUpdated={refresh}
+          />
+        </>
+      )}
     </div>
   )
 }

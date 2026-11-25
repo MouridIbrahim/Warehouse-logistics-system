@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { getErrorMessage } from '../../lib/api'
 import { Button } from '../../components/ui/Button'
 import { Select } from '../../components/ui/Select'
+import { WorkflowProgress } from '../../components/ui/WorkflowProgress'
 import { listProducts } from '../products/api'
 import { listWarehouses, listLocations } from '../warehouses/api'
 import { createOutboundOrder } from './api'
@@ -16,6 +17,7 @@ interface ItemRow {
 
 export function CreateOutboundOrderPage() {
   const navigate = useNavigate()
+  const [currentStep, setCurrentStep] = useState(1)
   const [referenceNumber, setReferenceNumber] = useState('')
   const [warehouseId, setWarehouseId] = useState('')
   const [notes, setNotes] = useState('')
@@ -61,6 +63,7 @@ export function CreateOutboundOrderPage() {
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault()
+    if (currentStep !== 3) return
     const parsedItems = items.map((i) => ({
       productId: Number(i.productId),
       storageLocationId: Number(i.storageLocationId),
@@ -83,6 +86,23 @@ export function CreateOutboundOrderPage() {
     }
   }
 
+  function continueWorkflow() {
+    setError(null)
+    if (currentStep === 1 && (!referenceNumber.trim() || !warehouseId)) {
+      setError('Enter a reference number and select the source warehouse before continuing.')
+      return
+    }
+    if (currentStep === 2 && items.some((item) =>
+      !item.productId || !item.storageLocationId || !Number.isFinite(Number(item.requestedQuantity)) || Number(item.requestedQuantity) < 1,
+    )) {
+      setError('Complete each item with a product, location, and quantity of at least 1.')
+      return
+    }
+    setCurrentStep((step) => Math.min(step + 1, 3))
+  }
+
+  const warehouseName = warehouseOptions.find((option) => option.value === warehouseId)?.label ?? 'Not selected'
+
   return (
     <div>
       <div className="text-caption-meta text-text-secondary mb-2 flex items-center gap-1.5">
@@ -94,34 +114,46 @@ export function CreateOutboundOrderPage() {
       </div>
 
       <h1 className="text-headline-h1 font-bold text-text-primary">Create Outbound Order</h1>
+      <p className="mt-1 text-body-default text-text-secondary">
+        Prepare goods for dispatch from your warehouse. Review the order before creating it.
+      </p>
 
-      <form className="mt-6 grid grid-cols-1 lg:grid-cols-3 gap-6" onSubmit={handleSubmit}>
+      <form className="mt-6" onSubmit={handleSubmit}>
+        <WorkflowProgress steps={['Order details', 'Items', 'Review']} currentStep={currentStep} />
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2 space-y-6">
+          {currentStep === 1 && (
           <div className="bg-surface rounded-xl border border-border-default p-space-lg shadow-sm">
             <h2 className="text-headline-h3 font-semibold text-text-primary">General Information</h2>
             <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="flex flex-col gap-1.5">
-                <label className="text-form-label text-text-primary">Reference number *</label>
+                <label htmlFor="outbound-reference" className="text-form-label text-text-primary">Reference number *</label>
                 <input
+                  id="outbound-reference"
                   className="h-10 px-3 text-body-default text-text-primary bg-surface border border-border-default rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/30"
                   placeholder="e.g. SO-2026-00001"
                   value={referenceNumber}
                   onChange={(e) => setReferenceNumber(e.target.value)}
-                  required
+                  required={currentStep === 1}
                 />
               </div>
               <div className="flex flex-col gap-1.5">
-                <label className="text-form-label text-text-primary">Source warehouse *</label>
+                <label htmlFor="outbound-warehouse" className="text-form-label text-text-primary">Source warehouse *</label>
                 <Select
+                  id="outbound-warehouse"
                   value={warehouseId}
-                  onChange={setWarehouseId}
+                  onChange={(value) => {
+                    setWarehouseId(value)
+                    setItems((current) => current.map((item) => ({ ...item, storageLocationId: '' })))
+                  }}
                   placeholder="Select warehouse"
                   options={warehouseOptions}
                 />
               </div>
               <div className="flex flex-col gap-1.5 sm:col-span-2">
-                <label className="text-form-label text-text-primary">Notes</label>
+                <label htmlFor="outbound-notes" className="text-form-label text-text-primary">Notes</label>
                 <textarea
+                  id="outbound-notes"
                   className="px-3 py-2 text-body-default text-text-primary bg-surface border border-border-default rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/30 resize-none"
                   rows={2}
                   value={notes}
@@ -130,61 +162,61 @@ export function CreateOutboundOrderPage() {
               </div>
             </div>
           </div>
+          )}
 
-          <div className="bg-surface rounded-xl border border-border-default p-space-lg shadow-sm">
-            <div className="flex items-center justify-between">
-              <h2 className="text-headline-h3 font-semibold text-text-primary">Items</h2>
-              <Button type="button" variant="secondary" icon="add" onClick={addItem}>
-                Add item
-              </Button>
+          {currentStep === 2 && (
+            <div className="bg-surface rounded-xl border border-border-default p-space-lg shadow-sm">
+              <div className="flex items-center justify-between">
+                <h2 className="text-headline-h3 font-semibold text-text-primary">Items</h2>
+                <Button type="button" variant="secondary" icon="add" onClick={addItem}>
+                  Add item
+                </Button>
+              </div>
+              <div className="mt-4 space-y-3">
+                {items.map((item, index) => (
+                  <div key={index} className="grid grid-cols-1 sm:grid-cols-12 gap-3 items-end p-3 rounded-lg bg-app-bg">
+                    <div className="sm:col-span-5 flex flex-col gap-1.5">
+                      <label htmlFor={`outbound-product-${index}`} className="text-form-label text-text-primary">Product *</label>
+                      <Select id={`outbound-product-${index}`} value={item.productId} onChange={(v) => updateItem(index, 'productId', v)} placeholder="Select product" options={productOptions} />
+                    </div>
+                    <div className="sm:col-span-3 flex flex-col gap-1.5">
+                      <label htmlFor={`outbound-location-${index}`} className="text-form-label text-text-primary">Location *</label>
+                      <Select id={`outbound-location-${index}`} value={item.storageLocationId} onChange={(v) => updateItem(index, 'storageLocationId', v)} placeholder="Select location" options={locationOptions} />
+                    </div>
+                    <div className="sm:col-span-3 flex flex-col gap-1.5">
+                      <label htmlFor={`outbound-quantity-${index}`} className="text-form-label text-text-primary">Quantity *</label>
+                      <input id={`outbound-quantity-${index}`} type="number" min={1} className="h-10 px-3 text-body-default text-text-primary bg-surface border border-border-default rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/30" value={item.requestedQuantity} onChange={(e) => updateItem(index, 'requestedQuantity', e.target.value)} required />
+                    </div>
+                    <div className="sm:col-span-1 flex justify-end">
+                      <button type="button" aria-label={`Remove item ${index + 1}`} className="p-2 rounded-lg text-text-secondary hover:text-status-danger-text transition-colors" onClick={() => removeItem(index)}>
+                        <span className="material-symbols-outlined text-[20px]">delete</span>
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
+          )}
 
-            <div className="mt-4 space-y-3">
-              {items.map((item, index) => (
-                <div key={index} className="grid grid-cols-1 sm:grid-cols-12 gap-3 items-end p-3 rounded-lg bg-app-bg">
-                  <div className="sm:col-span-5 flex flex-col gap-1.5">
-                    <label className="text-form-label text-text-primary">Product *</label>
-                    <Select
-                      value={item.productId}
-                      onChange={(v) => updateItem(index, 'productId', v)}
-                      placeholder="Select product"
-                      options={productOptions}
-                    />
-                  </div>
-                  <div className="sm:col-span-3 flex flex-col gap-1.5">
-                    <label className="text-form-label text-text-primary">Location *</label>
-                    <Select
-                      value={item.storageLocationId}
-                      onChange={(v) => updateItem(index, 'storageLocationId', v)}
-                      placeholder="Select location"
-                      options={locationOptions}
-                    />
-                  </div>
-                  <div className="sm:col-span-3 flex flex-col gap-1.5">
-                    <label className="text-form-label text-text-primary">Quantity *</label>
-                    <input
-                      type="number"
-                      min={1}
-                      className="h-10 px-3 text-body-default text-text-primary bg-surface border border-border-default rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/30"
-                      value={item.requestedQuantity}
-                      onChange={(e) => updateItem(index, 'requestedQuantity', e.target.value)}
-                      required
-                    />
-                  </div>
-                  <div className="sm:col-span-1 flex justify-end">
-                    <button
-                      type="button"
-                      className="p-2 rounded-lg text-text-secondary hover:text-status-danger-text transition-colors"
-                      onClick={() => removeItem(index)}
-                      title="Remove item"
-                    >
-                      <span className="material-symbols-outlined text-[20px]">delete</span>
-                    </button>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
+          {currentStep === 3 && (
+            <section aria-labelledby="outbound-review-title" className="bg-surface rounded-xl border border-border-default p-space-lg shadow-sm">
+              <h2 id="outbound-review-title" className="text-headline-h3 font-semibold text-text-primary">Review outbound order</h2>
+              <p className="mt-1 text-caption-meta text-text-secondary">Check the source warehouse and quantities before creating this order.</p>
+              <dl className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4 text-body-default">
+                <div><dt className="text-caption-meta text-text-secondary">Reference</dt><dd className="font-semibold">{referenceNumber}</dd></div>
+                <div><dt className="text-caption-meta text-text-secondary">Source warehouse</dt><dd className="font-semibold">{warehouseName}</dd></div>
+                {notes && <div className="sm:col-span-2"><dt className="text-caption-meta text-text-secondary">Notes</dt><dd>{notes}</dd></div>}
+              </dl>
+              <ul className="mt-4 divide-y divide-border-default border-y border-border-default">
+                {items.map((item, index) => (
+                  <li key={`${item.productId}-${index}`} className="flex flex-wrap justify-between gap-2 py-3 text-body-default">
+                    <span>{productOptions.find((option) => option.value === item.productId)?.label ?? 'Product'} · Location {locationOptions.find((option) => option.value === item.storageLocationId)?.label ?? item.storageLocationId}</span>
+                    <span className="font-semibold tabular-nums">{item.requestedQuantity} units</span>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )}
         </div>
 
         <div className="space-y-4">
@@ -205,7 +237,7 @@ export function CreateOutboundOrderPage() {
           </div>
 
           {error && (
-            <div className="p-3 rounded-lg bg-status-danger-bg text-status-danger-text text-caption-meta">
+            <div role="alert" className="p-3 rounded-lg bg-status-danger-bg text-status-danger-text text-caption-meta">
               {error}
             </div>
           )}
@@ -214,10 +246,22 @@ export function CreateOutboundOrderPage() {
             <Button type="button" variant="secondary" onClick={() => navigate('/app/outbound')}>
               Cancel
             </Button>
-            <Button type="submit" disabled={loading} className="flex-1">
-              {loading ? 'Creating...' : 'Create Outbound Order'}
-            </Button>
+            {currentStep > 1 && (
+              <Button type="button" variant="secondary" onClick={() => { setError(null); setCurrentStep((step) => step - 1) }}>
+                Back
+              </Button>
+            )}
+            {currentStep < 3 ? (
+              <Button type="button" onClick={continueWorkflow} className="flex-1">
+                {currentStep === 1 ? 'Continue to items' : 'Review order'}
+              </Button>
+            ) : (
+              <Button type="submit" disabled={loading} className="flex-1">
+                {loading ? 'Creating...' : 'Create outbound order'}
+              </Button>
+            )}
           </div>
+        </div>
         </div>
       </form>
     </div>

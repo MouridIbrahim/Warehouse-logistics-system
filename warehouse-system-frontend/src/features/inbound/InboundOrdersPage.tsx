@@ -10,6 +10,8 @@ import { StatusBadge } from '../../components/ui/StatusBadge'
 import { EmptyState } from '../../components/ui/EmptyState'
 import { FilterToolbar } from '../../components/ui/filter'
 import { ActiveFilterChips } from '../../components/ui/filter'
+import { useAuth } from '../auth/auth-context'
+import { OPERATIONS, hasAnyRole } from '../auth/permissions'
 import { listInboundOrders, exportInboundOrders, confirmInboundOrder } from './api'
 import type { InboundOrderDto } from './api'
 import { listWarehouses } from '../warehouses/api'
@@ -21,6 +23,8 @@ const INBOUND_STATUS_OPTIONS = [
 ]
 
 export function InboundOrdersPage() {
+  const { user } = useAuth()
+  const canOperate = hasAnyRole(user, OPERATIONS)
   const [term, setTerm] = useState('')
   const [status, setStatus] = useState('')
   const [warehouseId, setWarehouseId] = useState<number | null>(null)
@@ -108,9 +112,11 @@ export function InboundOrdersPage() {
         title="Inbound Operations"
         description="Track expected and received goods."
         actions={
-          <Link to="/app/inbound/new">
-            <Button icon="add">Create Inbound Order</Button>
-          </Link>
+          canOperate ? (
+            <Link to="/app/inbound/new">
+              <Button icon="add">Create Inbound Order</Button>
+            </Link>
+          ) : undefined
         }
       />
 
@@ -164,7 +170,7 @@ export function InboundOrdersPage() {
             <span className="material-symbols-outlined text-[16px]">download</span>
             Export CSV
           </Button>
-          {selectedIds.length > 0 && (
+          {canOperate && selectedIds.length > 0 && (
             <div className="flex items-center gap-2">
               <span className="text-caption-meta text-text-secondary">
                 {selectedIds.length} selected
@@ -190,14 +196,15 @@ export function InboundOrdersPage() {
           <table className="w-full text-left">
             <thead className="bg-app-bg text-table-header uppercase text-text-secondary select-none">
               <tr>
-                <th className="px-4 py-3">
+                {canOperate && <th className="px-4 py-3">
                   <input
                     type="checkbox"
                     className="w-4 h-4 rounded accent-[#C45D16]"
+                    aria-label="Select all inbound orders"
                     checked={selectedIds.length > 0 && selectedIds.length === (data?.content.length ?? 0)}
                     onChange={(e) => toggleAll(e.target.checked)}
                   />
-                </th>
+                </th>}
                 <th className="px-4 py-3">Reference</th>
                 <th className="px-4 py-3">Warehouse</th>
                 <th className="px-4 py-3 text-center">Items</th>
@@ -209,28 +216,29 @@ export function InboundOrdersPage() {
             <tbody className="divide-y divide-border-default/60 text-body-default text-text-primary">
               {loading && !data ? (
                 <tr>
-                  <td colSpan={6} className="px-4 py-8 text-center text-text-secondary">
+                  <td colSpan={canOperate ? 7 : 6} className="px-4 py-8 text-center text-text-secondary">
                     <span className="material-symbols-outlined animate-spin align-middle mr-2">sync</span>
                     Loading inbound orders...
                   </td>
                 </tr>
               ) : error && !data ? (
                 <tr>
-                  <td colSpan={7} className="px-4 py-8 text-center text-status-danger-text">
+                  <td colSpan={canOperate ? 7 : 6} className="px-4 py-8 text-center text-status-danger-text">
                     Inbound orders could not be loaded.
                   </td>
                 </tr>
               ) : data && data.content.length > 0 ? (
                 data.content.map((o) => (
                   <tr key={o.id} className="hover:bg-app-bg/50 transition-colors">
-                    <td className="px-4 py-3">
+                    {canOperate && <td className="px-4 py-3">
                       <input
                         type="checkbox"
                         className="w-4 h-4 rounded accent-[#C45D16]"
+                        aria-label={`Select inbound order ${o.referenceNumber}`}
                         checked={selectedIds.includes(o.id.toString())}
                         onChange={() => toggleItem(o.id.toString())}
                       />
-                    </td>
+                    </td>}
                     <td className="px-4 py-3">
                       <Link
                         to={`/app/inbound/${o.id}`}
@@ -270,7 +278,7 @@ export function InboundOrdersPage() {
                 ))
               ) : (
                 <tr>
-                  <td colSpan={7}>
+                  <td colSpan={canOperate ? 7 : 6}>
                     <EmptyState
                       icon="south_west"
                       title="No inbound orders"

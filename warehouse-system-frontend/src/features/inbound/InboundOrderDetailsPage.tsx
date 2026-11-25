@@ -5,10 +5,14 @@ import { formatDateTime } from '../../lib/format'
 import { Button } from '../../components/ui/Button'
 import { StatusBadge } from '../../components/ui/StatusBadge'
 import { Modal } from '../../components/ui/Modal'
+import { useAuth } from '../auth/auth-context'
+import { OPERATIONS, hasAnyRole } from '../auth/permissions'
 import { confirmInboundOrder, getInboundOrder } from './api'
 import type { InboundOrderDto } from './api'
 
 export function InboundOrderDetailsPage() {
+  const { user } = useAuth()
+  const canOperate = hasAnyRole(user, OPERATIONS)
   const { id } = useParams()
   const orderId = Number(id)
   const [order, setOrder] = useState<InboundOrderDto | null>(null)
@@ -67,7 +71,7 @@ export function InboundOrderDetailsPage() {
             Warehouse #{order.warehouseId} · Created by {order.createdByName}
           </p>
         </div>
-        {order.status === 'DRAFT' && (
+        {canOperate && order.status === 'DRAFT' && (
           <Button icon="check_circle" onClick={() => setConfirmOpen(true)}>
             Confirm Receipt
           </Button>

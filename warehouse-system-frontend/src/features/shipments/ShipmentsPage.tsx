@@ -12,6 +12,7 @@ import { Button } from '../../components/ui/Button'
 import { StatusBadge } from '../../components/ui/StatusBadge'
 import { EmptyState } from '../../components/ui/EmptyState'
 import { Modal } from '../../components/ui/Modal'
+import { WorkflowProgress } from '../../components/ui/WorkflowProgress'
 import { FilterToolbar } from '../../components/ui/filter'
 import { ActiveFilterChips } from '../../components/ui/filter'
 import { listOutboundOrders } from '../outbound/api'
@@ -212,7 +213,7 @@ export function ShipmentsPage() {
                         >
                           <span className="material-symbols-outlined text-[18px]">visibility</span>
                         </Link>
-                        {s.status !== 'DELIVERED' && s.status !== 'CANCELLED' && (
+                        {canManage && s.status !== 'DELIVERED' && s.status !== 'CANCELLED' && (
                           <button
                             type="button"
                             className="p-2 rounded text-text-secondary hover:text-status-danger-text transition-colors"
@@ -291,17 +292,24 @@ function CreateShipmentModal({
   const [outboundOptions, setOutboundOptions] = useState<{ value: string; label: string }[]>([])
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
+  const [ordersLoading, setOrdersLoading] = useState(false)
+  const [currentStep, setCurrentStep] = useState(1)
 
   useEffect(() => {
     if (open) {
+      setCurrentStep(1)
+      setError(null)
+      setOrdersLoading(true)
       listOutboundOrders(undefined, 'DISPATCHED', 0, 100).then((d) =>
         setOutboundOptions(d.content.map((o) => ({ value: String(o.id), label: o.referenceNumber }))),
-      )
+      ).catch((err) => setError(getErrorMessage(err)))
+        .finally(() => setOrdersLoading(false))
     }
   }, [open])
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault()
+    if (currentStep !== 2) return
     setLoading(true)
     setError(null)
     try {
@@ -322,49 +330,95 @@ function CreateShipmentModal({
     }
   }
 
+  function continueToReview() {
+    if (!trackingNumber.trim() || !outboundOrderId) {
+      setError('Enter a tracking number and choose a dispatched outbound order.')
+      return
+    }
+    setError(null)
+    setCurrentStep(2)
+  }
+
+  const selectedOrder = outboundOptions.find((option) => option.value === outboundOrderId)?.label
+
   return (
     <Modal open={open} onClose={onClose} title="Create Shipment">
       <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
-        <div className="flex flex-col gap-1.5">
-          <label className="text-form-label text-text-primary">Tracking number *</label>
-          <input
-            className="h-10 px-3 text-body-default text-text-primary bg-surface border border-border-default rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/30"
-            placeholder="e.g. TRK-0000001"
-            value={trackingNumber}
-            onChange={(e) => setTrackingNumber(e.target.value)}
-            required
-          />
-        </div>
-        <div className="flex flex-col gap-1.5">
-          <label className="text-form-label text-text-primary">Outbound order *</label>
-          <Select
-            value={outboundOrderId}
-            onChange={setOutboundOrderId}
-            placeholder="Select dispatched order"
-            options={outboundOptions}
-          />
-        </div>
-        <div className="flex flex-col gap-1.5">
-          <label className="text-form-label text-text-primary">Carrier</label>
-          <input
-            className="h-10 px-3 text-body-default text-text-primary bg-surface border border-border-default rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/30"
-            placeholder="e.g. DHL Express"
-            value={carrierName}
-            onChange={(e) => setCarrierName(e.target.value)}
-          />
-        </div>
+        <WorkflowProgress steps={['Shipment details', 'Review']} currentStep={currentStep} />
+        {currentStep === 1 ? (
+          <>
+            <p className="text-caption-meta text-text-secondary">Link a tracking number to an order that has already been dispatched.</p>
+            <div className="flex flex-col gap-1.5">
+              <label htmlFor="shipment-tracking" className="text-form-label text-text-primary">Tracking number *</label>
+              <input
+                id="shipment-tracking"
+                className="h-10 px-3 text-body-default text-text-primary bg-surface border border-border-default rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/30"
+                placeholder="e.g. TRK-0000001"
+                value={trackingNumber}
+                onChange={(e) => setTrackingNumber(e.target.value)}
+                required
+              />
+            </div>
+            <div className="flex flex-col gap-1.5">
+              <label htmlFor="shipment-outbound-order" className="text-form-label text-text-primary">Dispatched outbound order *</label>
+              <Select
+                id="shipment-outbound-order"
+                value={outboundOrderId}
+                onChange={setOutboundOrderId}
+                placeholder="Select dispatched order"
+                options={outboundOptions}
+              />
+              {!ordersLoading && outboundOptions.length === 0 && !error && (
+                <p className="text-caption-meta text-text-secondary">
+                  No dispatched orders are available. <Link className="font-semibold text-primary hover:underline" to="/app/outbound">Review outbound orders</Link> and return after dispatch.
+                </p>
+              )}
+            </div>
+            <div className="flex flex-col gap-1.5">
+              <label htmlFor="shipment-carrier" className="text-form-label text-text-primary">Carrier <span className="text-text-secondary">(optional)</span></label>
+              <input
+                id="shipment-carrier"
+                className="h-10 px-3 text-body-default text-text-primary bg-surface border border-border-default rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/30"
+                placeholder="e.g. DHL Express"
+                value={carrierName}
+                onChange={(e) => setCarrierName(e.target.value)}
+              />
+            </div>
+          </>
+        ) : (
+          <section aria-labelledby="shipment-review-title" className="rounded-lg border border-border-default bg-app-bg p-4">
+            <h3 id="shipment-review-title" className="text-body-semibold text-text-primary">Confirm shipment details</h3>
+            <p className="mt-1 text-caption-meta text-text-secondary">Creating this shipment records its tracking information and links it to the dispatched order.</p>
+            <dl className="mt-4 space-y-3 text-body-default">
+              <div><dt className="text-caption-meta text-text-secondary">Tracking number</dt><dd className="font-semibold">{trackingNumber}</dd></div>
+              <div><dt className="text-caption-meta text-text-secondary">Outbound order</dt><dd className="font-semibold">{selectedOrder}</dd></div>
+              {carrierName && <div><dt className="text-caption-meta text-text-secondary">Carrier</dt><dd>{carrierName}</dd></div>}
+            </dl>
+          </section>
+        )}
 
         {error && (
-          <div className="p-3 rounded-lg bg-status-danger-bg text-status-danger-text text-caption-meta">{error}</div>
+          <div role="alert" className="p-3 rounded-lg bg-status-danger-bg text-status-danger-text text-caption-meta">{error}</div>
         )}
 
         <div className="flex items-center justify-end gap-2 mt-2">
           <Button type="button" variant="secondary" onClick={onClose}>
             Cancel
           </Button>
-          <Button type="submit" disabled={loading}>
-            {loading ? 'Creating...' : 'Create Shipment'}
-          </Button>
+          {currentStep === 2 && (
+            <Button type="button" variant="secondary" onClick={() => { setError(null); setCurrentStep(1) }}>
+              Back
+            </Button>
+          )}
+          {currentStep === 1 ? (
+            <Button type="button" disabled={ordersLoading || outboundOptions.length === 0} onClick={continueToReview}>
+              Review shipment
+            </Button>
+          ) : (
+            <Button type="submit" disabled={loading}>
+              {loading ? 'Creating...' : 'Create shipment'}
+            </Button>
+          )}
         </div>
       </form>
     </Modal>

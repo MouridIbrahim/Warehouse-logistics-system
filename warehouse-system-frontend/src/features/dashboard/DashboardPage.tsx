@@ -1,83 +1,122 @@
-import { useEffect, useState } from 'react'
-import { fetchDashboard, fetchProductCount, fetchWarehouseCount } from './api'
+import { useCallback, useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
+import { Button } from '../../components/ui/Button'
+import { useAuth } from '../auth/auth-context'
+import { ADMIN_MANAGER, AUDIT_VIEW, OPERATIONS, SHIPMENT_MANAGE, hasAnyRole } from '../auth/permissions'
+import { fetchDashboard } from './api'
 
 interface Stats {
-  totalProducts: number
-  totalWarehouses: number
   totalInventory: number
   pendingInbound: number
   pendingOutbound: number
   activeShipments: number
-  inboundVolume: number
-  outboundVolume: number
 }
 
-function StatCard({
-  label,
-  value,
-  icon,
-  tone = 'neutral',
-  hint,
-}: {
-  label: string
-  value: string
-  icon: string
-  tone?: 'neutral' | 'success' | 'warning' | 'info' | 'danger'
-  hint?: string
-}) {
-  const iconTone: Record<string, string> = {
-    neutral: 'bg-status-neutral-bg text-status-neutral-text',
-    success: 'bg-status-success-bg text-status-success-text',
-    warning: 'bg-status-warning-bg text-status-warning-text',
-    info: 'bg-status-info-bg text-status-info-text',
-    danger: 'bg-status-danger-bg text-status-danger-text',
-  }
-
+function StatCard({ label, value, icon }: { label: string; value: string; icon: string }) {
   return (
     <div className="bg-surface rounded-xl border border-border-default p-space-md shadow-sm flex flex-col justify-between">
       <div className="flex items-center justify-between">
         <span className="text-caption-meta font-semibold uppercase tracking-wider text-text-secondary">
           {label}
         </span>
-        <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${iconTone[tone]}`}>
+        <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-status-info-bg text-status-info-text">
           <span className="material-symbols-outlined text-[18px]">{icon}</span>
         </div>
       </div>
       <div className="mt-3">
         <div className="text-display-kpi font-bold text-text-primary tabular-nums">{value}</div>
-        {hint && <div className="text-caption-meta text-text-secondary mt-0.5">{hint}</div>}
       </div>
     </div>
   )
 }
 
 export function DashboardPage() {
+  const { user } = useAuth()
   const [stats, setStats] = useState<Stats | null>(null)
   const [error, setError] = useState<string | null>(null)
+  const [loading, setLoading] = useState(true)
 
-  useEffect(() => {
-    Promise.all([
-      fetchDashboard(undefined),
-      fetchProductCount(),
-      fetchWarehouseCount(),
-    ])
-      .then(([dash, products, warehouseCount]) => {
+  const loadDashboard = useCallback(() => {
+    setLoading(true)
+    setError(null)
+    fetchDashboard(undefined)
+      .then((dash) => {
         const activeShipments = (dash.shipmentStatusCounts ?? [])
           .filter((s) => !['DELIVERED', 'CANCELLED'].includes(s.status))
           .reduce((sum, s) => sum + s.count, 0)
         setStats({
-          totalProducts: products,
-          totalWarehouses: warehouseCount,
           totalInventory: dash.totalInventoryOnHand,
           pendingInbound: dash.pendingInboundOrders,
           pendingOutbound: dash.pendingOutboundOrders,
           activeShipments,
-          inboundVolume: dash.inboundVolume,
-          outboundVolume: dash.outboundVolume,
         })
       })
-      .catch(() => setError('Failed to load dashboard data.'))
+      .catch(() => setError('Dashboard data could not be loaded. Check your connection and try again.'))
+      .finally(() => setLoading(false))
   }, [])
+
+  useEffect(() => {
+    loadDashboard()
+  }, [loadDashboard])
+
+  const cards = hasAnyRole(user, ADMIN_MANAGER)
+    ? [
+        { label: 'Pending inbound', value: stats?.pendingInbound, icon: 'south_west' },
+        { label: 'Pending outbound', value: stats?.pendingOutbound, icon: 'north_east' },
+        { label: 'Active shipments', value: stats?.activeShipments, icon: 'local_shipping' },
+        { label: 'Inventory units', value: stats?.totalInventory, icon: 'package_2' },
+      ]
+    : hasAnyRole(user, OPERATIONS)
+      ? [
+        { label: 'Pending inbound', value: stats?.pendingInbound, icon: 'south_west' },
+        { label: 'Pending outbound', value: stats?.pendingOutbound, icon: 'north_east' },
+        { label: 'Inventory units', value: stats?.totalInventory, icon: 'package_2' },
+        ]
+      : hasAnyRole(user, SHIPMENT_MANAGE)
+        ? [
+          { label: 'Active shipments', value: stats?.activeShipments, icon: 'local_shipping' },
+          { label: 'Pending outbound', value: stats?.pendingOutbound, icon: 'north_east' },
+          ]
+        : hasAnyRole(user, AUDIT_VIEW)
+          ? [
+            { label: 'Inventory units', value: stats?.totalInventory, icon: 'package_2' },
+            { label: 'Pending inbound', value: stats?.pendingInbound, icon: 'south_west' },
+            { label: 'Pending outbound', value: stats?.pendingOutbound, icon: 'north_east' },
+            ]
+          : []
+
+  const quickActions = [
+    ...(hasAnyRole(user, OPERATIONS)
+      ? [
+          { icon: 'south_west', label: 'Receive goods', to: '/app/inbound/new' },
+          { icon: 'north_east', label: 'Create outbound order', to: '/app/outbound/new' },
+          { icon: 'qr_code_scanner', label: 'Cycle count', to: '/app/cycle-count' },
+        ]
+      : []),
+    ...(hasAnyRole(user, SHIPMENT_MANAGE)
+      ? [{ icon: 'local_shipping', label: 'Manage shipments', to: '/app/shipments' }]
+      : []),
+    ...(hasAnyRole(user, ADMIN_MANAGER)
+      ? [
+          { icon: 'inventory_2', label: 'Manage products', to: '/app/products' },
+          { icon: 'warehouse', label: 'Manage warehouses', to: '/app/warehouses' },
+        ]
+      : []),
+    ...(hasAnyRole(user, AUDIT_VIEW)
+      ? [
+          { icon: 'monitoring', label: 'View reports', to: '/app/reports' },
+          { icon: 'history', label: 'Review audit logs', to: '/app/audit-logs' },
+        ]
+      : []),
+  ]
+
+  const roleDescription = hasAnyRole(user, OPERATIONS)
+    ? 'Focus on receiving, dispatch preparation, and accurate stock records.'
+    : hasAnyRole(user, SHIPMENT_MANAGE)
+      ? 'Focus on shipment status and delivery progress.'
+      : hasAnyRole(user, AUDIT_VIEW)
+        ? 'Review warehouse activity, reports, and audit history.'
+        : 'Use the shortcuts below to access the areas available to your account.'
 
   return (
     <div>
@@ -85,81 +124,56 @@ export function DashboardPage() {
         <div>
           <div className="flex items-center gap-2">
             <h1 className="text-headline-h1 font-bold text-text-primary">Dashboard</h1>
-            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-status-neutral-bg text-status-neutral-text text-caption-meta">
-              <span className="w-1.5 h-1.5 rounded-full bg-text-secondary" />
-              Live Data
-            </span>
           </div>
           <p className="text-body-default text-text-secondary mt-0.5">
-            Real-time overview of warehouse transit operations.
+            {roleDescription}
           </p>
         </div>
       </div>
 
       {error ? (
-        <div className="mt-6 p-4 rounded-lg bg-status-danger-bg text-status-danger-text">
-          {error}
+        <div role="alert" className="mt-6 flex flex-col items-start gap-3 rounded-lg bg-status-danger-bg p-4 text-status-danger-text sm:flex-row sm:items-center sm:justify-between">
+          <span>{error}</span>
+          <Button variant="secondary" onClick={loadDashboard}>Retry</Button>
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-space-md mt-6">
-          <StatCard label="Total Products" value={stats ? stats.totalProducts.toLocaleString() : '—'} icon="inventory_2" />
-          <StatCard label="Warehouses" value={stats ? stats.totalWarehouses.toLocaleString() : '—'} icon="warehouse" />
-          <StatCard label="Inventory Units" value={stats ? stats.totalInventory.toLocaleString() : '—'} icon="package_2" tone="info" />
-          <StatCard label="Pending Inbound" value={stats ? stats.pendingInbound.toLocaleString() : '—'} icon="south_west" tone="warning" />
-          <StatCard label="Pending Outbound" value={stats ? stats.pendingOutbound.toLocaleString() : '—'} icon="north_east" tone="info" />
-          <StatCard label="Active Shipments" value={stats ? stats.activeShipments.toLocaleString() : '—'} icon="local_shipping" tone="success" />
-        </div>
-      )}
-
-      {stats && (
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-space-lg mt-6">
-          <div className="bg-surface rounded-xl border border-border-default p-space-lg shadow-sm">
-            <h2 className="text-headline-h3 font-semibold text-text-primary">Throughput Volume</h2>
-            <p className="text-caption-meta text-text-secondary mt-0.5">Cumulative inbound vs outbound units</p>
-            <div className="mt-4 flex items-end gap-8">
-              <div className="flex-1">
-                <div className="text-caption-meta text-text-secondary uppercase tracking-wider">Inbound</div>
-                <div className="text-display-kpi font-bold text-text-primary tabular-nums mt-1">
-                  {stats.inboundVolume.toLocaleString()}
-                </div>
-                <div className="mt-2 h-2 rounded-full bg-status-neutral-bg overflow-hidden">
-                  <div className="h-full bg-status-info rounded-full" style={{ width: '100%' }} />
-                </div>
-              </div>
-              <div className="flex-1">
-                <div className="text-caption-meta text-text-secondary uppercase tracking-wider">Outbound</div>
-                <div className="text-display-kpi font-bold text-text-primary tabular-nums mt-1">
-                  {stats.outboundVolume.toLocaleString()}
-                </div>
-                <div className="mt-2 h-2 rounded-full bg-status-neutral-bg overflow-hidden">
-                  <div className="h-full bg-sidebar-bg rounded-full" style={{ width: '100%' }} />
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="bg-surface rounded-xl border border-border-default p-space-lg shadow-sm">
-            <h2 className="text-headline-h3 font-semibold text-text-primary">Quick Actions</h2>
-            <p className="text-caption-meta text-text-secondary mt-0.5">Common operational routines</p>
-            <div className="grid grid-cols-2 gap-space-md mt-4">
-              {[
-                { icon: 'south_west', label: 'Receive Goods', to: '/app/inbound' },
-                { icon: 'north_east', label: 'Create Outbound', to: '/app/outbound' },
-                { icon: 'inventory_2', label: 'Manage Products', to: '/app/products' },
-                { icon: 'local_shipping', label: 'Track Shipments', to: '/app/shipments' },
-              ].map((a) => (
-                <a
-                  key={a.label}
-                  href={a.to}
-                  className="p-4 rounded-xl bg-app-bg hover:bg-surface-container transition-colors text-left flex flex-col gap-2"
-                >
-                  <span className="material-symbols-outlined text-[20px] text-primary">{a.icon}</span>
-                  <span className="text-body-semibold text-text-primary">{a.label}</span>
-                </a>
+        <>
+          {loading && !stats ? (
+            <p role="status" className="mt-6 text-body-default text-text-secondary">Loading your operational summary…</p>
+          ) : stats && cards.length > 0 ? (
+            <div aria-busy={loading} className="mt-6 grid grid-cols-1 gap-space-md sm:grid-cols-2 lg:grid-cols-3">
+              {cards.map((card) => (
+                <StatCard
+                  key={card.label}
+                  label={card.label}
+                  value={card.value?.toLocaleString() ?? '—'}
+                  icon={card.icon}
+                />
               ))}
             </div>
+          ) : null}
+
+          <div className="mt-6 bg-surface rounded-xl border border-border-default p-space-lg shadow-sm">
+            <h2 className="text-headline-h3 font-semibold text-text-primary">Your shortcuts</h2>
+            <p className="text-caption-meta text-text-secondary mt-0.5">Common tasks for your role</p>
+            {quickActions.length > 0 ? (
+              <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3">
+                {quickActions.map((action) => (
+                  <Link
+                    key={action.to}
+                    to={action.to}
+                    className="flex min-h-12 items-center gap-3 rounded-lg border border-border-default p-3 text-body-semibold text-text-primary transition-colors hover:bg-app-bg focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary"
+                  >
+                    <span className="material-symbols-outlined text-[20px] text-primary" aria-hidden="true">{action.icon}</span>
+                    {action.label}
+                  </Link>
+                ))}
+              </div>
+            ) : (
+              <p className="mt-4 text-body-default text-text-secondary">No shortcuts are available for this account.</p>
+            )}
           </div>
-        </div>
+        </>
       )}
     </div>
   )

@@ -10,6 +10,8 @@ import { StatusBadge } from '../../components/ui/StatusBadge'
 import { EmptyState } from '../../components/ui/EmptyState'
 import { FilterToolbar } from '../../components/ui/filter'
 import { ActiveFilterChips } from '../../components/ui/filter'
+import { useAuth } from '../auth/auth-context'
+import { OPERATIONS, hasAnyRole } from '../auth/permissions'
 import { listOutboundOrders, exportOutboundOrders } from './api'
 import type { OutboundOrderDto } from './api'
 import { listWarehouses } from '../warehouses/api'
@@ -21,6 +23,8 @@ const OUTBOUND_STATUS_OPTIONS = [
 ]
 
 export function OutboundOrdersPage() {
+  const { user } = useAuth()
+  const canOperate = hasAnyRole(user, OPERATIONS)
   const [term, setTerm] = useState('')
   const [status, setStatus] = useState('')
   const [warehouseId, setWarehouseId] = useState<number | null>(null)
@@ -70,9 +74,11 @@ export function OutboundOrdersPage() {
         title="Outbound Operations"
         description="Manage orders leaving your warehouses."
         actions={
-          <Link to="/app/outbound/new">
-            <Button icon="add">Create Outbound Order</Button>
-          </Link>
+          canOperate ? (
+            <Link to="/app/outbound/new">
+              <Button icon="add">Create Outbound Order</Button>
+            </Link>
+          ) : undefined
         }
       />
 
