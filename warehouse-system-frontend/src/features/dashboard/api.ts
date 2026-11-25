@@ -1,5 +1,4 @@
 import { api } from '../../lib/api'
-import type { PageResponse } from '../../types'
 
 export interface ShipmentStatusCount {
   status: string
@@ -31,17 +30,13 @@ export async function fetchDashboard(
 }
 
 export async function fetchProductCount(): Promise<number> {
-  const { data } = await api.get<PageResponse<unknown>>('/api/v1/products', {
-    params: { page: 0, size: 1 },
-  })
-  return data.totalElements
+  const { data } = await api.get<number>('/api/v1/products/count')
+  return data
 }
 
 export async function fetchWarehouseCount(): Promise<number> {
-  const { data } = await api.get<PageResponse<unknown>>('/api/v1/warehouses', {
-    params: { page: 0, size: 1 },
-  })
-  return data.totalElements
+  const { data } = await api.get<number>('/api/v1/warehouses/count')
+  return data
 }
 
 export async function downloadCustomReport(

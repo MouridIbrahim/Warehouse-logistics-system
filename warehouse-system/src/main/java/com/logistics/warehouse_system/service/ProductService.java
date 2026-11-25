@@ -10,6 +10,7 @@ import com.logistics.warehouse_system.exception.NotFoundException;
 import com.logistics.warehouse_system.repository.ProductRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,17 +33,45 @@ public class ProductService {
     @Transactional(readOnly = true)
     public PageResponse<ProductDto> list(String term, String unitOfMeasure, Boolean active,
                                          Instant from, Instant to, Pageable pageable) {
-        Page<Product> page = productRepository.search(term, unitOfMeasure, active, from, to, pageable);
+        Specification<Product> spec = searchSpec(term, unitOfMeasure, active, from, to);
+        Page<Product> page = productRepository.findAll(spec, pageable);
         List<ProductDto> content = page.getContent().stream().map(ProductDto::from).toList();
         return PageResponse.of(page, content);
+    }
+
+    private Specification<Product> searchSpec(String term, String unitOfMeasure, Boolean active,
+                                               Instant from, Instant to) {
+        return Specification.allOf(
+                term == null || term.isBlank()
+                        ? Specification.unrestricted()
+                        : (root, query, cb) -> cb.or(
+                                cb.like(cb.lower(root.get("sku")), "%" + term.trim().toLowerCase() + "%"),
+                                cb.like(cb.lower(root.get("name")), "%" + term.trim().toLowerCase() + "%")),
+                unitOfMeasure == null || unitOfMeasure.isBlank()
+                        ? Specification.unrestricted()
+                        : (root, query, cb) -> cb.equal(root.get("unitOfMeasure"), unitOfMeasure),
+                active == null
+                        ? Specification.unrestricted()
+                        : (root, query, cb) -> cb.equal(root.get("active"), active),
+                from == null
+                        ? Specification.unrestricted()
+                        : (root, query, cb) -> cb.greaterThanOrEqualTo(root.get("createdAt"), from),
+                to == null
+                        ? Specification.unrestricted()
+                        : (root, query, cb) -> cb.lessThanOrEqualTo(root.get("createdAt"), to));
+    }
+
+    @Transactional(readOnly = true)
+    public long count() {
+        return productRepository.count();
     }
 
     @Transactional(readOnly = true)
     public List<Map<String, Object>> exportAll(String term, String unitOfMeasure, Boolean active,
                                                Instant from, Instant to) {
-        List<Product> products = productRepository.search(term, unitOfMeasure, active, from, to,
-                org.springframework.data.domain.Pageable.unpaged())
-                .getContent();
+        List<Product> products = productRepository.findAll(
+                searchSpec(term, unitOfMeasure, active, from, to),
+                org.springframework.data.domain.Sort.by(org.springframework.data.domain.Sort.Direction.DESC, "createdAt", "id"));
         return products.stream().map(p -> {
             Map<String, Object> map = new java.util.HashMap<>();
             map.put("id", p.getId());

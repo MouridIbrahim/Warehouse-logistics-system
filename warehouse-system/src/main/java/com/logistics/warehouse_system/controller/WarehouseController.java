@@ -54,6 +54,11 @@ public class WarehouseController {
         return warehouseService.list(term, active, from, to, pageable);
     }
 
+    @GetMapping("/count")
+    public long count() {
+        return warehouseService.count();
+    }
+
     @GetMapping("/{id}")
     public WarehouseDto get(@PathVariable Long id) {
         return warehouseService.get(id);

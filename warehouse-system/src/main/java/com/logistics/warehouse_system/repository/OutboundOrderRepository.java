@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -13,7 +14,8 @@ import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
-public interface OutboundOrderRepository extends JpaRepository<OutboundOrder, Long> {
+public interface OutboundOrderRepository extends JpaRepository<OutboundOrder, Long>,
+        JpaSpecificationExecutor<OutboundOrder> {
 
     Optional<OutboundOrder> findByReferenceNumber(String referenceNumber);
 
@@ -35,23 +37,6 @@ public interface OutboundOrderRepository extends JpaRepository<OutboundOrder, Lo
 
     @EntityGraph(attributePaths = {"createdBy", "warehouse"})
     Page<OutboundOrder> findByStatusOrderByCreatedAtDesc(OutboundStatus status, Pageable pageable);
-
-    @EntityGraph(attributePaths = {"createdBy", "warehouse"})
-    @Query("""
-            select distinct o from OutboundOrder o
-            where (:term is null or lower(o.referenceNumber) like lower(concat('%', :term, '%')))
-              and (:status is null or o.status = :status)
-              and (:warehouseId is null or o.warehouse.id = :warehouseId)
-              and (:from is null or o.createdAt >= :from)
-              and (:to is null or o.createdAt <= :to)
-            order by o.createdAt desc, o.id desc
-            """)
-    Page<OutboundOrder> search(@Param("term") String term,
-                               @Param("status") OutboundStatus status,
-                               @Param("warehouseId") Long warehouseId,
-                               @Param("from") Instant from,
-                               @Param("to") Instant to,
-                               Pageable pageable);
 
     @EntityGraph(attributePaths = {"createdBy", "warehouse"})
     @Query("""

@@ -30,6 +30,7 @@ The LogiTrack Logistics Transit Warehouse Operation and Maintenance System under
 | 12 | `CreateInboundOrderPage` form draft persistence incomplete — draft never saved | Medium | Frontend |
 | 13 | `refresh()` in 6 pages doesn't set loading state — UI flashes on data refresh | Low | Frontend |
 | 14 | CSV export endpoints return 400 when date filters provided — date format mismatch between frontend date picker and backend | High | Frontend + Backend |
+| 15 | Dashboard product and warehouse counts returned HTTP 500 from PostgreSQL parameter-type and custom HQL search issues | High | Frontend + Backend |
 
 ---
 
@@ -296,7 +297,7 @@ All backend endpoints compile and all 33 backend tests pass. All frontend pages 
 | Page/Feature | Status | Notes |
 |-------------|--------|-------|
 | Login / Register | ✅ Working | ToastProvider wraps these routes; token refresh handles 401 |
-| Dashboard | ✅ Working | Displays real data from backend |
+| Dashboard | ✅ Working | Verified 1,000 products, 1 warehouse, and live aggregate dashboard data |
 | Products (list, create, edit, export) | ✅ Working | refresh() shows loading state |
 | Warehouses (list, details, create, edit, export) | ✅ Working | refresh() shows loading state |
 | Inventory (balances, movements, reverse, export) | ✅ Working | refresh() shows loading state |
@@ -405,6 +406,7 @@ All backend endpoints compile and all 33 backend tests pass. All frontend pages 
 | `src/features/shipments/ShipmentsPage.tsx` | Fixed refresh() loading state |
 | `src/features/users/UsersPage.tsx` | Fixed refresh() loading state |
 | `src/features/reports/ReportsPage.tsx` | Removed mock TrendChart; added warehouse selector; added custom report downloads |
+| `src/features/dashboard/api.ts` | Replaced paginated product/warehouse list calls with dedicated count endpoints |
 
 ### Backend (`warehouse-system/`)
 

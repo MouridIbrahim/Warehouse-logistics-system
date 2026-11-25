@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import type { PageResponse } from '../../types'
 import { formatDateTime } from '../../lib/format'
+import { getErrorMessage } from '../../lib/api'
 import { PageHeader } from '../../components/ui/PageHeader'
 import { Pagination } from '../../components/ui/Pagination'
 import { Button } from '../../components/ui/Button'
@@ -29,13 +30,18 @@ export function InboundOrdersPage() {
   const [size, setSize] = useState(20)
   const [data, setData] = useState<PageResponse<InboundOrderDto> | null>(null)
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
   const [warehouses, setWarehouses] = useState<WarehouseDto[]>([])
   const [selectedIds, setSelectedIds] = useState<string[]>([])
   const [bulkLoading, setBulkLoading] = useState(false)
 
   function refresh() {
     setLoading(true)
-    listInboundOrders(term || undefined, status || undefined, page, size, warehouseId ? Number(warehouseId) : undefined, from || undefined, to || undefined).then(setData).finally(() => setLoading(false))
+    setError(null)
+    listInboundOrders(term || undefined, status || undefined, page, size, warehouseId ? Number(warehouseId) : undefined, from || undefined, to || undefined)
+      .then(setData)
+      .catch((err) => setError(getErrorMessage(err)))
+      .finally(() => setLoading(false))
   }
 
   const toggleAll = (checked: boolean) => {
@@ -71,6 +77,7 @@ export function InboundOrdersPage() {
 
   useEffect(() => {
     setLoading(true)
+    setError(null)
     listInboundOrders(
       term || undefined,
       status || undefined,
@@ -81,6 +88,7 @@ export function InboundOrdersPage() {
       to || undefined,
     )
       .then(setData)
+      .catch((err) => setError(getErrorMessage(err)))
       .finally(() => setLoading(false))
   }, [term, status, warehouseId, from, to, page, size])
 
@@ -105,6 +113,12 @@ export function InboundOrdersPage() {
           </Link>
         }
       />
+
+      {error && (
+        <div role="alert" className="mt-4 p-3 rounded-lg bg-status-danger-bg text-status-danger-text text-caption-meta">
+          Could not load inbound orders: {error}
+        </div>
+      )}
 
       {activeChips.length > 0 && (
         <ActiveFilterChips chips={activeChips} onClearAll={() => { setTerm(''); setStatus(''); setWarehouseId(null); setFrom(''); setTo('') }} />
@@ -200,6 +214,12 @@ export function InboundOrdersPage() {
                     Loading inbound orders...
                   </td>
                 </tr>
+              ) : error && !data ? (
+                <tr>
+                  <td colSpan={7} className="px-4 py-8 text-center text-status-danger-text">
+                    Inbound orders could not be loaded.
+                  </td>
+                </tr>
               ) : data && data.content.length > 0 ? (
                 data.content.map((o) => (
                   <tr key={o.id} className="hover:bg-app-bg/50 transition-colors">
@@ -250,7 +270,7 @@ export function InboundOrdersPage() {
                 ))
               ) : (
                 <tr>
-                  <td colSpan={6}>
+                  <td colSpan={7}>
                     <EmptyState
                       icon="south_west"
                       title="No inbound orders"

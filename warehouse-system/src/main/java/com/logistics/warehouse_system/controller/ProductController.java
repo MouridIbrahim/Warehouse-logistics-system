@@ -55,6 +55,11 @@ public class ProductController {
         return productService.list(term, unitOfMeasure, active, from, to, pageable);
     }
 
+    @GetMapping("/count")
+    public long count() {
+        return productService.count();
+    }
+
     @GetMapping("/{id}")
     public ProductDto get(@PathVariable Long id) {
         return productService.get(id);

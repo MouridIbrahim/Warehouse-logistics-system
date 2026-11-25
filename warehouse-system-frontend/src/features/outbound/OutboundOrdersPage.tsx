@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import type { PageResponse } from '../../types'
 import { formatDateTime } from '../../lib/format'
+import { getErrorMessage } from '../../lib/api'
 import { PageHeader } from '../../components/ui/PageHeader'
 import { Pagination } from '../../components/ui/Pagination'
 import { Button } from '../../components/ui/Button'
@@ -29,6 +30,7 @@ export function OutboundOrdersPage() {
   const [size, setSize] = useState(20)
   const [data, setData] = useState<PageResponse<OutboundOrderDto> | null>(null)
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
   const [warehouses, setWarehouses] = useState<WarehouseDto[]>([])
 
   useEffect(() => {
@@ -37,6 +39,7 @@ export function OutboundOrdersPage() {
 
   useEffect(() => {
     setLoading(true)
+    setError(null)
     listOutboundOrders(
       term || undefined,
       status || undefined,
@@ -47,6 +50,7 @@ export function OutboundOrdersPage() {
       to || undefined,
     )
       .then(setData)
+      .catch((err) => setError(getErrorMessage(err)))
       .finally(() => setLoading(false))
   }, [term, status, warehouseId, from, to, page, size])
 
@@ -71,6 +75,12 @@ export function OutboundOrdersPage() {
           </Link>
         }
       />
+
+      {error && (
+        <div role="alert" className="mt-4 p-3 rounded-lg bg-status-danger-bg text-status-danger-text text-caption-meta">
+          Could not load outbound orders: {error}
+        </div>
+      )}
 
       {activeChips.length > 0 && (
         <ActiveFilterChips chips={activeChips} onClearAll={() => { setTerm(''); setStatus(''); setWarehouseId(null); setFrom(''); setTo('') }} />
@@ -136,6 +146,12 @@ export function OutboundOrdersPage() {
                   <td colSpan={6} className="px-4 py-8 text-center text-text-secondary">
                     <span className="material-symbols-outlined animate-spin align-middle mr-2">sync</span>
                     Loading outbound orders...
+                  </td>
+                </tr>
+              ) : error && !data ? (
+                <tr>
+                  <td colSpan={6} className="px-4 py-8 text-center text-status-danger-text">
+                    Outbound orders could not be loaded.
                   </td>
                 </tr>
               ) : data && data.content.length > 0 ? (

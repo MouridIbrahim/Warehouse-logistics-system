@@ -48,10 +48,12 @@ public class InboundController {
     public PageResponse<InboundOrderDto> list(@RequestParam(required = false) String term,
                                               @RequestParam(required = false) InboundStatus status,
                                               @RequestParam(required = false) Long warehouseId,
-                                              @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Instant from,
-                                              @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Instant to,
+                                              @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from,
+                                              @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to,
                                               @PageableDefault(size = 20) Pageable pageable) {
-        return inboundService.list(term, status, warehouseId, from, to, pageable);
+        Instant fromInstant = from != null ? from.atStartOfDay(ZoneOffset.UTC).toInstant() : null;
+        Instant toInstant = to != null ? to.plusDays(1).atStartOfDay(ZoneOffset.UTC).toInstant() : null;
+        return inboundService.list(term, status, warehouseId, fromInstant, toInstant, pageable);
     }
 
     @GetMapping("/{id}")

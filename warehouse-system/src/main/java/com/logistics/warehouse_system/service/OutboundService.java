@@ -28,6 +28,8 @@ import com.logistics.warehouse_system.repository.WarehouseRepository;
 import com.logistics.warehouse_system.security.SecurityUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -71,17 +73,40 @@ public class OutboundService {
     @Transactional(readOnly = true)
     public PageResponse<OutboundOrderDto> list(String term, OutboundStatus status, Long warehouseId,
                                                Instant from, Instant to, Pageable pageable) {
-        Page<OutboundOrder> page = outboundOrderRepository.search(term, status, warehouseId, from, to, pageable);
+        Page<OutboundOrder> page = outboundOrderRepository.findAll(
+                searchSpec(term, status, warehouseId, from, to), pageable);
         List<OutboundOrderDto> content = page.getContent().stream().map(OutboundOrderDto::summary).toList();
         return PageResponse.of(page, content);
+    }
+
+    private Specification<OutboundOrder> searchSpec(String term, OutboundStatus status, Long warehouseId,
+                                                    Instant from, Instant to) {
+        return Specification.allOf(
+                term == null || term.isBlank()
+                        ? Specification.unrestricted()
+                        : (root, query, cb) -> cb.like(
+                                cb.lower(root.get("referenceNumber")),
+                                "%" + term.trim().toLowerCase(java.util.Locale.ROOT) + "%"),
+                status == null
+                        ? Specification.unrestricted()
+                        : (root, query, cb) -> cb.equal(root.get("status"), status),
+                warehouseId == null
+                        ? Specification.unrestricted()
+                        : (root, query, cb) -> cb.equal(root.get("warehouse").get("id"), warehouseId),
+                from == null
+                        ? Specification.unrestricted()
+                        : (root, query, cb) -> cb.greaterThanOrEqualTo(root.get("createdAt"), from),
+                to == null
+                        ? Specification.unrestricted()
+                        : (root, query, cb) -> cb.lessThanOrEqualTo(root.get("createdAt"), to));
     }
 
     @Transactional(readOnly = true)
     public List<Map<String, Object>> exportAll(String term, OutboundStatus status, Long warehouseId,
                                                Instant from, Instant to) {
-        List<OutboundOrder> orders = outboundOrderRepository.search(term, status, warehouseId, from, to,
-                org.springframework.data.domain.Pageable.unpaged())
-                .getContent();
+        List<OutboundOrder> orders = outboundOrderRepository.findAll(
+                searchSpec(term, status, warehouseId, from, to),
+                Sort.by(Sort.Direction.DESC, "createdAt", "id"));
         return orders.stream().map(o -> {
             Map<String, Object> map = new java.util.HashMap<>();
             map.put("id", o.getId());
