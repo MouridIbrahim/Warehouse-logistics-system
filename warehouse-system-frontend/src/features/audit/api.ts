@@ -15,9 +15,9 @@ export interface AuditDto {
 export async function listAuditLogs(
   entityType?: string,
   action?: string,
+  actorUserId?: string,
   from?: string,
   to?: string,
-  actorUserId?: string,
   page = 0,
   size = 20,
 ): Promise<PageResponse<AuditDto>> {

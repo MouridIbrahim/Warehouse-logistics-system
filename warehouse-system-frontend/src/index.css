@@ -42,8 +42,60 @@
 }
 
 @layer components {
+  .heading-1 {
+    @apply text-6xl font-semibold leading-none tracking-tight;
+  }
+
+  .heading-2 {
+    @apply text-5xl font-semibold leading-none tracking-tight;
+  }
+
+  .heading-3 {
+    @apply text-4xl font-semibold leading-10;
+  }
+
+  .heading-4 {
+    @apply text-3xl font-semibold leading-9;
+  }
+
+  .heading-6 {
+    @apply text-xl font-semibold leading-7;
+  }
+
+  .title-2 {
+    @apply text-lg font-medium leading-7;
+  }
+
+  .title-3 {
+    @apply text-base font-medium leading-6;
+  }
+
+  .body-3 {
+    @apply text-base font-normal leading-6;
+  }
+
+  .body-6 {
+    @apply text-sm font-normal leading-5;
+  }
+
+  .button-md {
+    @apply text-base font-semibold leading-6;
+  }
+
+  .caption-3 {
+    @apply text-xs font-semibold leading-4;
+  }
+
+  .caption-4 {
+    @apply text-xs font-medium leading-4;
+  }
+
+  .caption-5 {
+    @apply text-xs font-normal leading-4;
+  }
+
   .material-symbols-outlined {
-    font-family: 'Material Symbols Outlined';
+    font-family: 'Material Symbols Outlined Variable';
     font-weight: normal;
     font-style: normal;
     font-size: 20px;

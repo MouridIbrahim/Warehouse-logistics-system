@@ -55,7 +55,7 @@ export default {
         'table-data': ['13px', '1.4'],
       },
       fontFamily: {
-        sans: ['Inter', 'system-ui', 'sans-serif'],
+        sans: ['Geist', 'system-ui', 'sans-serif'],
       },
       borderRadius: {
         card: '12px',

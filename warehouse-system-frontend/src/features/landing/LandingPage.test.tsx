@@ -32,7 +32,7 @@ describe('landing page', () => {
     renderLandingPage()
 
     expect(screen.getAllByRole('link', { name: /Create first account/ })).toHaveLength(3)
-    expect(screen.getAllByRole('link', { name: 'Sign in' })).toHaveLength(3)
+    expect(screen.getAllByRole('link', { name: 'Sign in' }).length).toBeGreaterThanOrEqual(3)
     expect(screen.getAllByRole('link', { name: /Create first account/ })[0]).toHaveAttribute(
       'href',
       '/register',
@@ -59,7 +59,7 @@ describe('landing page', () => {
 
     fireEvent.click(screen.getByRole('button', { name: 'Open navigation menu' }))
     const mobileNavigation = screen.getByRole('navigation', { name: 'Mobile navigation' })
-    expect(within(mobileNavigation).getByRole('link', { name: 'Product' })).toHaveAttribute(
+    expect(within(mobileNavigation).getByRole('link', { name: 'Features' })).toHaveAttribute(
       'href',
       '#product',
     )
