@@ -2,7 +2,7 @@
 
 ## 1. Executive Summary
 
-The LogiTrack Logistics Transit Warehouse Operation and Maintenance System underwent a maintenance and stabilization pass against the current worktree. The frontend production build and strict TypeScript check pass, all 9 frontend tests pass, and the backend Maven suite passes all 35 tests. The frontend lint command exits successfully with existing warnings.
+The LogiTrack Logistics Transit Warehouse Operation and Maintenance System underwent a maintenance and stabilization pass against the current worktree. The frontend production build and strict TypeScript check pass, all 12 frontend tests pass, and the backend Maven suite passes all 35 tests. The frontend lint command exits successfully with existing warnings.
 
 **Previously identified critical fixes:** 7 (including authentication token expiration, inventory cycle count data integrity, LOW_STOCK filter threshold, and missing ToastProvider on auth routes). Additional functional fixes are listed below.
 
@@ -347,7 +347,7 @@ Added `refreshToken()` API function to `auth/api.ts`.
 
 ## 5. Functional Verification
 
-The backend and frontend builds pass; all 35 backend tests and 9 frontend tests pass. A live Docker deployment returned healthy status. The authenticated API smoke matrix passed all 25 checks, including date-filtered list requests and all four CSV report types with and without date filters.
+The backend and frontend builds pass; all 35 backend tests and 12 frontend tests pass. A live Docker deployment returned healthy status. The authenticated API smoke matrix passed all 25 checks, including date-filtered list requests and all four CSV report types with and without date filters.
 
 ### Pages and Features Verified
 
@@ -357,7 +357,7 @@ The backend and frontend builds pass; all 35 backend tests and 9 frontend tests 
 | Dashboard | ✅ Smoke-tested | Live aggregate metrics and core counts rendered |
 | Products / Warehouses | ✅ API-smoke-tested | Lists and date-filtered requests returned HTTP 200 |
 | Inventory / Movement History | ✅ Smoke-tested | Balance and movement lists rendered; movement query returned HTTP 200 |
-| Cycle Counting | ✅ Regression-tested | Existing test coverage and build pass; no live mutation performed |
+| Cycle Counting | ✅ Implemented | Camera and imported-image barcode/QR scans select an exact-SKU inventory item; physical camera decoding still needs device-level verification |
 | Inbound / Outbound Orders | ✅ Smoke-tested | Lists rendered; sample item counts matched detail data |
 | Shipments | ✅ Smoke-tested | Shipment list rendered 20 populated rows |
 | Reports & Analytics | ✅ Smoke-tested | Metrics rendered; all four export buttons called endpoints returning HTTP 200 |
@@ -378,9 +378,9 @@ The backend and frontend builds pass; all 35 backend tests and 9 frontend tests 
 
 ### Frontend
 - TypeScript strict check: ✅ Pass (0 errors)
-- Vite production build: ✅ Pass (`✓ built in 1.72s`)
-- Vitest tests: ✅ Pass (3 files, 9 tests)
-- Test files: `components/ui/StatusBadge.test.tsx`, `features/auth/permissions.test.ts`, `lib/format.test.ts`
+- Vite production build: ✅ Pass
+- Vitest tests: ✅ Pass (4 files, 12 tests)
+- Test files: `components/ui/StatusBadge.test.tsx`, `components/ui/BarcodeScanner.test.tsx`, `features/auth/permissions.test.ts`, `lib/format.test.ts`
 
 ### Backend
 - Maven compile: ✅ Pass (BUILD SUCCESS)
@@ -399,10 +399,9 @@ The backend and frontend builds pass; all 35 backend tests and 9 frontend tests 
 |---|-------|----------|-------|
 | 1 | Bulk confirm/dispatch (Phase 2.6) not fully implemented | Low | Individual confirm/dispatch endpoints exist; bulk multi-select UI not built |
 | 2 | No scheduled reports (Phase 3.4 "Scheduled" part) | Low | Custom report export endpoints exist; scheduling/cron not implemented |
-| 3 | Barcode/QR scanning (Phase 3.1) is simulated via prompt | Low | `BarcodeScanner` component exists but uses `window.prompt` simulation |
-| 4 | Dashboard has no warehouse selector | Low | Backend supports warehouseId filter; frontend DashboardPage doesn't expose it (ReportsPage does) |
-| 5 | `role_permissions` table has no data | Low | Backend uses `hasAnyRole()` not `hasAuthority()`, so permissions table is unused |
-| 6 | Automated browser E2E suite is not available | Medium | No project Playwright suite/config was found. The local browser binary was missing; browser installation stalled and the CDN check failed with `CRYPT_E_REVOCATION_OFFLINE`. Manual integrated-browser smoke checks were used instead. |
+| 3 | Dashboard has no warehouse selector | Low | Backend supports warehouseId filter; frontend DashboardPage doesn't expose it (ReportsPage does) |
+| 4 | `role_permissions` table has no data | Low | Backend uses `hasAnyRole()` not `hasAuthority()`, so permissions table is unused |
+| 5 | Automated browser E2E suite is not available | Medium | No project Playwright suite/config was found. The local browser binary was missing; browser installation stalled and the CDN check failed with `CRYPT_E_REVOCATION_OFFLINE`. Manual integrated-browser smoke checks were used instead. |
 
 ---
 
@@ -419,7 +418,7 @@ The backend and frontend builds pass; all 35 backend tests and 9 frontend tests 
 - Security headers (CSP, HSTS, X-Content-Type-Options, X-Frame-Options)
 - Rate limiting on login/register (10 requests/60 seconds)
 - Account lockout after 5 failed attempts
-- All 35 backend tests and 9 frontend tests passing
+- All 35 backend tests and 12 frontend tests passing
 - Both production builds succeeding
 
 ### ⚠️ Needs Attention Before Production
@@ -443,6 +442,11 @@ The backend and frontend builds pass; all 35 backend tests and 9 frontend tests 
 | `src/features/auth/auth-context.tsx` | No changes (already correct) |
 | `src/app/router.tsx` | Added ToastProvider wrapping for login/register/landing routes |
 | `src/features/inventory/CycleCountPage.tsx` | Fixed search, locationId, cycleCount params, toast notifications, disabled state |
+| `src/features/inventory/CycleCountPage.tsx` | Added camera scanning and scanned-SKU inventory selection |
+| `src/components/ui/BarcodeScanner.tsx` | Added camera-based barcode/QR reader and camera lifecycle cleanup |
+| `src/components/ui/BarcodeScanner.test.tsx` | Added camera, permission-error, and imported-image decoding tests |
+| `src/components/layout/AppSidebar.tsx` | Added visible Cycle Counting navigation |
+| `package.json` | Added `@zxing/browser` scanner dependency |
 | `src/features/inventory/api.ts` | Made `locationId` optional in `cycleCount()` |
 | `src/features/inventory/InventoryPage.tsx` | Fixed MovementsTable refresh() loading state; Reverse button loading |
 | `src/features/products/ProductsPage.tsx` | Fixed refresh() loading state |

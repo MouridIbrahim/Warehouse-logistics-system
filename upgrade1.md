@@ -22,7 +22,7 @@
 
 ### Phase 1 Acceptance Criteria
 - [x] All 30 backend tests pass
-- [x] All 9 frontend tests pass
+- [x] All frontend tests pass (currently 12 tests)
 - [x] Both frontend and backend production builds succeed
 - [x] Security headers present in all responses
 
@@ -48,7 +48,7 @@
 
 ### Phase 2 Acceptance Criteria — Met
 - [x] All 30 backend tests pass
-- [x] All 9 frontend tests pass
+- [x] All frontend tests pass (currently 12 tests)
 - [x] Both frontend and backend production builds succeed
 - [x] Stock reservation prevents double-allocation (tested in WarehouseIntegrationTest)
 - [x] CSV export works for all 6 list pages (Products, Warehouses, Inbound, Outbound, Shipments, Inventory)
@@ -66,8 +66,8 @@
 
 | ID | Task | Status |
 |----|------|--------|
-| 3.1 | Barcode/QR code scanning | ✅ DONE — `BarcodeScanner` component created, wired into product selection flow |
-| 3.2 | Cycle counting workflow | ✅ DONE — Backend: `cycleCount` service method + `GET/POST /api/v1/inventory/cycle-count` endpoint. Frontend: `CycleCountPage.tsx` with scan-input UI |
+| 3.1 | Barcode/QR code scanning | ✅ DONE — `BarcodeScanner` is available from Cycle Counting with live camera scanning and image import; decoded values match an exact product SKU |
+| 3.2 | Cycle counting workflow | ✅ DONE — Backend: `cycleCount` service method + `POST /api/v1/inventory/cycle-count` endpoint. Frontend: `CycleCountPage.tsx` includes camera scan, inventory selection, and count entry |
 | 3.3 | Shipment tracking + POD upload | ✅ DONE — Backend: Shipment entity podFileName/podUploadedAt fields, V12 migration, uploadPod/downloadPod service methods + POST/GET /api/v1/shipments/{id}/pod endpoints. Frontend: POD upload modal + download button on ShipmentDetailsPage |
 | 3.4 | Scheduled + custom reports | ✅ DONE — Backend: ReportService inventoryMovements/inboundSummary/outboundSummary/shipmentSummary methods + GET /api/v1/reports/{type} CSV export endpoints. Frontend: ReportsPage warehouse selector + custom report type buttons with CSV download |
 | 3.5 | Split shipment support | ✅ DONE — Backend: `ShipmentService.splitShipment()` method + `POST /api/v1/shipments/{id}/split` endpoint. Frontend: Split button on ShipmentsPage rows for PENDING/IN_TRANSIT shipments |

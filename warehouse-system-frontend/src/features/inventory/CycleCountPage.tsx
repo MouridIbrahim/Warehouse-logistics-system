@@ -1,14 +1,21 @@
-import { useEffect, useState } from 'react'
+import { lazy, Suspense, useCallback, useEffect, useState } from 'react'
 import { getErrorMessage } from '../../lib/api'
 import type { PageResponse } from '../../types'
 import { PageHeader } from '../../components/ui/PageHeader'
 import { Pagination } from '../../components/ui/Pagination'
 import { Button } from '../../components/ui/Button'
 import { EmptyState } from '../../components/ui/EmptyState'
+import { Modal } from '../../components/ui/Modal'
 import { FilterToolbar } from '../../components/ui/filter'
 import { useToast } from '../../components/ui/toast'
 import { listBalances, cycleCount } from './api'
 import type { InventoryBalanceDto } from './api'
+import { listProducts } from '../products/api'
+import type { ProductDto } from '../products/api'
+
+const BarcodeScanner = lazy(() =>
+  import('../../components/ui/BarcodeScanner').then((module) => ({ default: module.BarcodeScanner })),
+)
 
 const QUANTITY_OPTIONS = [
   { value: 'LOW_STOCK', label: 'Low Stock (< threshold)' },
@@ -28,6 +35,9 @@ export function CycleCountPage() {
   const [loading, setLoading] = useState(true)
   const [countedQuantities, setCountedQuantities] = useState<Record<string, string>>({})
   const [notes, setNotes] = useState('')
+  const [scannerOpen, setScannerOpen] = useState(false)
+  const [scanLookupLoading, setScanLookupLoading] = useState(false)
+  const [selectedProduct, setSelectedProduct] = useState<ProductDto | null>(null)
 
   useEffect(() => {
     setLoading(true)
@@ -57,6 +67,48 @@ export function CycleCountPage() {
     }
   }
 
+  const handleScannedCode = useCallback(async (scannedValue: string) => {
+    setScannerOpen(false)
+    setScanLookupLoading(true)
+
+    try {
+      const sku = scannedValue.trim()
+      const products = await listProducts(sku, 0, 100)
+      const product = products.content.find(
+        (candidate) => candidate.sku.trim().toLowerCase() === sku.toLowerCase(),
+      )
+
+      if (!product) {
+        addToast({
+          type: 'error',
+          title: 'Product not found',
+          message: `No product matches the scanned SKU "${sku}".`,
+        })
+        return
+      }
+
+      setSelectedProduct(product)
+      setProductId(String(product.id))
+      setLocationId('')
+      setQuantityCondition('')
+      setSearch('')
+      setPage(0)
+      addToast({
+        type: 'success',
+        title: 'Product selected',
+        message: `${product.sku} — ${product.name}`,
+      })
+    } catch (err) {
+      addToast({
+        type: 'error',
+        title: 'Product lookup failed',
+        message: getErrorMessage(err),
+      })
+    } finally {
+      setScanLookupLoading(false)
+    }
+  }, [addToast])
+
   const filtered = data?.content.filter(
     (b) =>
       !search ||
@@ -69,6 +121,17 @@ export function CycleCountPage() {
       <PageHeader
         title="Cycle Counting"
         description="Record physical stock counts and reconcile with system records."
+        actions={
+          <Button
+            type="button"
+            variant="secondary"
+            icon="qr_code_scanner"
+            onClick={() => setScannerOpen(true)}
+            disabled={scanLookupLoading}
+          >
+            {scanLookupLoading ? 'Finding product...' : 'Scan SKU'}
+          </Button>
+        }
       />
 
       <div className="mt-6 bg-surface rounded-xl border border-border-default shadow-sm overflow-hidden">
@@ -83,9 +146,14 @@ export function CycleCountPage() {
               {
                 key: 'productId',
                 value: productId,
-                onChange: (v) => setProductId(v),
-                options: [],
-                placeholder: 'Product ID',
+                onChange: (v) => {
+                  setProductId(v)
+                  if (!v) setSelectedProduct(null)
+                },
+                options: selectedProduct
+                  ? [{ value: String(selectedProduct.id), label: `${selectedProduct.sku} — ${selectedProduct.name}` }]
+                  : [],
+                placeholder: 'Scanned product',
               },
               {
                 key: 'locationId',
@@ -102,7 +170,12 @@ export function CycleCountPage() {
                 placeholder: 'Quantity condition',
               },
             ]}
-            onReset={() => { setProductId(''); setLocationId(''); setQuantityCondition('') }}
+            onReset={() => {
+              setProductId('')
+              setSelectedProduct(null)
+              setLocationId('')
+              setQuantityCondition('')
+            }}
           />
         </div>
 
@@ -214,6 +287,14 @@ export function CycleCountPage() {
           />
         )}
       </div>
+      <Modal open={scannerOpen} onClose={() => setScannerOpen(false)} title="Scan SKU barcode or QR code">
+        <Suspense fallback={<p role="status">Loading camera scanner...</p>}>
+          <BarcodeScanner onDetected={handleScannedCode} />
+        </Suspense>
+        <p className="mt-3 text-caption-meta text-text-secondary">
+          The code must contain the product&apos;s exact SKU. Allow camera access for live scanning, or import an image instead.
+        </p>
+      </Modal>
     </div>
   )
 }

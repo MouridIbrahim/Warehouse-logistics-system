@@ -22,6 +22,7 @@ const NAV_GROUPS: NavGroup[] = [
       { label: 'Products', icon: 'inventory_2', to: '/app/products', roles: ALL_ROLES },
       { label: 'Warehouses', icon: 'warehouse', to: '/app/warehouses', roles: ALL_ROLES },
       { label: 'Inventory', icon: 'package_2', to: '/app/inventory', roles: ALL_ROLES },
+      { label: 'Cycle Counting', icon: 'qr_code_scanner', to: '/app/cycle-count', roles: ALL_ROLES },
     ],
   },
   {
