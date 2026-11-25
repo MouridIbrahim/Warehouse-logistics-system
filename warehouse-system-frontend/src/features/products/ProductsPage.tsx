@@ -79,11 +79,11 @@ export function ProductsPage() {
   }
 
   const activeChips = [
-    ...(term ? [{ key: 'search', label: `Search: "${term}"`, value: term, onRemove: () => setTerm('') }] : []),
-    ...(unitOfMeasure ? [{ key: 'unitOfMeasure', label: `Unit: ${unitOfMeasure}`, value: unitOfMeasure, onRemove: () => setUnitOfMeasure('') }] : []),
-    ...(active ? [{ key: 'active', label: `Status: ${active === 'true' ? 'Active' : 'Inactive'}`, value: active, onRemove: () => setActive('') }] : []),
-    ...(from ? [{ key: 'from', label: `From: ${from}`, value: from, onRemove: () => setFrom('') }] : []),
-    ...(to ? [{ key: 'to', label: `To: ${to}`, value: to, onRemove: () => setTo('') }] : []),
+    ...(term ? [{ key: 'search', label: `Search: "${term}"`, value: term, onRemove: () => { setTerm(''); setPage(0) } }] : []),
+    ...(unitOfMeasure ? [{ key: 'unitOfMeasure', label: `Unit: ${unitOfMeasure}`, value: unitOfMeasure, onRemove: () => { setUnitOfMeasure(''); setPage(0) } }] : []),
+    ...(active ? [{ key: 'active', label: `Status: ${active === 'true' ? 'Active' : 'Inactive'}`, value: active, onRemove: () => { setActive(''); setPage(0) } }] : []),
+    ...(from ? [{ key: 'from', label: `From: ${from}`, value: from, onRemove: () => { setFrom(''); setPage(0) } }] : []),
+    ...(to ? [{ key: 'to', label: `To: ${to}`, value: to, onRemove: () => { setTo(''); setPage(0) } }] : []),
   ]
 
   return (
@@ -101,7 +101,7 @@ export function ProductsPage() {
       />
 
       {activeChips.length > 0 && (
-        <ActiveFilterChips chips={activeChips} onClearAll={() => { setTerm(''); setUnitOfMeasure(''); setActive(''); setFrom(''); setTo('') }} />
+        <ActiveFilterChips chips={activeChips} onClearAll={() => { setTerm(''); setUnitOfMeasure(''); setActive(''); setFrom(''); setTo(''); setPage(0) }} />
       )}
 
       <div className="mt-6 bg-surface rounded-xl border border-border-default shadow-sm overflow-hidden">
@@ -109,21 +109,21 @@ export function ProductsPage() {
           <FilterToolbar
             search={{
               value: term,
-              onChange: setTerm,
+              onChange: (value) => { setTerm(value); setPage(0) },
               placeholder: 'Search product name or SKU...',
             }}
             selects={[
               {
                 key: 'unitOfMeasure',
                 value: unitOfMeasure,
-                onChange: setUnitOfMeasure,
+                onChange: (value) => { setUnitOfMeasure(value); setPage(0) },
                 options: UNIT_OPTIONS,
                 placeholder: 'Unit of measure',
               },
               {
                 key: 'active',
                 value: active,
-                onChange: setActive,
+                onChange: (value) => { setActive(value); setPage(0) },
                 options: ACTIVE_OPTIONS,
                 placeholder: 'All statuses',
               },
@@ -131,10 +131,10 @@ export function ProductsPage() {
             dateRange={{
               startValue: from,
               endValue: to,
-              onStartChange: setFrom,
-              onEndChange: setTo,
+              onStartChange: (value) => { setFrom(value); setPage(0) },
+              onEndChange: (value) => { setTo(value); setPage(0) },
             }}
-            onReset={() => { setTerm(''); setUnitOfMeasure(''); setActive(''); setFrom(''); setTo('') }}
+            onReset={() => { setTerm(''); setUnitOfMeasure(''); setActive(''); setFrom(''); setTo(''); setPage(0) }}
           />
           <Button
             variant="secondary"

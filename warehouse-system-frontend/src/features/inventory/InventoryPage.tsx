@@ -298,38 +298,38 @@ function BalancesTable() {
         content: data.content.filter(
           (b) =>
             !search ||
-            b.productName.toLowerCase().includes(search.toLowerCase()) ||
-            b.productSku.toLowerCase().includes(search.toLowerCase()) ||
-            b.storageLocationCode.toLowerCase().includes(search.toLowerCase()),
+            b.productName.toLowerCase().includes(search.trim().toLowerCase()) ||
+            b.productSku.toLowerCase().includes(search.trim().toLowerCase()) ||
+            b.storageLocationCode.toLowerCase().includes(search.trim().toLowerCase()),
         ),
       }
     : null
 
   const activeChips = [
-    ...(search ? [{ key: 'search', label: `Search: "${search}"`, value: search, onRemove: () => setSearch('') }] : []),
-    ...(quantityCondition ? [{ key: 'quantityCondition', label: `Quantity: ${QUANTITY_OPTIONS.find((o) => o.value === quantityCondition)?.label}`, value: quantityCondition, onRemove: () => setQuantityCondition('') }] : []),
+    ...(search ? [{ key: 'search', label: `Search: "${search}"`, value: search, onRemove: () => { setSearch(''); setPage(0) } }] : []),
+    ...(quantityCondition ? [{ key: 'quantityCondition', label: `Quantity: ${QUANTITY_OPTIONS.find((o) => o.value === quantityCondition)?.label}`, value: quantityCondition, onRemove: () => { setQuantityCondition(''); setPage(0) } }] : []),
   ]
 
   return (
     <div className="bg-surface rounded-xl border border-border-default shadow-sm overflow-hidden">
       <div className="p-space-md border-b border-border-default">
         {activeChips.length > 0 && (
-          <ActiveFilterChips chips={activeChips} onClearAll={() => { setSearch(''); setQuantityCondition('') }} />
+          <ActiveFilterChips chips={activeChips} onClearAll={() => { setSearch(''); setQuantityCondition(''); setPage(0) }} />
         )}
         <FilterToolbar
           search={{
             value: search,
-            onChange: setSearch,
+            onChange: (value) => { setSearch(value); setPage(0) },
             placeholder: 'Search product, SKU, or location...',
           }}
           selects={[{
               key: 'quantityCondition',
               value: quantityCondition,
-              onChange: setQuantityCondition,
+              onChange: (value) => { setQuantityCondition(value); setPage(0) },
               options: QUANTITY_OPTIONS,
               placeholder: 'Quantity condition',
             }]}
-          onReset={() => { setSearch(''); setQuantityCondition('') }}
+          onReset={() => { setSearch(''); setQuantityCondition(''); setPage(0) }}
         />
       </div>
 
@@ -455,14 +455,14 @@ function MovementsTable() {
   }, [page, size])
 
   const activeChips = [
-    ...(search ? [{ key: 'search', label: `Search: "${search}"`, value: search, onRemove: () => setSearch('') }] : []),
+    ...(search ? [{ key: 'search', label: `Search: "${search}"`, value: search, onRemove: () => { setSearch(''); setPage(0) } }] : []),
   ]
   const filtered = data
     ? {
         ...data,
         content: data.content.filter((movement) =>
           [movement.productName, movement.productSku, movement.storageLocationCode]
-            .some((value) => value.toLowerCase().includes(search.toLowerCase())),
+            .some((value) => value.toLowerCase().includes(search.trim().toLowerCase())),
         ),
       }
     : null
@@ -487,7 +487,7 @@ function MovementsTable() {
     <div className="bg-surface rounded-xl border border-border-default shadow-sm overflow-hidden">
       <div className="p-space-md border-b border-border-default">
         {activeChips.length > 0 && (
-          <ActiveFilterChips chips={activeChips} onClearAll={() => setSearch('')} />
+          <ActiveFilterChips chips={activeChips} onClearAll={() => { setSearch(''); setPage(0) }} />
         )}
         <FilterToolbar
           search={{
@@ -495,7 +495,7 @@ function MovementsTable() {
             onChange: (value) => { setSearch(value); setPage(0) },
             placeholder: 'Search product, SKU, or location...',
           }}
-          onReset={() => setSearch('')}
+          onReset={() => { setSearch(''); setPage(0) }}
         />
       </div>
 

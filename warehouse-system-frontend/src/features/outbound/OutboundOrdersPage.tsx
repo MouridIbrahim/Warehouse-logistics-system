@@ -59,13 +59,13 @@ export function OutboundOrdersPage() {
   }, [term, status, warehouseId, from, to, page, size])
 
   const activeChips = [
-    ...(term ? [{ key: 'search', label: `Search: "${term}"`, value: term, onRemove: () => setTerm('') }] : []),
+    ...(term ? [{ key: 'search', label: `Search: "${term}"`, value: term, onRemove: () => { setTerm(''); setPage(0) } }] : []),
     ...(status
-      ? [{ key: 'status', label: `Status: ${OUTBOUND_STATUS_OPTIONS.find((o) => o.value === status)?.label ?? status}`, value: status, onRemove: () => setStatus('') }]
+      ? [{ key: 'status', label: `Status: ${OUTBOUND_STATUS_OPTIONS.find((o) => o.value === status)?.label ?? status}`, value: status, onRemove: () => { setStatus(''); setPage(0) } }]
       : []),
-    ...(warehouseId ? [{ key: 'warehouseId', label: `Warehouse: ${warehouses.find((w) => w.id === warehouseId)?.name ?? warehouseId}`, value: String(warehouseId), onRemove: () => setWarehouseId(null) }] : []),
-    ...(from ? [{ key: 'from', label: `From: ${from}`, value: from, onRemove: () => setFrom('') }] : []),
-    ...(to ? [{ key: 'to', label: `To: ${to}`, value: to, onRemove: () => setTo('') }] : []),
+    ...(warehouseId ? [{ key: 'warehouseId', label: `Warehouse: ${warehouses.find((w) => w.id === warehouseId)?.name ?? warehouseId}`, value: String(warehouseId), onRemove: () => { setWarehouseId(null); setPage(0) } }] : []),
+    ...(from ? [{ key: 'from', label: `From: ${from}`, value: from, onRemove: () => { setFrom(''); setPage(0) } }] : []),
+    ...(to ? [{ key: 'to', label: `To: ${to}`, value: to, onRemove: () => { setTo(''); setPage(0) } }] : []),
   ]
 
   return (
@@ -89,7 +89,7 @@ export function OutboundOrdersPage() {
       )}
 
       {activeChips.length > 0 && (
-        <ActiveFilterChips chips={activeChips} onClearAll={() => { setTerm(''); setStatus(''); setWarehouseId(null); setFrom(''); setTo('') }} />
+        <ActiveFilterChips chips={activeChips} onClearAll={() => { setTerm(''); setStatus(''); setWarehouseId(null); setFrom(''); setTo(''); setPage(0) }} />
       )}
 
       <div className="mt-6 bg-surface rounded-xl border border-border-default shadow-sm overflow-hidden">
@@ -97,21 +97,21 @@ export function OutboundOrdersPage() {
           <FilterToolbar
             search={{
               value: term,
-              onChange: setTerm,
+              onChange: (value) => { setTerm(value); setPage(0) },
               placeholder: 'Search outbound reference...',
             }}
             selects={[
               {
                 key: 'status',
                 value: status,
-                onChange: setStatus,
+                onChange: (value) => { setStatus(value); setPage(0) },
                 options: OUTBOUND_STATUS_OPTIONS,
                 placeholder: 'All statuses',
               },
               {
                 key: 'warehouseId',
                 value: warehouseId ? String(warehouseId) : '',
-                onChange: (v) => setWarehouseId(v ? Number(v) : null),
+                onChange: (v) => { setWarehouseId(v ? Number(v) : null); setPage(0) },
                 options: warehouses.map((w) => ({ value: String(w.id), label: `${w.code} - ${w.name}` })),
                 placeholder: 'All warehouses',
               },
@@ -119,10 +119,10 @@ export function OutboundOrdersPage() {
             dateRange={{
               startValue: from,
               endValue: to,
-              onStartChange: setFrom,
-              onEndChange: setTo,
+              onStartChange: (value) => { setFrom(value); setPage(0) },
+              onEndChange: (value) => { setTo(value); setPage(0) },
             }}
-            onReset={() => { setTerm(''); setStatus(''); setWarehouseId(null); setFrom(''); setTo('') }}
+            onReset={() => { setTerm(''); setStatus(''); setWarehouseId(null); setFrom(''); setTo(''); setPage(0) }}
           />
           <Button
             variant="secondary"

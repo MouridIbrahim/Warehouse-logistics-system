@@ -1,4 +1,6 @@
 
+import { useEffect, useRef, useState } from 'react'
+
 export interface FilterToolbarProps {
   search?: {
     value: string
@@ -31,6 +33,30 @@ export function FilterToolbar({
   onReset,
   className = '',
 }: FilterToolbarProps) {
+  const [searchDraft, setSearchDraft] = useState(search?.value ?? '')
+  const searchTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  useEffect(() => {
+    setSearchDraft(search?.value ?? '')
+  }, [search?.value])
+
+  useEffect(() => () => {
+    if (searchTimer.current) clearTimeout(searchTimer.current)
+  }, [])
+
+  function handleSearchChange(value: string) {
+    setSearchDraft(value)
+    if (searchTimer.current) clearTimeout(searchTimer.current)
+    if (value === '') {
+      search?.onChange('')
+      return
+    }
+    searchTimer.current = setTimeout(() => {
+      search?.onChange(value.trim())
+      searchTimer.current = null
+    }, 300)
+  }
+
   const hasActiveFilters =
     (search?.value?.trim() ?? false) ||
     (selects?.some((s) => s.value?.trim()) ?? false) ||
@@ -53,15 +79,15 @@ export function FilterToolbar({
               aria-label={search.placeholder ?? 'Search'}
               className="w-full pl-9 pr-3 h-[38px] text-body-default bg-app-bg rounded-lg placeholder:text-sidebar-muted text-text-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
               placeholder={search.placeholder ?? 'Search...'}
-              value={search.value}
-              onChange={(e) => search.onChange(e.target.value)}
+              value={searchDraft}
+              onChange={(e) => handleSearchChange(e.target.value)}
             />
-            {search.value?.trim() && (
+            {searchDraft.trim() && (
               <button
                 type="button"
                 aria-label="Clear search"
                 className="absolute right-3 top-2.5 p-1 text-text-secondary hover:text-text-primary"
-                onClick={() => search.onChange('')}
+                onClick={() => handleSearchChange('')}
                 title="Clear search"
               >
                 <span className="material-symbols-outlined text-[18px]">close</span>
@@ -101,16 +127,27 @@ export function FilterToolbar({
             <input
               aria-label="Start date"
               type="date"
+              max={dateRange.endValue || undefined}
               className="h-[38px] pl-3 pr-3 bg-app-bg text-body-default text-text-primary rounded-lg border border-border-default focus:outline-none focus:ring-2 focus:ring-primary/20"
               value={dateRange.startValue}
-              onChange={(e) => dateRange.onStartChange(e.target.value)}
+              onChange={(e) => {
+                const value = e.target.value
+                dateRange.onStartChange(value)
+                if (value && dateRange.endValue && value > dateRange.endValue) {
+                  dateRange.onEndChange('')
+                }
+              }}
             />
             <input
               aria-label="End date"
               type="date"
+              min={dateRange.startValue || undefined}
               className="h-[38px] pl-3 pr-3 bg-app-bg text-body-default text-text-primary rounded-lg border border-border-default focus:outline-none focus:ring-2 focus:ring-primary/20"
               value={dateRange.endValue}
-              onChange={(e) => dateRange.onEndChange(e.target.value)}
+              onChange={(e) => {
+                const value = e.target.value
+                dateRange.onEndChange(value)
+              }}
             />
           </div>
         )}

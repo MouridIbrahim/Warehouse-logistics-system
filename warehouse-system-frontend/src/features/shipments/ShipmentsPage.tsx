@@ -84,12 +84,12 @@ export function ShipmentsPage() {
   }
 
   const activeChips = [
-    ...(term ? [{ key: 'search', label: `Search: "${term}"`, value: term, onRemove: () => setTerm('') }] : []),
+    ...(term ? [{ key: 'search', label: `Search: "${term}"`, value: term, onRemove: () => { setTerm(''); setPage(0) } }] : []),
     ...(status
-      ? [{ key: 'status', label: `Status: ${SHIPMENT_STATUS_OPTIONS.find((o) => o.value === status)?.label ?? status}`, value: status, onRemove: () => setStatus('') }]
+      ? [{ key: 'status', label: `Status: ${SHIPMENT_STATUS_OPTIONS.find((o) => o.value === status)?.label ?? status}`, value: status, onRemove: () => { setStatus(''); setPage(0) } }]
       : []),
-    ...(from ? [{ key: 'from', label: `From: ${from}`, value: from, onRemove: () => setFrom('') }] : []),
-    ...(to ? [{ key: 'to', label: `To: ${to}`, value: to, onRemove: () => setTo('') }] : []),
+    ...(from ? [{ key: 'from', label: `From: ${from}`, value: from, onRemove: () => { setFrom(''); setPage(0) } }] : []),
+    ...(to ? [{ key: 'to', label: `To: ${to}`, value: to, onRemove: () => { setTo(''); setPage(0) } }] : []),
   ]
 
   return (
@@ -113,7 +113,7 @@ export function ShipmentsPage() {
       )}
 
       {activeChips.length > 0 && (
-        <ActiveFilterChips chips={activeChips} onClearAll={() => { setTerm(''); setStatus(''); setFrom(''); setTo('') }} />
+        <ActiveFilterChips chips={activeChips} onClearAll={() => { setTerm(''); setStatus(''); setFrom(''); setTo(''); setPage(0) }} />
       )}
 
       <div className="mt-6 bg-surface rounded-xl border border-border-default shadow-sm overflow-hidden">
@@ -121,14 +121,14 @@ export function ShipmentsPage() {
           <FilterToolbar
             search={{
               value: term,
-              onChange: setTerm,
+              onChange: (value) => { setTerm(value); setPage(0) },
               placeholder: 'Search tracking number...',
             }}
             selects={[
               {
                 key: 'status',
                 value: status,
-                onChange: setStatus,
+                onChange: (value) => { setStatus(value); setPage(0) },
                 options: SHIPMENT_STATUS_OPTIONS,
                 placeholder: 'All statuses',
               },
@@ -136,10 +136,10 @@ export function ShipmentsPage() {
             dateRange={{
               startValue: from,
               endValue: to,
-              onStartChange: setFrom,
-              onEndChange: setTo,
+              onStartChange: (value) => { setFrom(value); setPage(0) },
+              onEndChange: (value) => { setTo(value); setPage(0) },
             }}
-            onReset={() => { setTerm(''); setStatus(''); setFrom(''); setTo('') }}
+            onReset={() => { setTerm(''); setStatus(''); setFrom(''); setTo(''); setPage(0) }}
           />
           <Button
             variant="secondary"

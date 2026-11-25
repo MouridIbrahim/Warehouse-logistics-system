@@ -139,7 +139,7 @@ export function CycleCountPage() {
           <FilterToolbar
             search={{
               value: search,
-              onChange: setSearch,
+              onChange: (value) => { setSearch(value); setPage(0) },
               placeholder: 'Search product or SKU...',
             }}
             selects={[
@@ -149,6 +149,7 @@ export function CycleCountPage() {
                 onChange: (v) => {
                   setProductId(v)
                   if (!v) setSelectedProduct(null)
+                  setPage(0)
                 },
                 options: selectedProduct
                   ? [{ value: String(selectedProduct.id), label: `${selectedProduct.sku} — ${selectedProduct.name}` }]
@@ -158,14 +159,14 @@ export function CycleCountPage() {
               {
                 key: 'locationId',
                 value: locationId,
-                onChange: (v) => setLocationId(v),
+                onChange: (v) => { setLocationId(v); setPage(0) },
                 options: [],
                 placeholder: 'Location ID',
               },
               {
                 key: 'quantityCondition',
                 value: quantityCondition,
-                onChange: setQuantityCondition,
+                onChange: (value) => { setQuantityCondition(value); setPage(0) },
                 options: QUANTITY_OPTIONS,
                 placeholder: 'Quantity condition',
               },
@@ -175,6 +176,8 @@ export function CycleCountPage() {
               setSelectedProduct(null)
               setLocationId('')
               setQuantityCondition('')
+              setSearch('')
+              setPage(0)
             }}
           />
         </div>

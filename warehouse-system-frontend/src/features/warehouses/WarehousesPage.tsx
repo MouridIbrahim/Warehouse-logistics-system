@@ -63,10 +63,10 @@ export function WarehousesPage() {
   }
 
   const activeChips = [
-    ...(term ? [{ key: 'search', label: `Search: "${term}"`, value: term, onRemove: () => setTerm('') }] : []),
-    ...(active ? [{ key: 'active', label: `Status: ${active === 'true' ? 'Active' : 'Inactive'}`, value: active, onRemove: () => setActive('') }] : []),
-    ...(from ? [{ key: 'from', label: `From: ${from}`, value: from, onRemove: () => setFrom('') }] : []),
-    ...(to ? [{ key: 'to', label: `To: ${to}`, value: to, onRemove: () => setTo('') }] : []),
+    ...(term ? [{ key: 'search', label: `Search: "${term}"`, value: term, onRemove: () => { setTerm(''); setPage(0) } }] : []),
+    ...(active ? [{ key: 'active', label: `Status: ${active === 'true' ? 'Active' : 'Inactive'}`, value: active, onRemove: () => { setActive(''); setPage(0) } }] : []),
+    ...(from ? [{ key: 'from', label: `From: ${from}`, value: from, onRemove: () => { setFrom(''); setPage(0) } }] : []),
+    ...(to ? [{ key: 'to', label: `To: ${to}`, value: to, onRemove: () => { setTo(''); setPage(0) } }] : []),
   ]
 
   return (
@@ -84,7 +84,10 @@ export function WarehousesPage() {
       />
 
       {activeChips.length > 0 && (
-        <ActiveFilterChips chips={activeChips} onClearAll={() => { setTerm(''); setActive(''); setFrom(''); setTo('') }} />
+        <ActiveFilterChips
+          chips={activeChips}
+          onClearAll={() => { setTerm(''); setActive(''); setFrom(''); setTo(''); setPage(0) }}
+        />
       )}
 
       <div className="mt-6 bg-surface rounded-xl border border-border-default shadow-sm overflow-hidden">
@@ -92,14 +95,14 @@ export function WarehousesPage() {
           <FilterToolbar
             search={{
               value: term,
-              onChange: setTerm,
+              onChange: (value) => { setTerm(value); setPage(0) },
               placeholder: 'Search warehouse name or code...',
             }}
             selects={[
               {
                 key: 'active',
                 value: active,
-                onChange: setActive,
+                onChange: (value) => { setActive(value); setPage(0) },
                 options: ACTIVE_OPTIONS,
                 placeholder: 'All statuses',
               },
@@ -107,10 +110,10 @@ export function WarehousesPage() {
             dateRange={{
               startValue: from,
               endValue: to,
-              onStartChange: setFrom,
-              onEndChange: setTo,
+              onStartChange: (value) => { setFrom(value); setPage(0) },
+              onEndChange: (value) => { setTo(value); setPage(0) },
             }}
-            onReset={() => { setTerm(''); setActive(''); setFrom(''); setTo('') }}
+            onReset={() => { setTerm(''); setActive(''); setFrom(''); setTo(''); setPage(0) }}
           />
           <Button
             variant="secondary"

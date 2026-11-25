@@ -92,11 +92,11 @@ export function UsersPage() {
   }
 
   const activeChips = [
-    ...(term ? [{ key: 'search', label: `Search: "${term}"`, value: term, onRemove: () => setTerm('') }] : []),
+    ...(term ? [{ key: 'search', label: `Search: "${term}"`, value: term, onRemove: () => { setTerm(''); setPage(0) } }] : []),
     ...(role
-      ? [{ key: 'role', label: `Role: ${roleLabel(role)}`, value: role, onRemove: () => setRole('') }]
+      ? [{ key: 'role', label: `Role: ${roleLabel(role)}`, value: role, onRemove: () => { setRole(''); setPage(0) } }]
       : []),
-    ...(active ? [{ key: 'active', label: `Status: ${active === 'true' ? 'Active' : 'Inactive'}`, value: active, onRemove: () => setActive('') }] : []),
+    ...(active ? [{ key: 'active', label: `Status: ${active === 'true' ? 'Active' : 'Inactive'}`, value: active, onRemove: () => { setActive(''); setPage(0) } }] : []),
   ]
 
   return (
@@ -118,7 +118,10 @@ export function UsersPage() {
       )}
 
       {activeChips.length > 0 && (
-        <ActiveFilterChips chips={activeChips} onClearAll={() => { setTerm(''); setRole(''); setActive('') }} />
+        <ActiveFilterChips
+          chips={activeChips}
+          onClearAll={() => { setTerm(''); setRole(''); setActive(''); setPage(0) }}
+        />
       )}
 
       <div className="mt-6 bg-surface rounded-xl border border-border-default shadow-sm overflow-hidden">
@@ -126,21 +129,21 @@ export function UsersPage() {
           <FilterToolbar
             search={{
               value: term,
-              onChange: setTerm,
+              onChange: (value) => { setTerm(value); setPage(0) },
               placeholder: 'Search by name or username...',
             }}
             selects={[
               {
                 key: 'role',
                 value: role,
-                onChange: setRole,
+                onChange: (value) => { setRole(value); setPage(0) },
                 options: roles.map((r) => ({ value: r.name, label: roleLabel(r.name) })),
                 placeholder: 'All roles',
               },
               {
                 key: 'active',
                 value: active,
-                onChange: setActive,
+                onChange: (value) => { setActive(value); setPage(0) },
                 options: [
                   { value: 'true', label: 'Active' },
                   { value: 'false', label: 'Inactive' },
@@ -148,7 +151,7 @@ export function UsersPage() {
                 placeholder: 'All statuses',
               },
             ]}
-            onReset={() => { setTerm(''); setRole(''); setActive('') }}
+            onReset={() => { setTerm(''); setRole(''); setActive(''); setPage(0) }}
           />
         </div>
 

@@ -76,11 +76,11 @@ export function AuditLogsPage() {
   }, [entityType, action, actorUserId, from, to, page, size])
 
   const activeChips = [
-    ...(entityType ? [{ key: 'entityType', label: `Entity: ${humanize(entityType)}`, value: entityType, onRemove: () => setEntityType('') }] : []),
-    ...(action ? [{ key: 'action', label: `Action: ${humanize(action)}`, value: action, onRemove: () => setAction('') }] : []),
-    ...(actorUserId ? [{ key: 'actorUserId', label: `Actor: ${users.find((u) => u.id === actorUserId)?.displayName ?? actorUserId}`, value: String(actorUserId), onRemove: () => setActorUserId(null) }] : []),
-    ...(from ? [{ key: 'from', label: `From: ${from}`, value: from, onRemove: () => setFrom('') }] : []),
-    ...(to ? [{ key: 'to', label: `To: ${to}`, value: to, onRemove: () => setTo('') }] : []),
+    ...(entityType ? [{ key: 'entityType', label: `Entity: ${humanize(entityType)}`, value: entityType, onRemove: () => { setEntityType(''); setPage(0) } }] : []),
+    ...(action ? [{ key: 'action', label: `Action: ${humanize(action)}`, value: action, onRemove: () => { setAction(''); setPage(0) } }] : []),
+    ...(actorUserId ? [{ key: 'actorUserId', label: `Actor: ${users.find((u) => u.id === actorUserId)?.displayName ?? actorUserId}`, value: String(actorUserId), onRemove: () => { setActorUserId(null); setPage(0) } }] : []),
+    ...(from ? [{ key: 'from', label: `From: ${from}`, value: from, onRemove: () => { setFrom(''); setPage(0) } }] : []),
+    ...(to ? [{ key: 'to', label: `To: ${to}`, value: to, onRemove: () => { setTo(''); setPage(0) } }] : []),
   ]
 
   return (
@@ -91,7 +91,7 @@ export function AuditLogsPage() {
       />
 
       {activeChips.length > 0 && (
-        <ActiveFilterChips chips={activeChips} onClearAll={() => { setEntityType(''); setAction(''); setActorUserId(null); setFrom(''); setTo('') }} />
+        <ActiveFilterChips chips={activeChips} onClearAll={() => { setEntityType(''); setAction(''); setActorUserId(null); setFrom(''); setTo(''); setPage(0) }} />
       )}
 
       <div className="mt-6 bg-surface rounded-xl border border-border-default shadow-sm overflow-hidden">
@@ -101,21 +101,21 @@ export function AuditLogsPage() {
               {
                 key: 'entityType',
                 value: entityType,
-                onChange: setEntityType,
+                onChange: (value) => { setEntityType(value); setPage(0) },
                 options: ENTITY_TYPES.map((e) => ({ value: e, label: humanize(e) })),
                 placeholder: 'All entity types',
               },
               {
                 key: 'action',
                 value: action,
-                onChange: setAction,
+                onChange: (value) => { setAction(value); setPage(0) },
                 options: ACTIONS.map((a) => ({ value: a, label: humanize(a) })),
                 placeholder: 'All actions',
               },
               {
                 key: 'actorUserId',
                 value: actorUserId ? String(actorUserId) : '',
-                onChange: (v) => setActorUserId(v ? Number(v) : null),
+                onChange: (v) => { setActorUserId(v ? Number(v) : null); setPage(0) },
                 options: users.map((u) => ({ value: String(u.id), label: `${u.displayName} (@${u.username})` })),
                 placeholder: 'All actors',
               },
@@ -123,10 +123,10 @@ export function AuditLogsPage() {
             dateRange={{
               startValue: from,
               endValue: to,
-              onStartChange: setFrom,
-              onEndChange: setTo,
+              onStartChange: (value) => { setFrom(value); setPage(0) },
+              onEndChange: (value) => { setTo(value); setPage(0) },
             }}
-            onReset={() => { setEntityType(''); setAction(''); setActorUserId(null); setFrom(''); setTo('') }}
+            onReset={() => { setEntityType(''); setAction(''); setActorUserId(null); setFrom(''); setTo(''); setPage(0) }}
           />
           <Button
             variant="secondary"
